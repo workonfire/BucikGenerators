@@ -1,0 +1,11 @@
+name: BucikGenerators
+version: 1.0.0
+description: A customizable plugin for setting up block generators.
+main: pl.workonfire.bucik.generators.Main
+api-version: 1.15
+authors: [Buty935]
+commands:
+  generators:
+    aliases: [gene, generator]
+  drop:
+    aliases: [genedrop, generatordrop]

@@ -1,0 +1,6 @@
+options:
+  auto-save-interval: 6000 # in ticks. 1 second = 20 ticks
+  locale: en
+  play-sounds: true
+  show-particles: true
+  debug: false
