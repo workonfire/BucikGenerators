@@ -37,7 +37,7 @@
 
 ![Screenshot 2](https://i.imgur.com/QNcWJ8c.png)
 
-![Screenshot 3](https://i.imgur.com/lMlBoOr.png)
+![Screenshot 3](https://i.imgur.com/nI1UY74.png)
 
 ![Screenshot 4](https://i.imgur.com/jdAO19o.png)
 
