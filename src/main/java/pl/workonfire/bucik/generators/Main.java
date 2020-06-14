@@ -5,7 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.workonfire.bucik.generators.commands.DropCommand;
 import pl.workonfire.bucik.generators.commands.MainGeneratorCommand;
 import pl.workonfire.bucik.generators.data.Metrics;
-import pl.workonfire.bucik.generators.listeners.*;
+import pl.workonfire.bucik.generators.listeners.TabCompleter;
 import pl.workonfire.bucik.generators.managers.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.Util;
