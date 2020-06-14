@@ -16,8 +16,8 @@ public class ConfigManager {
     private static final File dataStorageFile = new File(getPlugin().getDataFolder(), "storage.yml");
 
     /**
-     * @since 1.0.0
      * Initializes the configuration files.
+     * @since 1.0.0
      */
     public static void initializeConfiguration() {
         config = getPlugin().getConfig();
@@ -33,35 +33,42 @@ public class ConfigManager {
             generatorsConfigFile.getParentFile().mkdirs();
             getPlugin().saveResource("generators.yml", false);
         }
-        if (!dataStorageFile.exists()) {
-            dataStorageFile.getParentFile().mkdirs();
-            getPlugin().saveResource("storage.yml", false);
-        }
         languageConfig = YamlConfiguration.loadConfiguration(languageConfigFile);
-        dataStorage = YamlConfiguration.loadConfiguration(dataStorageFile);
         generatorsConfig = YamlConfiguration.loadConfiguration(generatorsConfigFile);
     }
 
     /**
-     * @since 1.0.0
+     * Initializes the database.
+     * @since 1.0.1
+     */
+    public static void initializeStorage() {
+        if (!dataStorageFile.exists()) {
+            dataStorageFile.getParentFile().mkdirs();
+            getPlugin().saveResource("storage.yml", false);
+        }
+        dataStorage = YamlConfiguration.loadConfiguration(dataStorageFile);
+    }
+
+    /**
      * Saves the database.yml file.
+     * @since 1.0.0
      */
     public static void updateStorage() {
         try {
             getDataStorage().save(dataStorageFile);
+            if (getConfig().getBoolean("options.debug")) System.out.println(getPrefix() + " §fDEBUG: File saved.");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
 
     /**
-     * @since 1.0.0
      * Reloads the configuration files.
+     * @since 1.0.0
      */
     public static void reloadAll() {
         getPlugin().reloadConfig();
         initializeConfiguration();
-        updateStorage();
     }
 
     /**
@@ -83,8 +90,8 @@ public class ConfigManager {
     }
 
     /**
-     * @since 1.0.0
      * Gets a language variable value from the config.
+     * @since 1.0.0
      * @param variable Unparsed language variable, e.g. "no-permission"
      * @return Language string
      */

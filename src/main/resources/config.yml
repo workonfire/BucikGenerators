@@ -4,3 +4,4 @@ options:
   play-sounds: true
   show-particles: true
   debug: false
+  metrics: true

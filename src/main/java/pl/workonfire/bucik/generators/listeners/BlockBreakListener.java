@@ -55,7 +55,7 @@ public class BlockBreakListener implements Listener {
                     final int breakCooldown = baseGenerator.getBreakCooldown();
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> block.setType(baseGenerator.getGeneratorMaterial()), breakCooldown);
                     if (ConfigManager.areSoundsEnabled())
-                        player.playSound(block.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1.0F, 1.0F);
+                         block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1.0F, 1.0F);
                     for (String permission : baseGenerator.getGeneratorDropPermissionList()) {
                         if (player.hasPermission(Util.getPermission(permission))) {
                             for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {

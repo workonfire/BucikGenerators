@@ -1,35 +1,36 @@
 # BucikGenerators
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/567c8bfa9c6b432f8b872fd59b6e7d90)](https://www.codacy.com/manual/workonfire/BucikGenerators?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=workonfire/BucikGenerators&amp;utm_campaign=Badge_Grade)
 ![GitHub last commit](https://img.shields.io/github/last-commit/workonfire/BucikGenerators)
 ![GitHub license](https://img.shields.io/github/license/workonfire/BucikGenerators)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
 ## Features
-  - Fully customizable block generators
-  - Custom permissions for almost everything
-  - Custom cooldown times
-  - Custom crafting recipes
-  - Fully customizable items that can be dropped
-  - Two item drop modes: `inventory` and `ground`
-  - Custom item drop odds based on permissions and luck (percentage system)
-  - Changeable action-bar messages
-  - Custom item drop multipliers (useful for events)
-  - Nice sound and particle effects
-  - Previewable generator drop details (`/drop`)
-  - World blacklist
-  - Database auto-save system
+- Fully customizable block generators
+- Custom permissions for almost everything
+- Custom cooldown times
+- Custom crafting recipes
+- Fully customizable items that can be dropped
+- Two item drop modes: `inventory` and `ground`
+- Custom item drop odds based on permissions and luck (percentage system)
+- Changeable action-bar messages
+- Custom item drop multipliers (useful for events)
+- Nice sound and particle effects
+- Previewable generator drop details (`/drop`)
+- World blacklist
+- Database auto-save system
 
 ## Permissions
-  - `bucik.generators.reload`
-  - `bucik.generators.get`
-  - `bucik.generators.drop.see`
-  - `bucik.generators.drop.manipulate`
+- `bucik.generators.reload`
+- `bucik.generators.get`
+- `bucik.generators.drop.see`
+- `bucik.generators.drop.manipulate`
   
 ## Commands
-  - `/generators reload`
-  - `/generators drop <getMultiplier|setMultiplier>`
-  - `/generators get <generatorID>`
-  - `/drop`
+- `/generators reload`
+- `/generators drop <getMultiplier|setMultiplier>`
+- `/generators get <generatorID>`
+- `/drop`
   
 ## Screenshots
 ![Screenshot 1](https://i.imgur.com/XPQAbUr.png)

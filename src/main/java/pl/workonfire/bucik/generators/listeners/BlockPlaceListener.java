@@ -3,6 +3,7 @@ package pl.workonfire.bucik.generators.listeners;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +22,12 @@ public class BlockPlaceListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         final Player player = event.getPlayer();
         try {
+            final Block block = event.getBlock();
+
             if (BlockUtil.isHeldBlockAGenerator(event.getItemInHand())) {
-                final Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(event.getBlock().getType());
+                final Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(block.getType());
                 for (String worldName : baseGenerator.getWorldBlacklist()) {
-                    if (event.getBlock().getWorld().getName().equals(worldName)) {
+                    if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
                         player.sendMessage(getPrefixedLanguageVariable("cannot-place-in-this-world"));
                         if (ConfigManager.areSoundsEnabled())
@@ -36,10 +39,10 @@ public class BlockPlaceListener implements Listener {
                     if (ConfigManager.areSoundsEnabled())
                         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 1.0F);
                     if (ConfigManager.areParticlesEnabled())
-                        player.spawnParticle(Particle.END_ROD, event.getBlock().getLocation(), 25);
+                        player.spawnParticle(Particle.END_ROD, block.getLocation(), 25);
                     player.sendMessage(getPrefixedLanguageVariable("generator-placed") + baseGenerator.getId());
-                    baseGenerator.register(event.getBlock().getLocation(), event.getBlock().getWorld());
-                    final Location generatorLocation = event.getBlock().getLocation().add(0, 1, 0);
+                    baseGenerator.register(block.getLocation(), block.getWorld());
+                    final Location generatorLocation = block.getLocation().add(0, 1, 0);
                     generatorLocation.getBlock().setType(baseGenerator.getGeneratorMaterial());
                 }
                 else {

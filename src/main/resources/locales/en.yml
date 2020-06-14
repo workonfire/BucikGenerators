@@ -19,7 +19,7 @@ language:
   cannot-place-in-this-world: "&f[&4&l❌&f] &cYou can't place a generator in this world."
   block-is-not-a-generator: "&f[&6&l!&f] &eThe block you are looking at is not a generator. Point the cursor on the generator to find out what drop it has."
   items-drop-list: "&f[&3&li&f] &bDrop specification of the selected generator:"
-  items-for-permission: "&f&lList of items for the permission &6"
+  items-for-permission: "&f[&3&li&f] &eList of items for the permission &6&o"
   drop-item-material: "&bItem: &6"
   drop-item-name: "&bName: &6"
   drop-item-amount: "&bAmount: &6"

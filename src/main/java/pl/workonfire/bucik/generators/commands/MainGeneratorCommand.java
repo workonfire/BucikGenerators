@@ -13,6 +13,7 @@ import pl.workonfire.bucik.generators.managers.ConfigManager;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
 public class MainGeneratorCommand implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 0) {
@@ -53,7 +54,7 @@ public class MainGeneratorCommand implements CommandExecutor {
                             else {
                                 try {
                                     DropMultiplier.setDropMultiplier(Integer.parseInt(args[2]));
-                                    sender.sendMessage(getPrefixedLanguageVariable("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x");
+                                    sender.sendMessage(getPrefixedLanguageVariable("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
                                 }
                                 catch (NumberFormatException exception) {
                                     sender.sendMessage(getPrefixedLanguageVariable("drop-multiplier-must-be-an-int"));

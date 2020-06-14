@@ -6,7 +6,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.Util;
 
 import static java.lang.String.format;
@@ -52,7 +51,7 @@ public class Generator {
      * @param world World object
      */
     public void register(Location location, World world) {
-        final List<String> currentLocations = ConfigManager.getDataStorage().getStringList("generators");
+        final List<String> currentLocations = getDataStorage().getStringList("generators");
         final String data = format("%s|%d|%d|%d", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
         currentLocations.add(data);
         getDataStorage().set("generators", currentLocations);
@@ -65,7 +64,7 @@ public class Generator {
      * @param world World object
      */
     public void unregister(Location location, World world) {
-        final List<String> currentLocations = ConfigManager.getDataStorage().getStringList("generators");
+        final List<String> currentLocations = getDataStorage().getStringList("generators");
         final String data = format("%s|%d|%d|%d", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
         currentLocations.remove(data);
         getDataStorage().set("generators", currentLocations);

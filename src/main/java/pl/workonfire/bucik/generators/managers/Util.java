@@ -1,12 +1,19 @@
 package pl.workonfire.bucik.generators.managers;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import pl.workonfire.bucik.generators.listeners.BlockBreakListener;
+import pl.workonfire.bucik.generators.listeners.BlockPlaceListener;
+import pl.workonfire.bucik.generators.listeners.EntityExplodeListener;
+import pl.workonfire.bucik.generators.listeners.PistonExtendListener;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 
+import static org.bukkit.Bukkit.getServer;
+import static pl.workonfire.bucik.generators.Main.getPlugin;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
 public class Util {
@@ -60,5 +67,16 @@ public class Util {
             ;
             player.sendMessage(getPrefixedLanguageVariable("debug-more-info-in-console"));
         }
+    }
+
+    /**
+     * Registers every event handler.
+     * @since 1.0.1
+     */
+    public static void registerEvents() {
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), getPlugin());
+        getServer().getPluginManager().registerEvents(new BlockPlaceListener(), getPlugin());
+        getServer().getPluginManager().registerEvents(new PistonExtendListener(), getPlugin());
+        getServer().getPluginManager().registerEvents(new EntityExplodeListener(), getPlugin());
     }
 }

@@ -19,7 +19,7 @@ language:
   cannot-place-in-this-world: "&f[&4&l❌&f] &cNie możesz postawić generatora w tym świecie."
   block-is-not-a-generator: "&f[&6&l!&f] &eBlok, na który patrzysz, nie jest generatorem. Skieruj wskaźnik na generator, by dowiedzieć się, jaki posiada drop."
   items-drop-list: "&f[&3&li&f] &bSpecyfikacja dropu wybranego generatora:"
-  items-for-permission: "&f&lLista przedmiotów dla permisji &6"
+  items-for-permission: "&f[&3&li&f] &eLista przedmiotów dla permisji &6&o"
   drop-item-material: "&bPrzedmiot: &6"
   drop-item-name: "&bNazwa: &6"
   drop-item-amount: "&bIlość: &6"
