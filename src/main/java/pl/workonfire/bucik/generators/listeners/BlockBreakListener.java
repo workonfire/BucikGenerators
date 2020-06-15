@@ -52,6 +52,7 @@ public class BlockBreakListener implements Listener {
             }
             else if (baseGenerator != null && BlockUtil.isGeneratorDefined(baseGenerator.getId())
                     && BlockUtil.isBlockAGenerator(baseBlockLocation, block.getWorld())) {
+                event.setCancelled(true);
                 if (player.hasPermission(baseGenerator.getPermission())) {
                     final int breakCooldown = baseGenerator.getBreakCooldown();
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> block.setType(baseGenerator.getGeneratorMaterial()), breakCooldown);
@@ -75,10 +76,7 @@ public class BlockBreakListener implements Listener {
                         }
                     }
                 }
-                else {
-                    event.setCancelled(true);
-                    player.sendMessage(getPrefixedLanguageVariable("no-permission"));
-                }
+                else player.sendMessage(getPrefixedLanguageVariable("no-permission"));
             }
         }
         catch (Exception exception) {

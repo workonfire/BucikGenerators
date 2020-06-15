@@ -15,7 +15,7 @@ import pl.workonfire.bucik.generators.managers.Util;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.0.3
+ * @version 1.0.4
  * @since   2020-06-13
  */
 
