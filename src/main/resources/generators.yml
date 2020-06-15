@@ -15,6 +15,9 @@ generators:
     world-blacklist:
       - world_the_end
       - world_nether
+    enchantments:
+      - "unbreaking:5"
+    hide-enchantments: true
     base:
       item: END_STONE
       name: "&7&l&oGenerator"
@@ -32,6 +35,8 @@ generators:
           1:
             chance: 100 # %
             item: COBBLESTONE
+            enchantments:
+              - "silk_touch:1"
             action-bar-message: "&f&l+ &f&l[&7&lCobblestone&f&l]"
           2:
             chance: 7 # %

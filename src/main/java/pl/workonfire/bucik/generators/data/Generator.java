@@ -2,10 +2,16 @@ package pl.workonfire.bucik.generators.data;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentWrapper;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import pl.workonfire.bucik.generators.Main;
 import pl.workonfire.bucik.generators.managers.Util;
 
 import static java.lang.String.format;
@@ -29,6 +35,8 @@ public class Generator {
     private final List<String> worldBlacklist;
     private final String itemDropMode;
     private final ConfigurationSection customRecipe;
+    private final List<String> enchantments;
+    private final boolean hideEnchantments;
 
     public Generator(String id) {
         this.id = id;
@@ -42,6 +50,8 @@ public class Generator {
         worldBlacklist = getGeneratorsConfig().getStringList(format("generators.%s.world-blacklist", id));
         itemDropMode = getGeneratorsConfig().getString(format("generators.%s.generator.item-drop-mode", id));
         customRecipe = getGeneratorsConfig().getConfigurationSection(format("generators.%s.custom-crafting-recipe", id));
+        enchantments = getGeneratorsConfig().getStringList(format("generators.%s.enchantments", id));
+        hideEnchantments = getGeneratorsConfig().getBoolean(format("generators.%s.hide-enchantments", id));
     }
 
     /**
@@ -86,12 +96,22 @@ public class Generator {
      * @return ItemStack object
      */
     public ItemStack getItemStack() {
-        final ItemStack generatorItem = new ItemStack(getBaseItemMaterial());
-        final ItemMeta generatorItemMeta = generatorItem.getItemMeta();
-        generatorItemMeta.setDisplayName(getBaseItemName());
-        generatorItemMeta.setLore(getBaseItemLore());
-        generatorItem.setItemMeta(generatorItemMeta);
-        return generatorItem;
+        final ItemStack item = new ItemStack(getBaseItemMaterial());
+        final ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(getBaseItemName());
+        itemMeta.setLore(getBaseItemLore());
+        if (areEnchantmentsHidden()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        final NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
+        itemMeta.getPersistentDataContainer().set(uniqueKey, PersistentDataType.INTEGER, 1);
+        item.setItemMeta(itemMeta);
+        if (getEnchantments() != null)
+            for (String enchantment : getEnchantments()) {
+                final String enchantmentName = enchantment.split(":")[0];
+                final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
+                final Enchantment enchantmentRepresentation = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName));
+                if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
+            }
+        return item;
     }
 
     public String getId() {
@@ -138,5 +158,13 @@ public class Generator {
 
     public ConfigurationSection getCustomRecipe() {
         return customRecipe;
+    }
+
+    public List<String> getEnchantments() {
+        return enchantments;
+    }
+
+    public boolean areEnchantmentsHidden() {
+        return hideEnchantments;
     }
 }

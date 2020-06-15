@@ -1,6 +1,9 @@
 package pl.workonfire.bucik.generators.data;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.workonfire.bucik.generators.managers.Util;
@@ -20,6 +23,7 @@ public class DropItem {
     private final String itemName;
     private final List<String> itemLore;
     private final String actionBarMessage;
+    private final List<String> enchantments;
 
     public DropItem(Generator generator, String permission, int id) {
         dropChance = getGeneratorsConfig().getDouble(format("generators.%s.generator.drop.%s.%d.chance", generator.getId(), permission, id));
@@ -28,6 +32,7 @@ public class DropItem {
         itemName = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.name", generator.getId(), permission, id));
         itemLore = getGeneratorsConfig().getStringList(format("generators.%s.generator.drop.%s.%d.lore", generator.getId(), permission, id));
         actionBarMessage = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.action-bar-message", generator.getId(), permission, id));
+        enchantments = getGeneratorsConfig().getStringList(format("generators.%s.generator.drop.%s.%d.enchantments", generator.getId(), permission, id));
     }
 
     /**
@@ -41,6 +46,13 @@ public class DropItem {
         if (itemName != null) itemMeta.setDisplayName(Util.formatColors(getItemName()));
         if (itemLore != null) itemMeta.setLore(getItemLore());
         item.setItemMeta(itemMeta);
+        if (getEnchantments() != null)
+            for (String enchantment : getEnchantments()) {
+                final String enchantmentName = enchantment.split(":")[0];
+                final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
+                final Enchantment enchantmentRepresentation = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName));
+                if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
+            }
         item.setAmount(getItemAmount());
         return item;
     }
@@ -73,5 +85,9 @@ public class DropItem {
 
     public String getActionBarMessage() {
         return actionBarMessage;
+    }
+
+    public List<String> getEnchantments() {
+        return enchantments;
     }
 }

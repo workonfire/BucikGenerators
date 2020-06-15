@@ -25,3 +25,4 @@ language:
   drop-item-amount: "&bIlość: &6"
   drop-item-chance: "&bSzansa na drop: &6"
   no-drop: "&f[&4&l❌&f] &cNie możesz nic wydropić z tego generatora."
+  contact-developer: "&4Poniżej znajduje się treść błędu BucikGenerators. Jeśli nie wiesz, jak go rozwiązać, skontaktuj się z twórcą: workonfire#8262"

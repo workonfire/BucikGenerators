@@ -25,3 +25,4 @@ language:
   drop-item-amount: "&bAmount: &6"
   drop-item-chance: "&bDrop chance: &6"
   no-drop: "&f[&4&l❌&f] &cYou can't drop anything from this generator."
+  contact-developer: "&4Below is the content of the BucikGenerators error. If you don't know how to solve it, contact the plugin author: workonfire#8262"

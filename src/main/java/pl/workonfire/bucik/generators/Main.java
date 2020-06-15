@@ -15,7 +15,7 @@ import pl.workonfire.bucik.generators.managers.Util;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.0.1
+ * @version 1.0.2
  * @since   2020-06-13
  */
 
@@ -36,6 +36,8 @@ public final class Main extends JavaPlugin {
         getCommand("generators").setTabCompleter(new TabCompleter());
         getCommand("drop").setExecutor(new DropCommand());
         System.out.println(ConfigManager.getPrefix() + " §fBucikGenerators §6" + getPluginVersion() + " §fby Buty935. Discord: §9workonfire#8262");
+        if (ConfigManager.getConfig().getBoolean("options.debug"))
+            System.out.println("§4IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
         final int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), ConfigManager::updateStorage, 0, dataSaveInterval);
         BlockUtil.registerRecipes();

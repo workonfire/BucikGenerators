@@ -58,6 +58,7 @@ public class Util {
             player.sendMessage(getPrefixedLanguageVariable("config-load-error-debug-header"));
             final StringWriter stringWriter = new StringWriter();
             exception.printStackTrace(new PrintWriter(stringWriter));
+            System.out.println(ConfigManager.getLanguageVariable("contact-developer"));
             exception.printStackTrace();
             String exceptionAsString = stringWriter.toString();
             exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
@@ -78,5 +79,14 @@ public class Util {
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), getPlugin());
         getServer().getPluginManager().registerEvents(new PistonExtendListener(), getPlugin());
         getServer().getPluginManager().registerEvents(new EntityExplodeListener(), getPlugin());
+    }
+
+    /**
+     * Returns a hard-coded debug message.
+     * @since 1.0.2
+     * @return Message
+     */
+    public static String getDebugMessage() {
+        return "§4There was a problem processing the configuration file. Make sure all fields have valid values. Details:";
     }
 }
