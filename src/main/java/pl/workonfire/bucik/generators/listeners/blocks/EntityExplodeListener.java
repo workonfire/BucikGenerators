@@ -20,15 +20,10 @@ public class EntityExplodeListener implements Listener {
                 if (BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld())) {
                     final Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(block.getType()).getId());
                     generator.unregister(block.getLocation(), block.getWorld());
-                    System.out.println("Wyrejestrowano generator.");
-                    //event.setCancelled(true);
                 }
                 else if (baseGenerator != null && BlockUtil.isGeneratorDefined(baseGenerator.getId())
-                        && BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld())) {
+                        && BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld()))
                     baseGenerator.unregister(baseBlockLocation, block.getWorld());
-                    System.out.println("Wyrejestrowano generator.");
-                }
-                    //event.setCancelled(true);
             }
         }
     }
