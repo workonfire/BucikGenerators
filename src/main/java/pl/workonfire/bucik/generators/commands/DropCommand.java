@@ -5,10 +5,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import pl.workonfire.bucik.generators.data.DropItem;
-import pl.workonfire.bucik.generators.data.Generator;
-import pl.workonfire.bucik.generators.managers.BlockUtil;
-import pl.workonfire.bucik.generators.managers.Util;
+import pl.workonfire.bucik.generators.data.generator.DropItem;
+import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;

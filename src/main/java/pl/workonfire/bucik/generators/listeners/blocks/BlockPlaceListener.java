@@ -1,4 +1,4 @@
-package pl.workonfire.bucik.generators.listeners;
+package pl.workonfire.bucik.generators.listeners.blocks;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import pl.workonfire.bucik.generators.data.Generator;
-import pl.workonfire.bucik.generators.managers.BlockUtil;
+import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.Util;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
@@ -37,7 +37,7 @@ public class BlockPlaceListener implements Listener {
                 }
                 if (player.hasPermission(baseGenerator.getPermission())) {
                     if (ConfigManager.areSoundsEnabled())
-                        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 1.0F);
+                        block.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 1.0F);
                     if (ConfigManager.areParticlesEnabled())
                         player.spawnParticle(Particle.END_ROD, block.getLocation(), 25);
                     player.sendMessage(getPrefixedLanguageVariable("generator-placed") + baseGenerator.getId());

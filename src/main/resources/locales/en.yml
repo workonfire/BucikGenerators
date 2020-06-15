@@ -1,3 +1,5 @@
+# If an update changes this file, it must be manually updated.
+
 language:
   plugin-prefix: "&f&l[&c&lB&6&lu&e&lc&a&li&b&lk&3&lGenerators&f&l]&r"
   no-permission: "&f[&4&l❌&f] &cNo permission!"

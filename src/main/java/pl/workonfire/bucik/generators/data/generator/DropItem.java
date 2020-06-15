@@ -1,4 +1,4 @@
-package pl.workonfire.bucik.generators.data;
+package pl.workonfire.bucik.generators.data.generator;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -6,7 +6,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pl.workonfire.bucik.generators.managers.Util;
+import pl.workonfire.bucik.generators.data.DropMultiplier;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static java.lang.String.format;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getGeneratorsConfig;
@@ -27,7 +28,7 @@ public class DropItem {
 
     public DropItem(Generator generator, String permission, int id) {
         dropChance = getGeneratorsConfig().getDouble(format("generators.%s.generator.drop.%s.%d.chance", generator.getId(), permission, id));
-        itemMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.item", generator.getId(), permission, id)));
+        itemMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.item", generator.getId(), permission, id)).toUpperCase());
         itemAmount = getGeneratorsConfig().getInt(format("generators.%s.generator.drop.%s.%d.amount", generator.getId(), permission, id));
         itemName = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.name", generator.getId(), permission, id));
         itemLore = getGeneratorsConfig().getStringList(format("generators.%s.generator.drop.%s.%d.lore", generator.getId(), permission, id));

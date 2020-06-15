@@ -1,4 +1,4 @@
-package pl.workonfire.bucik.generators.listeners;
+package pl.workonfire.bucik.generators.listeners.blocks;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -9,11 +9,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import pl.workonfire.bucik.generators.Main;
-import pl.workonfire.bucik.generators.data.DropItem;
-import pl.workonfire.bucik.generators.data.Generator;
-import pl.workonfire.bucik.generators.managers.BlockUtil;
+import pl.workonfire.bucik.generators.data.generator.DropItem;
+import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.Util;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
@@ -40,9 +40,9 @@ public class BlockBreakListener implements Listener {
                     block.setType(Material.AIR);
                     block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack(1));
                     if (ConfigManager.areSoundsEnabled())
-                        player.playSound(block.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, 1.0F);
+                        block.getWorld().playSound(block.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, 1.0F);
                     if (ConfigManager.areParticlesEnabled())
-                        player.spawnParticle(Particle.EXPLOSION_NORMAL, event.getBlock().getLocation(), 25);
+                        player.spawnParticle(Particle.SMOKE_LARGE, event.getBlock().getLocation(), 7);
                     player.sendMessage(getPrefixedLanguageVariable("base-generator-destroyed"));
                 }
                 else {
@@ -55,6 +55,7 @@ public class BlockBreakListener implements Listener {
                 event.setCancelled(true);
                 if (player.hasPermission(baseGenerator.getPermission())) {
                     final int breakCooldown = baseGenerator.getBreakCooldown();
+                    block.setType(Material.AIR);
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> block.setType(baseGenerator.getGeneratorMaterial()), breakCooldown);
                     if (ConfigManager.areSoundsEnabled())
                          block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1.0F, 1.0F);

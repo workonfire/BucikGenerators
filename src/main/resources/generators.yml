@@ -1,3 +1,9 @@
+# This is the generators config file.
+# Make sure it has no syntax errors by comparing it to the default config on the resource website.
+# https://www.spigotmc.org/resources/bucikgenerators-custom-block-generators.80180/
+
+# If you have any questions or troubles, feel free to text me.
+
 generators:
   normal:
     break-cooldown: 1 # In ticks. 20 ticks = 1 second
@@ -63,9 +69,9 @@ generators:
             lore:
               - "&5Hmm.."
             action-bar-message: "&f&l+ &f&l[&b&lDiamond&f&l]"
-  wzium:
+  gold:
     break-cooldown: 20 # In ticks. 20 ticks = 1 second
-    permission: bucik.generators.wzium
+    permission: bucik.generators.gold
     base:
       item: SLIME_BLOCK
       name: "&a&l&oGenerator"
@@ -89,7 +95,7 @@ generators:
             lore:
               - "&5:D"
             action-bar-message: "&f&l+ &f&l[&6&lGold Block&f&l]"
-  genediax10:
+  diaxgene10:
     break-cooldown: 1
     permission: bucik.generators.diax10
     base:

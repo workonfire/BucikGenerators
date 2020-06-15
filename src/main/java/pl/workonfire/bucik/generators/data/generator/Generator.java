@@ -1,4 +1,4 @@
-package pl.workonfire.bucik.generators.data;
+package pl.workonfire.bucik.generators.data.generator;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.Main;
-import pl.workonfire.bucik.generators.managers.Util;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static java.lang.String.format;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getGeneratorsConfig;
@@ -42,10 +42,10 @@ public class Generator {
         this.id = id;
         breakCooldown = getGeneratorsConfig().getInt(format("generators.%s.break-cooldown", id));
         permission = getGeneratorsConfig().getString(format("generators.%s.permission", id));
-        baseItemMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.base.item", id)));
+        baseItemMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.base.item", id)).toUpperCase());
         baseItemName = getGeneratorsConfig().getString(format("generators.%s.base.name", id));
         baseItemLore = getGeneratorsConfig().getStringList(format("generators.%s.base.lore", id));
-        generatorMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.generator.item", id)));
+        generatorMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.generator.item", id)).toUpperCase());
         generatorDropPermissionList = getGeneratorsConfig().getConfigurationSection(format("generators.%s.generator.drop", getId())).getKeys(false);
         worldBlacklist = getGeneratorsConfig().getStringList(format("generators.%s.world-blacklist", id));
         itemDropMode = getGeneratorsConfig().getString(format("generators.%s.generator.item-drop-mode", id));

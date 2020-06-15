@@ -1,6 +1,6 @@
 package pl.workonfire.bucik.generators.data;
 
-public class DropMultiplier {
+public abstract class DropMultiplier {
     private static int dropMultiplier = 1;
 
     public static int getDropMultiplier() {

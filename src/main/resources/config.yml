@@ -1,7 +1,11 @@
+# BucikGenerators
+# Author: workonfire aka Buty935
+# Contact: workonfire#8262 (Discord)
+
 options:
-  auto-save-interval: 6000 # in ticks. 1 second = 20 ticks
+  auto-save-interval: 6000 # in ticks. 1 second = 20 ticks. Currently set to 5 minutes
   locale: en
   play-sounds: true
   show-particles: true
-  debug: false
+  debug: false # Enable this to allow displaying full error messages.
   metrics: true

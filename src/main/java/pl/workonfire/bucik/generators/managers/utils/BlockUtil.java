@@ -1,4 +1,4 @@
-package pl.workonfire.bucik.generators.managers;
+package pl.workonfire.bucik.generators.managers.utils;
 
 import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
@@ -6,14 +6,15 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.Main;
-import pl.workonfire.bucik.generators.data.Generator;
+import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.ConfigManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
-public class BlockUtil {
+public abstract class BlockUtil {
 
     /**
      * Gets a list of all generators IDs.
@@ -47,7 +48,7 @@ public class BlockUtil {
         final List<Material> materialList = new ArrayList<>();
         for (String generatorId : getGeneratorsIds()) {
             final String materialName = ConfigManager.getGeneratorsConfig().getString("generators." + generatorId + ".base.item");
-            materialList.add(Material.getMaterial(materialName));
+            materialList.add(Material.getMaterial(materialName.toUpperCase()));
         }
         return materialList;
     }

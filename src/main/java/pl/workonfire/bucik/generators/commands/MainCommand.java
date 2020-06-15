@@ -5,15 +5,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.Main;
-import pl.workonfire.bucik.generators.data.Generator;
+import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.data.DropMultiplier;
-import pl.workonfire.bucik.generators.managers.BlockUtil;
+import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.Util;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
-public class MainGeneratorCommand implements CommandExecutor {
+public class MainCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

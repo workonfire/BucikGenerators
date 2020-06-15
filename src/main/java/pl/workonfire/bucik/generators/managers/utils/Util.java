@@ -1,12 +1,18 @@
-package pl.workonfire.bucik.generators.managers;
+package pl.workonfire.bucik.generators.managers.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import pl.workonfire.bucik.generators.listeners.BlockBreakListener;
-import pl.workonfire.bucik.generators.listeners.BlockPlaceListener;
-import pl.workonfire.bucik.generators.listeners.EntityExplodeListener;
-import pl.workonfire.bucik.generators.listeners.PistonExtendListener;
+import pl.workonfire.bucik.generators.Main;
+import pl.workonfire.bucik.generators.commands.DropCommand;
+import pl.workonfire.bucik.generators.commands.MainCommand;
+import pl.workonfire.bucik.generators.listeners.blocks.BlockBreakListener;
+import pl.workonfire.bucik.generators.listeners.blocks.BlockPlaceListener;
+import pl.workonfire.bucik.generators.listeners.blocks.EntityExplodeListener;
+import pl.workonfire.bucik.generators.listeners.blocks.PistonExtendListener;
+import pl.workonfire.bucik.generators.listeners.commands.DropTabCompleter;
+import pl.workonfire.bucik.generators.listeners.commands.MainTabCompleter;
+import pl.workonfire.bucik.generators.managers.ConfigManager;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,7 +22,8 @@ import static org.bukkit.Bukkit.getServer;
 import static pl.workonfire.bucik.generators.Main.getPlugin;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
-public class Util {
+@SuppressWarnings("ConstantConditions")
+public abstract class Util {
 
     /**
      * Replaces & to § in order to show colors properly.
@@ -48,9 +55,9 @@ public class Util {
         if (ConfigManager.areSoundsEnabled()) {
             player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1.0F, 1.0F);
             if (ConfigManager.getConfig().getBoolean("options.wzium")) {
-                final byte[] initialCharacters = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
-                final String errorMessageTitle = "§4§l" + new String(initialCharacters, StandardCharsets.US_ASCII);
-                player.sendTitle(errorMessageTitle, null, 20, 60, 20);
+                final byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
+                final String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
+                player.sendTitle(t, null, 20, 60, 20);
             }
         }
         player.sendMessage(getPrefixedLanguageVariable("config-load-error"));
@@ -79,6 +86,17 @@ public class Util {
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), getPlugin());
         getServer().getPluginManager().registerEvents(new PistonExtendListener(), getPlugin());
         getServer().getPluginManager().registerEvents(new EntityExplodeListener(), getPlugin());
+    }
+
+    /**
+     * Register every command and its tab completer.
+     * @since 1.0.5
+     */
+    public static void registerCommands() {
+        Main.getPlugin().getCommand("generators").setExecutor(new MainCommand());
+        Main.getPlugin().getCommand("generators").setTabCompleter(new MainTabCompleter());
+        Main.getPlugin().getCommand("drop").setExecutor(new DropCommand());
+        Main.getPlugin().getCommand("drop").setTabCompleter(new DropTabCompleter());
     }
 
     /**
