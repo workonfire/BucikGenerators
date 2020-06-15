@@ -26,6 +26,7 @@
 - `bucik.generators.get`
 - `bucik.generators.drop.see`
 - `bucik.generators.drop.manipulate`
+- `bucik.generators.debug`
   
 ## Commands
 - `/generators reload`

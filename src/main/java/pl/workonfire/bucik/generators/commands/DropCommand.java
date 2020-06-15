@@ -53,7 +53,7 @@ public class DropCommand implements CommandExecutor {
                     }
                     else player.sendMessage(getPrefixedLanguageVariable("block-is-not-a-generator"));
                 }
-                else sender.sendMessage(getPrefixedLanguageVariable("no-permission"));
+                else player.sendMessage(getPrefixedLanguageVariable("no-permission"));
             }
             else sender.sendMessage(getPrefixedLanguageVariable("cannot-open-from-console"));
             return true;
