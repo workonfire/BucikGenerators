@@ -95,7 +95,7 @@ public class Generator {
      * @since 1.0.0
      * @return ItemStack object
      */
-    public ItemStack getItemStack() {
+    public ItemStack getItemStack(int amount) {
         final ItemStack item = new ItemStack(getBaseItemMaterial());
         final ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(getBaseItemName());
@@ -111,6 +111,7 @@ public class Generator {
                 final Enchantment enchantmentRepresentation = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName));
                 if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
             }
+        item.setAmount((amount == 0) ? 1 : amount);
         return item;
     }
 

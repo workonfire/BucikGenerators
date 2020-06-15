@@ -63,13 +63,12 @@ public class BlockUtil {
         if (getAllGeneratorTypes().contains(generatorBlock)) {
             final Generator generator = getGeneratorFromMaterial(item.getType());
             if (BlockUtil.isGeneratorDefined(generator.getId())) {
-                final ItemStack generatorItem = generator.getItemStack();
+                final ItemStack generatorItem = generator.getItemStack(1);
                 if (item.isSimilar(generatorItem)) return true;
                 else {
-                    PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+                    final PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
                     return container.has(new NamespacedKey(Main.getPlugin(), "unique-generator"), PersistentDataType.INTEGER);
                 }
-                //return item.isSimilar(generator.getItemStack());
             }
         }
         return false;
@@ -121,7 +120,7 @@ public class BlockUtil {
                 final Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
                     final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getBaseItemMaterial().toString());
-                    final ShapedRecipe generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack());
+                    final ShapedRecipe generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
                     generatorRecipe.shape("ABC", "DEF", "GHI");
                     for (char ch = 'A'; ch <= 'I'; ++ch)
                         generatorRecipe.setIngredient(ch, Material.getMaterial(generator.getCustomRecipe().getString("slot-" + ch)));

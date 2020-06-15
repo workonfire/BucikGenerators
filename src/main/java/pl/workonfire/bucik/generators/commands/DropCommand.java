@@ -37,6 +37,10 @@ public class DropCommand implements CommandExecutor {
                                         player.sendMessage(getLanguageVariable("drop-item-name") + Util.formatColors(dropItem.getItemName()));
                                     if (dropItem.getItemAmount() > 1)
                                         player.sendMessage(getLanguageVariable("drop-item-amount") + dropItem.getItemAmount());
+                                    if (!dropItem.getEnchantments().isEmpty()) {
+                                        player.sendMessage(getLanguageVariable("drop-item-enchantments"));
+                                        for (String enchantment : dropItem.getEnchantments()) player.sendMessage(enchantment);
+                                    }
                                     player.sendMessage(getLanguageVariable("drop-item-chance") + dropItem.getDropChance() + "%");
                                 }
                                 player.sendMessage("§c§m--------------");

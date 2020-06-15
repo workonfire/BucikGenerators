@@ -35,7 +35,16 @@ public class MainGeneratorCommand implements CommandExecutor {
                                 final String generatorName = args[1];
                                 if (BlockUtil.isGeneratorDefined(generatorName)) {
                                     final Generator generator = new Generator(generatorName);
-                                    player.getInventory().addItem(generator.getItemStack());
+                                    if (args.length == 3) {
+                                        try {
+                                            player.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));
+                                        }
+                                        catch (NumberFormatException exception) {
+                                            sender.sendMessage(getPrefixedLanguageVariable("argument-must-be-an-int"));
+                                            return false;
+                                        }
+                                    }
+                                    else player.getInventory().addItem(generator.getItemStack(1));
                                     player.sendMessage(getPrefixedLanguageVariable("generator-given") + generator.getId());
                                 }
                                 else player.sendMessage(getPrefixedLanguageVariable("generator-does-not-exist"));
@@ -59,7 +68,7 @@ public class MainGeneratorCommand implements CommandExecutor {
                                         sender.sendMessage(getPrefixedLanguageVariable("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
                                     }
                                     catch (NumberFormatException exception) {
-                                        sender.sendMessage(getPrefixedLanguageVariable("drop-multiplier-must-be-an-int"));
+                                        sender.sendMessage(getPrefixedLanguageVariable("argument-must-be-an-int"));
                                     }
                                 }
                             }

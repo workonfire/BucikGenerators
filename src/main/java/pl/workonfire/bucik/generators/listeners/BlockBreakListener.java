@@ -38,7 +38,7 @@ public class BlockBreakListener implements Listener {
                     event.setCancelled(true);
                     supposedGeneratorLocation.getBlock().setType(Material.AIR);
                     block.setType(Material.AIR);
-                    block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack());
+                    block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack(1));
                     if (ConfigManager.areSoundsEnabled())
                         player.playSound(block.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, 1.0F);
                     if (ConfigManager.areParticlesEnabled())
@@ -50,7 +50,8 @@ public class BlockBreakListener implements Listener {
                     player.sendMessage(getPrefixedLanguageVariable("no-permission"));
                 }
             }
-            else if (baseGenerator != null && BlockUtil.isGeneratorDefined(baseGenerator.getId())) {
+            else if (baseGenerator != null && BlockUtil.isGeneratorDefined(baseGenerator.getId())
+                    && BlockUtil.isBlockAGenerator(baseBlockLocation, block.getWorld())) {
                 if (player.hasPermission(baseGenerator.getPermission())) {
                     final int breakCooldown = baseGenerator.getBreakCooldown();
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> block.setType(baseGenerator.getGeneratorMaterial()), breakCooldown);
