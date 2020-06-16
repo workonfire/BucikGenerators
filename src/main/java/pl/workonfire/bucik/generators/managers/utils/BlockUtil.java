@@ -3,6 +3,8 @@ package pl.workonfire.bucik.generators.managers.utils;
 import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.Main;
@@ -67,8 +69,15 @@ public abstract class BlockUtil {
                 final ItemStack generatorItem = generator.getItemStack(1);
                 if (item.isSimilar(generatorItem)) return true;
                 else {
-                    final PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-                    return container.has(new NamespacedKey(Main.getPlugin(), "unique-generator"), PersistentDataType.INTEGER);
+                    try {
+                        final PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+                        return container.has(new NamespacedKey(Main.getPlugin(), "unique-generator"), PersistentDataType.INTEGER);
+                    }
+                    catch (NoSuchMethodError error) {
+                        final NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
+                        final CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
+                        return tagContainer.hasCustomTag(uniqueKey, ItemTagType.INTEGER);
+                    }
                 }
             }
         }
@@ -139,6 +148,7 @@ public abstract class BlockUtil {
      * Unegisters custom crafting recipes, if there are any.
      * @since 1.0.0
      */
+    @Deprecated
     public static void unregisterRecipes() {
         for (String generatorId : BlockUtil.getGeneratorsIds()) {
             final Generator generator = new Generator(generatorId);

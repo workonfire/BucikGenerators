@@ -10,6 +10,7 @@ import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.Main;
 import pl.workonfire.bucik.generators.managers.utils.Util;
@@ -102,7 +103,12 @@ public class Generator {
         itemMeta.setLore(getBaseItemLore());
         if (areEnchantmentsHidden()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         final NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
-        itemMeta.getPersistentDataContainer().set(uniqueKey, PersistentDataType.INTEGER, 1);
+        try {
+            itemMeta.getPersistentDataContainer().set(uniqueKey, PersistentDataType.INTEGER, 1);
+        }
+        catch (NoSuchMethodError error) {
+            itemMeta.getCustomTagContainer().setCustomTag(uniqueKey, ItemTagType.INTEGER, 1);
+        }
         item.setItemMeta(itemMeta);
         if (getEnchantments() != null)
             for (String enchantment : getEnchantments()) {

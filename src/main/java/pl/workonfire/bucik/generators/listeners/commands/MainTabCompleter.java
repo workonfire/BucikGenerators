@@ -30,7 +30,7 @@ public class MainTabCompleter implements TabCompleter {
                     final List<String> dropCommands = new ArrayList<>(Arrays.asList("getMultiplier", "setMultiplier"));
                     return StringUtil.copyPartialMatches(args[1], dropCommands, new ArrayList<>());
                 }
-                else return null;
+                else return new ArrayList<>();
             case 3:
                 if (args[0].equalsIgnoreCase("get") && sender.hasPermission("bucik.generators.get"))
                     return new ArrayList<>(Arrays.asList("1", "32", "64"));

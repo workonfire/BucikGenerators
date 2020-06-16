@@ -22,8 +22,8 @@ public class DropCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 final Player player = (Player) sender;
                 if (player.hasPermission("bucik.generators.drop.see")) {
-                    final Block targetBlock = player.getTargetBlock(null, 15);
-                    if (BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
+                    final Block targetBlock = player.getTargetBlockExact(5);
+                    if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                         player.sendMessage(getPrefixedLanguageVariable("items-drop-list"));
                         final Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(targetBlock.getType()).getId());
                         for (String permission : generator.getGeneratorDropPermissionList()) {

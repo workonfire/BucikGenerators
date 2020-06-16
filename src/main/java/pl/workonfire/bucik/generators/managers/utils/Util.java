@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -17,6 +18,9 @@ import pl.workonfire.bucik.generators.managers.ConfigManager;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.bukkit.Bukkit.getServer;
 import static pl.workonfire.bucik.generators.Main.getPlugin;
@@ -106,5 +110,17 @@ public abstract class Util {
      */
     public static String getDebugMessage() {
         return "§4There was a problem processing the configuration file. Make sure all fields have valid values. Details:";
+    }
+
+    /**
+     * Check if the server is legacy.
+     * @since 1.0.6
+     * @return true, if the server is running on 1.12 or an earlier version.
+     */
+    public static boolean isServerLegacy() {
+        final List<String> newVersions = new ArrayList<>(Arrays.asList("1.13", "1.14", "1.15"));
+        for (final String version : newVersions)
+            if (Bukkit.getVersion().contains(version)) return false;
+        return true;
     }
 }

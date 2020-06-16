@@ -8,13 +8,14 @@ generators:
   normal:
     break-cooldown: 1 # In ticks. 20 ticks = 1 second
     permission: bucik.generators.normal
+    # Redefining or removing the crafting recipe requires a full server restart.
     custom-crafting-recipe:
       slot-A: AIR
       slot-B: AIR
       slot-C: AIR
       slot-D: STONE
       slot-E: AIR
-      slot-F: AIR
+      slot-F: COBBLESTONE
       slot-G: AIR
       slot-H: AIR
       slot-I: AIR
@@ -56,9 +57,9 @@ generators:
             chance: 0.45 # %
             item: EMERALD
             amount: 1
-            name: "&6This should remain empty."
+            name: "&aRare emerald..."
             lore:
-              - "&5This should remain empty as well."
+              - "&5:D."
             action-bar-message: "&f&l+ &f&l[&b&lEmerald&f&l]"
         bucik-generators-stone-svip:
           1:
@@ -72,6 +73,16 @@ generators:
   gold:
     break-cooldown: 20 # In ticks. 20 ticks = 1 second
     permission: bucik.generators.gold
+    custom-crafting-recipe:
+      slot-A: AIR
+      slot-B: AIR
+      slot-C: GOLD_BLOCK
+      slot-D: AIR
+      slot-E: GOLD_INGOT
+      slot-F: AIR
+      slot-G: STONE
+      slot-H: AIR
+      slot-I: AIR
     base:
       item: SLIME_BLOCK
       name: "&a&l&oGenerator"

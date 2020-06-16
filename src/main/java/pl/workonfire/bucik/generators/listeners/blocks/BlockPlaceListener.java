@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import pl.workonfire.bucik.generators.data.generator.Generator;
@@ -18,7 +19,7 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedL
 @SuppressWarnings("ConstantConditions")
 public class BlockPlaceListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
         final Player player = event.getPlayer();
         try {

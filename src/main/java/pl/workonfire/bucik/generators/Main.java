@@ -12,7 +12,7 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.0.5
+ * @version 1.0.6
  * @since   2020-06-13
  */
 
@@ -24,6 +24,11 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         pluginVersion = getPlugin().getDescription().getVersion();
+        if (Util.isServerLegacy()) {
+            System.out.println("§41.12 and lower versions are not supported yet.");
+            Bukkit.getPluginManager().disablePlugin(getPlugin());
+            return;
+        }
         getPlugin().saveDefaultConfig();
         ConfigManager.initializeConfiguration();
         ConfigManager.initializeStorage();
@@ -45,8 +50,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        ConfigManager.updateStorage();
-        BlockUtil.unregisterRecipes();
+        if (!Util.isServerLegacy()) {
+            ConfigManager.updateStorage();
+            getPlugin().getServer().clearRecipes();
+        }
     }
 
     public static Main getPlugin() {
