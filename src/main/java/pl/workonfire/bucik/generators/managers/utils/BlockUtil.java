@@ -129,7 +129,7 @@ public abstract class BlockUtil {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
                 final Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
-                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId().toString());
+                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
                     final ShapedRecipe generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
                     generatorRecipe.shape("ABC", "DEF", "GHI");
                     for (char ch = 'A'; ch <= 'I'; ++ch)
@@ -153,7 +153,7 @@ public abstract class BlockUtil {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
                 final Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
-                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getBaseItemMaterial().toString());
+                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
                     Bukkit.removeRecipe(recipeKey);
                 }
             }
