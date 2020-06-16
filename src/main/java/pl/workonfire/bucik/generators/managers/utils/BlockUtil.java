@@ -129,7 +129,7 @@ public abstract class BlockUtil {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
                 final Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
-                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getBaseItemMaterial().toString());
+                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId().toString());
                     final ShapedRecipe generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
                     generatorRecipe.shape("ABC", "DEF", "GHI");
                     for (char ch = 'A'; ch <= 'I'; ++ch)
@@ -148,14 +148,18 @@ public abstract class BlockUtil {
      * Unegisters custom crafting recipes, if there are any.
      * @since 1.0.0
      */
-    @Deprecated
     public static void unregisterRecipes() {
-        for (String generatorId : BlockUtil.getGeneratorsIds()) {
-            final Generator generator = new Generator(generatorId);
-            if (generator.getCustomRecipe() != null) {
-                final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getBaseItemMaterial().toString());
-                Bukkit.removeRecipe(recipeKey);
+        try {
+            for (String generatorId : BlockUtil.getGeneratorsIds()) {
+                final Generator generator = new Generator(generatorId);
+                if (generator.getCustomRecipe() != null) {
+                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getBaseItemMaterial().toString());
+                    Bukkit.removeRecipe(recipeKey);
+                }
             }
+        }
+        catch (NoSuchMethodError error) {
+            Main.getPlugin().getServer().clearRecipes();
         }
     }
 }

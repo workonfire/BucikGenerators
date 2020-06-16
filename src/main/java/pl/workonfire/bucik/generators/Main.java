@@ -12,7 +12,7 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.0.6
+ * @version 1.0.7
  * @since   2020-06-13
  */
 
@@ -52,7 +52,7 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         if (!Util.isServerLegacy()) {
             ConfigManager.updateStorage();
-            getPlugin().getServer().clearRecipes();
+            BlockUtil.unregisterRecipes();
         }
     }
 
