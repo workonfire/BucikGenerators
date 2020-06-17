@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import pl.workonfire.bucik.generators.Main;
 import pl.workonfire.bucik.generators.commands.DropCommand;
 import pl.workonfire.bucik.generators.commands.MainCommand;
 import pl.workonfire.bucik.generators.listeners.blocks.BlockBreakListener;
@@ -97,10 +96,10 @@ public abstract class Util {
      * @since 1.0.5
      */
     public static void registerCommands() {
-        Main.getPlugin().getCommand("generators").setExecutor(new MainCommand());
-        Main.getPlugin().getCommand("generators").setTabCompleter(new MainTabCompleter());
-        Main.getPlugin().getCommand("drop").setExecutor(new DropCommand());
-        Main.getPlugin().getCommand("drop").setTabCompleter(new DropTabCompleter());
+        getPlugin().getCommand("generators").setExecutor(new MainCommand());
+        getPlugin().getCommand("generators").setTabCompleter(new MainTabCompleter());
+        getPlugin().getCommand("drop").setExecutor(new DropCommand());
+        getPlugin().getCommand("drop").setTabCompleter(new DropTabCompleter());
     }
 
     /**
