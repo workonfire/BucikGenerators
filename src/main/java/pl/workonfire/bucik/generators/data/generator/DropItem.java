@@ -25,6 +25,9 @@ public class DropItem {
     private final List<String> itemLore;
     private final String actionBarMessage;
     private final List<String> enchantments;
+    private final String potionEffectTypeName;
+    private final int potionEffectDuration;
+    private final int potionEffectAmplifier;
 
     public DropItem(Generator generator, String permission, int id) {
         dropChance = getGeneratorsConfig().getDouble(format("generators.%s.generator.drop.%s.%d.chance", generator.getId(), permission, id));
@@ -34,13 +37,11 @@ public class DropItem {
         itemLore = getGeneratorsConfig().getStringList(format("generators.%s.generator.drop.%s.%d.lore", generator.getId(), permission, id));
         actionBarMessage = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.action-bar-message", generator.getId(), permission, id));
         enchantments = getGeneratorsConfig().getStringList(format("generators.%s.generator.drop.%s.%d.enchantments", generator.getId(), permission, id));
+        potionEffectTypeName = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.potion.effect", generator.getId(), permission, id));
+        potionEffectDuration = getGeneratorsConfig().getInt(format("generators.%s.generator.drop.%s.%d.potion.duration", generator.getId(), permission, id));
+        potionEffectAmplifier = getGeneratorsConfig().getInt(format("generators.%s.generator.drop.%s.%d.potion.amplifier", generator.getId(), permission, id));
     }
 
-    /**
-     * Creates an ItemStack from a dropped item.
-     * @since 1.0.0
-     * @return ItemStack object
-     */
     public ItemStack getItemStack() {
         final ItemStack item = new ItemStack(getItemMaterial());
         final ItemMeta itemMeta = item.getItemMeta();
@@ -56,6 +57,12 @@ public class DropItem {
             }
         item.setAmount(getItemAmount());
         return item;
+    }
+
+    public boolean isAPotion() {
+        return getItemMaterial().equals(Material.POTION)
+                || getItemMaterial().equals(Material.SPLASH_POTION)
+                || getItemMaterial().equals(Material.LINGERING_POTION);
     }
 
     public boolean gotSelected() {
@@ -90,5 +97,17 @@ public class DropItem {
 
     public List<String> getEnchantments() {
         return enchantments;
+    }
+
+    public String getPotionEffectTypeName() {
+        return potionEffectTypeName;
+    }
+
+    public int getPotionEffectDuration() {
+        return potionEffectDuration;
+    }
+
+    public int getPotionEffectAmplifier() {
+        return potionEffectAmplifier;
     }
 }

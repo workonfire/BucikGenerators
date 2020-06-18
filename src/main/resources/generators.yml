@@ -64,12 +64,13 @@ generators:
         bucik-generators-stone-svip:
           1:
             chance: 5 # %
-            item: DIAMOND
-            amount: 1
-            name: "&6An.. sVIP diamond?"
-            lore:
-              - "&5Hmm.."
-            action-bar-message: "&f&l+ &f&l[&b&lDiamond&f&l]"
+            item: POTION
+            potion:
+              # Potions list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html
+              effect: FAST_DIGGING
+              amplifier: 2
+              duration: 600 # In ticks.
+            action-bar-message: "&f&l+ &f&l[&5&lHaste II&f&l]"
   gold:
     break-cooldown: 20 # In ticks. 20 ticks = 1 second
     permission: bucik.generators.gold

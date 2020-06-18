@@ -12,7 +12,7 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.0.7
+ * @version 1.0.8
  * @since   2020-06-13
  */
 

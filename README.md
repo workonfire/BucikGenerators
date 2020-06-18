@@ -13,6 +13,7 @@
 - Fully customizable items that can be dropped
 - Two item drop modes: `inventory` and `ground`
 - Custom item drop odds based on permissions and luck (percentage system)
+- Customizable potion effects that can be applied when mining
 - Changeable action-bar messages
 - Custom item drop multipliers (useful for events)
 - Nice sound and particle effects
@@ -105,12 +106,12 @@ generators:
         bucik-generators-stone-svip:
           1:
             chance: 5 # %
-            item: DIAMOND
-            amount: 1
-            name: "&6An.. sVIP diamond?"
-            lore:
-              - "&5Hmm.."
-            action-bar-message: "&f&l+ &f&l[&b&lDiamond&f&l]"
+            item: POTION
+            potion:
+              effect: FAST_DIGGING
+              amplifier: 2
+              duration: 600 # In ticks.
+            action-bar-message: "&f&l+ &f&l[&5&lHaste II&f&l]"
 ```
 You can customize more options in `config.yml`.
 

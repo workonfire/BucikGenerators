@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import pl.workonfire.bucik.generators.Main;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
@@ -67,14 +69,23 @@ public class BlockBreakListener implements Listener {
                             for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                                 DropItem item = new DropItem(baseGenerator, permission, Integer.parseInt(dropItemId));
                                 if (item.gotSelected()) {
-                                    if (baseGenerator.getItemDropMode() != null
-                                            && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory"))
-                                        player.getInventory().addItem(item.getItemStack());
-                                    else
-                                        block.getWorld().dropItemNaturally(baseBlockLocation, item.getItemStack());
-                                    if (item.getActionBarMessage() != null)
-                                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                                                TextComponent.fromLegacyText(Util.formatColors(item.getActionBarMessage())));
+                                    if (item.isAPotion() && item.getPotionEffectTypeName() != null) {
+                                        final PotionEffect potionEffect = new PotionEffect(
+                                                PotionEffectType.getByName(item.getPotionEffectTypeName()),
+                                                item.getPotionEffectDuration(),
+                                                item.getPotionEffectAmplifier());
+                                        player.addPotionEffect(potionEffect);
+                                    }
+                                    else {
+                                        if (baseGenerator.getItemDropMode() != null
+                                                && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory"))
+                                            player.getInventory().addItem(item.getItemStack());
+                                        else
+                                            block.getWorld().dropItemNaturally(baseBlockLocation, item.getItemStack());
+                                        if (item.getActionBarMessage() != null)
+                                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                                                    TextComponent.fromLegacyText(Util.formatColors(item.getActionBarMessage())));
+                                    }
                                 }
                             }
                         }
