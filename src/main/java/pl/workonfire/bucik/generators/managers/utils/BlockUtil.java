@@ -139,7 +139,7 @@ public abstract class BlockUtil {
             }
         }
         catch (Exception exception) {
-            System.out.println(Util.getDebugMessage());
+            System.out.println(ConfigManager.getLanguageVariable("contact-developer"));
             exception.printStackTrace();
         }
     }

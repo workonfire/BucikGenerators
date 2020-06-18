@@ -91,11 +91,7 @@ public class MainCommand implements CommandExecutor {
             return true;
         }
         catch (Exception exception) {
-            if (sender instanceof Player) Util.handleErrors((Player) sender, exception);
-            else {
-                sender.sendMessage(Util.getDebugMessage());
-                exception.printStackTrace();
-            }
+            Util.handleErrors(sender, exception);
             return false;
         }
     }

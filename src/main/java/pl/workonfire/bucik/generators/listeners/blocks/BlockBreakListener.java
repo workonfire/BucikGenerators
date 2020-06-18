@@ -72,7 +72,7 @@ public class BlockBreakListener implements Listener {
                                     if (item.isAPotion() && item.getPotionEffectTypeName() != null) {
                                         final PotionEffect potionEffect = new PotionEffect(
                                                 PotionEffectType.getByName(item.getPotionEffectTypeName()),
-                                                item.getPotionEffectDuration(),
+                                                item.getPotionEffectDuration() * 20,
                                                 item.getPotionEffectAmplifier());
                                         player.addPotionEffect(potionEffect);
                                     }

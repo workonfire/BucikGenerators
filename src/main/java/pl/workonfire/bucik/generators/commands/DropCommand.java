@@ -37,6 +37,11 @@ public class DropCommand implements CommandExecutor {
                                         player.sendMessage(getLanguageVariable("drop-item-name") + Util.formatColors(dropItem.getItemName()));
                                     if (dropItem.getItemAmount() > 1)
                                         player.sendMessage(getLanguageVariable("drop-item-amount") + dropItem.getItemAmount());
+                                    if (dropItem.isAPotion()) {
+                                        player.sendMessage(getLanguageVariable("potion-type") + dropItem.getPotionEffectTypeName());
+                                        player.sendMessage(getLanguageVariable("potion-amplifier") + dropItem.getPotionEffectAmplifier());
+                                        player.sendMessage(getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() + "s");
+                                    }
                                     if (!dropItem.getEnchantments().isEmpty()) {
                                         player.sendMessage(getLanguageVariable("drop-item-enchantments"));
                                         for (String enchantment : dropItem.getEnchantments()) player.sendMessage(enchantment);
@@ -59,11 +64,7 @@ public class DropCommand implements CommandExecutor {
             return true;
         }
         catch (Exception exception) {
-            if (sender instanceof Player) Util.handleErrors((Player) sender, exception);
-            else {
-                sender.sendMessage(Util.getDebugMessage());
-                exception.printStackTrace();
-            }
+            Util.handleErrors(sender, exception);
             return false;
         }
     }

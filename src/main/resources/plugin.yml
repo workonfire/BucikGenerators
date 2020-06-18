@@ -1,5 +1,5 @@
 name: BucikGenerators
-version: 1.0.8
+version: 1.0.9
 description: A customizable plugin for setting up block generators.
 main: pl.workonfire.bucik.generators.Main
 api-version: 1.13

@@ -110,7 +110,7 @@ generators:
             potion:
               effect: FAST_DIGGING
               amplifier: 2
-              duration: 600 # In ticks.
+              duration: 30 # In seconds.
             action-bar-message: "&f&l+ &f&l[&5&lHaste II&f&l]"
 ```
 You can customize more options in `config.yml`.

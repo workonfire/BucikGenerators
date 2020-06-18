@@ -30,18 +30,35 @@ public class DropItem {
     private final int potionEffectAmplifier;
 
     public DropItem(Generator generator, String permission, int id) {
-        dropChance = getGeneratorsConfig().getDouble(format("generators.%s.generator.drop.%s.%d.chance", generator.getId(), permission, id));
-        itemMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.item", generator.getId(), permission, id)).toUpperCase());
-        itemAmount = getGeneratorsConfig().getInt(format("generators.%s.generator.drop.%s.%d.amount", generator.getId(), permission, id));
-        itemName = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.name", generator.getId(), permission, id));
-        itemLore = getGeneratorsConfig().getStringList(format("generators.%s.generator.drop.%s.%d.lore", generator.getId(), permission, id));
-        actionBarMessage = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.action-bar-message", generator.getId(), permission, id));
-        enchantments = getGeneratorsConfig().getStringList(format("generators.%s.generator.drop.%s.%d.enchantments", generator.getId(), permission, id));
-        potionEffectTypeName = getGeneratorsConfig().getString(format("generators.%s.generator.drop.%s.%d.potion.effect", generator.getId(), permission, id));
-        potionEffectDuration = getGeneratorsConfig().getInt(format("generators.%s.generator.drop.%s.%d.potion.duration", generator.getId(), permission, id));
-        potionEffectAmplifier = getGeneratorsConfig().getInt(format("generators.%s.generator.drop.%s.%d.potion.amplifier", generator.getId(), permission, id));
+        dropChance = getGeneratorsConfig().getDouble(getPropertyName("chance", generator.getId(), id, permission));
+        itemMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("item", generator.getId(), id, permission)).toUpperCase());
+        itemAmount = getGeneratorsConfig().getInt(getPropertyName("amount", generator.getId(), id, permission));
+        itemName = getGeneratorsConfig().getString(getPropertyName("name", generator.getId(), id, permission));
+        itemLore = getGeneratorsConfig().getStringList(getPropertyName("lore", generator.getId(), id, permission));
+        actionBarMessage = getGeneratorsConfig().getString(getPropertyName("action-bar-message", generator.getId(), id, permission));
+        enchantments = getGeneratorsConfig().getStringList(getPropertyName("enchantments", generator.getId(), id, permission));
+        potionEffectTypeName = getGeneratorsConfig().getString(getPropertyName("potion.effect", generator.getId(), id, permission));
+        potionEffectDuration = getGeneratorsConfig().getInt(getPropertyName("potion.duration", generator.getId(), id, permission));
+        potionEffectAmplifier = getGeneratorsConfig().getInt(getPropertyName("potion.amplifier", generator.getId(), id, permission));
     }
 
+    /**
+     * Gets the specified configuration section.
+     * @param property Section name
+     * @param generatorName Generator handler
+     * @param generatorId Generator ID
+     * @param permission Generator permission
+     * @return Formatted property name
+     */
+    private String getPropertyName(String property, String generatorName, int generatorId, String permission) {
+        return format("generators.%s.generator.drop.%s.%d.%s", generatorName, permission, generatorId, property);
+    }
+
+    /**
+     * Creates an ItemStack from a dropped item.
+     * @since 1.0.0
+     * @return ItemStack object
+     */
     public ItemStack getItemStack() {
         final ItemStack item = new ItemStack(getItemMaterial());
         final ItemMeta itemMeta = item.getItemMeta();
@@ -59,12 +76,21 @@ public class DropItem {
         return item;
     }
 
+    /**
+     * Checks if the item is a potion.
+     * @since 1.0.8
+     * @return true, if it is
+     */
     public boolean isAPotion() {
         return getItemMaterial().equals(Material.POTION)
                 || getItemMaterial().equals(Material.SPLASH_POTION)
                 || getItemMaterial().equals(Material.LINGERING_POTION);
     }
 
+    /**
+     * Checks if the item was randomly selected.
+     * @return true, if it was
+     */
     public boolean gotSelected() {
         return Math.round(new Random().nextDouble() * 10000.0) / 100.0 <= getDropChance();
     }
@@ -104,7 +130,7 @@ public class DropItem {
     }
 
     public int getPotionEffectDuration() {
-        return potionEffectDuration;
+        return potionEffectDuration / 20;
     }
 
     public int getPotionEffectAmplifier() {

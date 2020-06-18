@@ -41,18 +41,28 @@ public class Generator {
 
     public Generator(String id) {
         this.id = id;
-        breakCooldown = getGeneratorsConfig().getInt(format("generators.%s.break-cooldown", id));
-        permission = getGeneratorsConfig().getString(format("generators.%s.permission", id));
-        baseItemMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.base.item", id)).toUpperCase());
-        baseItemName = getGeneratorsConfig().getString(format("generators.%s.base.name", id));
-        baseItemLore = getGeneratorsConfig().getStringList(format("generators.%s.base.lore", id));
-        generatorMaterial = Material.getMaterial(getGeneratorsConfig().getString(format("generators.%s.generator.item", id)).toUpperCase());
-        generatorDropPermissionList = getGeneratorsConfig().getConfigurationSection(format("generators.%s.generator.drop", getId())).getKeys(false);
-        worldBlacklist = getGeneratorsConfig().getStringList(format("generators.%s.world-blacklist", id));
-        itemDropMode = getGeneratorsConfig().getString(format("generators.%s.generator.item-drop-mode", id));
-        customRecipe = getGeneratorsConfig().getConfigurationSection(format("generators.%s.custom-crafting-recipe", id));
-        enchantments = getGeneratorsConfig().getStringList(format("generators.%s.enchantments", id));
-        hideEnchantments = getGeneratorsConfig().getBoolean(format("generators.%s.hide-enchantments", id));
+        breakCooldown = getGeneratorsConfig().getInt(getPropertyName("break-cooldown", id));
+        permission = getGeneratorsConfig().getString(getPropertyName("permission", id));
+        baseItemMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("base.item", id)).toUpperCase());
+        baseItemName = getGeneratorsConfig().getString(getPropertyName("base.name", id));
+        baseItemLore = getGeneratorsConfig().getStringList(getPropertyName("base.lore", id));
+        generatorMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("generator.item", id)).toUpperCase());
+        generatorDropPermissionList = getGeneratorsConfig().getConfigurationSection(getPropertyName("generator.drop", id)).getKeys(false);
+        worldBlacklist = getGeneratorsConfig().getStringList(getPropertyName("world-blacklist", id));
+        itemDropMode = getGeneratorsConfig().getString(getPropertyName("item-drop-mode", id));
+        customRecipe = getGeneratorsConfig().getConfigurationSection(getPropertyName("custom-crafting-recipe", id));
+        enchantments = getGeneratorsConfig().getStringList(getPropertyName("enchantments", id));
+        hideEnchantments = getGeneratorsConfig().getBoolean(getPropertyName("hide-enchantments", id));
+    }
+
+    /**
+     * Gets the specified configuration section.
+     * @param property Section name
+     * @param generatorName Generator handler
+     * @return Formatted property name
+     */
+    private String getPropertyName(String property, String generatorName) {
+        return format("generators.%s.%s", generatorName, property);
     }
 
     /**

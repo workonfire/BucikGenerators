@@ -3,6 +3,7 @@ package pl.workonfire.bucik.generators.managers.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.commands.DropCommand;
 import pl.workonfire.bucik.generators.commands.MainCommand;
@@ -23,13 +24,14 @@ import java.util.List;
 
 import static org.bukkit.Bukkit.getServer;
 import static pl.workonfire.bucik.generators.Main.getPlugin;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
 @SuppressWarnings("ConstantConditions")
 public abstract class Util {
 
     /**
-     * Replaces & to § in order to show colors properly.
+     * Replaces "&" to "§" in order to show colors properly.
      * @since 1.0.0
      * @param text String to format
      * @return Formatted string
@@ -39,7 +41,7 @@ public abstract class Util {
     }
 
     /**
-     * Replaces - to . in a permission node.
+     * Replaces "-" to "." in a permission node.
      * @since 1.0.0
      * @param unparsedPermission unparsed permission with minuses
      * @return parsed permission with dots
@@ -51,32 +53,39 @@ public abstract class Util {
     /**
      * Listens for errors and prints the details.
      * @since 1.0.0
-     * @param player Player object
+     * @param commandSender Command sender object
      * @param exception Exception object
      */
-    public static void handleErrors(Player player, Exception exception) {
-        if (ConfigManager.areSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1.0F, 1.0F);
-            if (ConfigManager.getConfig().getBoolean("options.wzium")) {
-                final byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
-                final String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
-                player.sendTitle(t, null, 20, 60, 20);
+    public static void handleErrors(CommandSender commandSender, Exception exception) {
+        if (commandSender instanceof Player) {
+            final Player player = (Player) commandSender;
+            if (ConfigManager.areSoundsEnabled()) {
+                player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1.0F, 1.0F);
+                if (ConfigManager.getConfig().getBoolean("options.wzium")) {
+                    final byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
+                    final String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
+                    player.sendTitle(t, null, 20, 60, 20);
+                }
+            }
+            player.sendMessage(getPrefixedLanguageVariable("config-load-error"));
+            if (ConfigManager.getConfig().getBoolean("options.debug") && player.hasPermission("bucik.generators.debug")) {
+                player.sendMessage(getPrefixedLanguageVariable("config-load-error-debug-header"));
+                final StringWriter stringWriter = new StringWriter();
+                exception.printStackTrace(new PrintWriter(stringWriter));
+                System.out.println(ConfigManager.getLanguageVariable("contact-developer"));
+                exception.printStackTrace();
+                String exceptionAsString = stringWriter.toString();
+                exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
+                player.sendMessage("§c" + exceptionAsString
+                        .replaceAll("\u0009", "    ")
+                        .replaceAll("\r", "\n") + "...")
+                ;
+                player.sendMessage(getPrefixedLanguageVariable("debug-more-info-in-console"));
             }
         }
-        player.sendMessage(getPrefixedLanguageVariable("config-load-error"));
-        if (ConfigManager.getConfig().getBoolean("options.debug") && player.hasPermission("bucik.generators.debug")) {
-            player.sendMessage(getPrefixedLanguageVariable("config-load-error-debug-header"));
-            final StringWriter stringWriter = new StringWriter();
-            exception.printStackTrace(new PrintWriter(stringWriter));
-            System.out.println(ConfigManager.getLanguageVariable("contact-developer"));
+        else {
+            commandSender.sendMessage(getLanguageVariable("contact-developer"));
             exception.printStackTrace();
-            String exceptionAsString = stringWriter.toString();
-            exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
-            player.sendMessage("§c" + exceptionAsString
-                    .replaceAll("\u0009", "    ")
-                    .replaceAll("\r", "\n") + "...")
-            ;
-            player.sendMessage(getPrefixedLanguageVariable("debug-more-info-in-console"));
         }
     }
 
@@ -92,7 +101,7 @@ public abstract class Util {
     }
 
     /**
-     * Register every command and its tab completer.
+     * Registers every command and its tab completer.
      * @since 1.0.5
      */
     public static void registerCommands() {
@@ -103,16 +112,7 @@ public abstract class Util {
     }
 
     /**
-     * Returns a hard-coded debug message.
-     * @since 1.0.2
-     * @return Message
-     */
-    public static String getDebugMessage() {
-        return "§4There was a problem processing the configuration file. Make sure all fields have valid values. Details:";
-    }
-
-    /**
-     * Check if the server is legacy.
+     * Checks if the server is legacy.
      * @since 1.0.6
      * @return true, if the server is running on 1.12 or an earlier version.
      */
