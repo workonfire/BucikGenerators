@@ -13,7 +13,7 @@
 - Fully customizable items that can be dropped
 - Two item drop modes: `inventory` and `ground`
 - Custom item drop odds based on permissions and luck (percentage system)
-- Customizable potion effects that can be applied when mining
+- Customizable potion effects that can be applied to player when mining
 - Changeable action-bar messages
 - Custom item drop multipliers (useful for events)
 - Nice sound and particle effects
