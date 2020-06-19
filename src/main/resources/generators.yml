@@ -8,6 +8,9 @@ generators:
   normal:
     break-cooldown: 1 # In ticks. 20 ticks = 1 second
     permission: bucik.generators.normal
+    durability:
+      enabled: true
+      value: 30
     # Redefining or removing the crafting recipe requires a full server restart.
     custom-crafting-recipe:
       slot-A: AIR

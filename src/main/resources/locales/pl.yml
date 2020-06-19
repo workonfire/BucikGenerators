@@ -32,3 +32,6 @@ language:
   potion-duration: "&bTrwałość mikstury: &6"
   no-drop: "&f[&4&l❌&f] &cNie możesz nic wydropić z tego generatora."
   contact-developer: "&4Poniżej znajduje się treść błędu BucikGenerators. Upewnij się, że wszystkie pola posiadają poprawne wartości. Jeśli nie wiesz, jak go rozwiązać, skontaktuj się z twórcą: workonfire#8262"
+  cannot-break-the-base: "&f[&6&l!&f] &eNie możesz zniszczyć tego generatora, ponieważ nie został do końca zużyty. Pozostała ilość użyć: &f&l"
+  generator-has-worn-out: "&f[&3&li&f] &bGenerator zużył się."
+  force-destroy-block-is-not-a-generator: "&f[&6&l!&f] &eBlok, na który patrzysz, nie jest generatorem."

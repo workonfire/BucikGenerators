@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import pl.workonfire.bucik.generators.Main;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
@@ -26,8 +28,8 @@ public class BlockPlaceListener implements Listener {
             final Block block = event.getBlock();
 
             if (BlockUtil.isHeldBlockAGenerator(event.getItemInHand())) {
-                final Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(block.getType());
-                for (String worldName : baseGenerator.getWorldBlacklist()) {
+                final Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
+                for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
                         player.sendMessage(getPrefixedLanguageVariable("cannot-place-in-this-world"));
@@ -36,15 +38,22 @@ public class BlockPlaceListener implements Listener {
                         return;
                     }
                 }
-                if (player.hasPermission(baseGenerator.getPermission())) {
-                    if (ConfigManager.areSoundsEnabled())
-                        block.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 1.0F);
-                    if (ConfigManager.areParticlesEnabled())
-                        player.spawnParticle(Particle.END_ROD, block.getLocation(), 25);
-                    player.sendMessage(getPrefixedLanguageVariable("generator-placed") + baseGenerator.getId());
-                    baseGenerator.register(block.getLocation(), block.getWorld());
-                    final Location generatorLocation = block.getLocation().add(0, 1, 0);
-                    generatorLocation.getBlock().setType(baseGenerator.getGeneratorMaterial());
+                if (player.hasPermission(generator.getPermission())) {
+                    final Location supposedBaseGeneratorLocation = block.getLocation().subtract(0, 1, 0);
+                    if (BlockUtil.isBlockAGenerator(supposedBaseGeneratorLocation, supposedBaseGeneratorLocation.getWorld()))
+                        event.setCancelled(true);
+                    else {
+                        if (ConfigManager.areSoundsEnabled())
+                            block.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 1.0F);
+                        if (ConfigManager.areParticlesEnabled())
+                            player.spawnParticle(Particle.END_ROD, block.getLocation(), 25);
+                        player.sendMessage(getPrefixedLanguageVariable("generator-placed") + generator.getId());
+                        generator.register(block.getLocation(), block.getWorld());
+                        final Location generatorLocation = block.getLocation().add(0, 1, 0);
+                        generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
+                        if (generator.isDurabilityEnabled() && generator.getDurability() != 0)
+                            block.setMetadata("durability", new FixedMetadataValue(Main.getPlugin(), generator.getDurability()));
+                    }
                 }
                 else {
                     event.setCancelled(true);

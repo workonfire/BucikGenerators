@@ -1,5 +1,8 @@
 package pl.workonfire.bucik.generators.commands;
 
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +16,7 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
+@SuppressWarnings("ConstantConditions")
 public class MainCommand implements CommandExecutor {
 
     @Override
@@ -29,7 +33,7 @@ public class MainCommand implements CommandExecutor {
                 else if (args[0].equalsIgnoreCase("get")) {
                     if (sender.hasPermission("bucik.generators.get")) {
                         if (sender instanceof Player) {
-                            Player player = (Player) sender;
+                            final Player player = (Player) sender;
                             if (args.length == 1) sender.sendMessage(getPrefixedLanguageVariable("no-generator-name-specified"));
                             else {
                                 final String generatorName = args[1];
@@ -75,6 +79,25 @@ public class MainCommand implements CommandExecutor {
                         }
                     }
                     else sender.sendMessage(getPrefixedLanguageVariable("no-permission"));
+                }
+                else if (args[0].equalsIgnoreCase("forceDestroy")) {
+                    if (sender instanceof Player) {
+                        final Player player = (Player) sender;
+                        if (player.hasPermission("bucik.generators.forcedestroy")) {
+                            final Block targetBlock = player.getTargetBlockExact(5);
+                            if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
+                                final Generator generator = BlockUtil.getGeneratorFromMaterial(targetBlock.getType());
+                                generator.unregister(targetBlock.getLocation(), targetBlock.getWorld());
+                                targetBlock.setType(Material.AIR);
+                                targetBlock.getLocation().add(0, 1, 0).getBlock().setType(Material.AIR);
+                                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_HURT, 1.0F, 1.0F);
+                                player.sendMessage(getPrefixedLanguageVariable("base-generator-destroyed"));
+                            }
+                            else player.sendMessage(getPrefixedLanguageVariable("force-destroy-block-is-not-a-generator"));
+                        }
+                        else player.sendMessage(getPrefixedLanguageVariable("no-permission"));
+                    }
+                    else sender.sendMessage(getPrefixedLanguageVariable("cannot-open-from-console"));
                 }
                 else sender.sendMessage(getPrefixedLanguageVariable("subcommand-does-not-exist"));
             }

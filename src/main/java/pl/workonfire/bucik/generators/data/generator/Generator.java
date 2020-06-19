@@ -38,6 +38,8 @@ public class Generator {
     private final ConfigurationSection customRecipe;
     private final List<String> enchantments;
     private final boolean hideEnchantments;
+    private final boolean isDurabilityEnabled;
+    private final int durability;
 
     public Generator(String id) {
         this.id = id;
@@ -53,6 +55,8 @@ public class Generator {
         customRecipe = getGeneratorsConfig().getConfigurationSection(getPropertyName("custom-crafting-recipe", id));
         enchantments = getGeneratorsConfig().getStringList(getPropertyName("enchantments", id));
         hideEnchantments = getGeneratorsConfig().getBoolean(getPropertyName("hide-enchantments", id));
+        isDurabilityEnabled = getGeneratorsConfig().getBoolean(getPropertyName("durability.enabled", id));
+        durability = getGeneratorsConfig().getInt(getPropertyName("durability.value", id));
     }
 
     /**
@@ -73,7 +77,7 @@ public class Generator {
      */
     public void register(Location location, World world) {
         final List<String> currentLocations = getDataStorage().getStringList("generators");
-        final String data = format("%s|%d|%d|%d", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        final String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
         currentLocations.add(data);
         getDataStorage().set("generators", currentLocations);
     }
@@ -86,7 +90,7 @@ public class Generator {
      */
     public void unregister(Location location, World world) {
         final List<String> currentLocations = getDataStorage().getStringList("generators");
-        final String data = format("%s|%d|%d|%d", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        final String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
         currentLocations.remove(data);
         getDataStorage().set("generators", currentLocations);
     }
@@ -183,5 +187,13 @@ public class Generator {
 
     public boolean areEnchantmentsHidden() {
         return hideEnchantments;
+    }
+
+    public boolean isDurabilityEnabled() {
+        return isDurabilityEnabled;
+    }
+
+    public int getDurability() {
+        return durability;
     }
 }

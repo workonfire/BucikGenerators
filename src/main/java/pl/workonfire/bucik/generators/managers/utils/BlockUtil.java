@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getDataStorage;
+
 @SuppressWarnings("ConstantConditions")
 public abstract class BlockUtil {
 
@@ -53,6 +55,33 @@ public abstract class BlockUtil {
             materialList.add(Material.getMaterial(materialName.toUpperCase()));
         }
         return materialList;
+    }
+
+    /**
+     * Deletes all generator with enabled durability from the database.
+     * @since 1.1.0
+     */
+    public static void purgeAllGeneratorsWithDurability() {
+        final List<String> currentLocations = getDataStorage().getStringList("generators");
+        for (String generatorDetails : currentLocations) {
+            final String[] splittedDetails = generatorDetails.split("\\|");
+            if (splittedDetails.length == 5) {
+                final boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
+                if (durabilityEnabled) {
+                    final World world = Main.getPlugin().getServer().getWorld(splittedDetails[0]);
+                    final int locationX = Integer.parseInt(splittedDetails[1]);
+                    final int locationY = Integer.parseInt(splittedDetails[2]);
+                    final int locationZ = Integer.parseInt(splittedDetails[3]);
+                    final Location baseGeneratorLocation = new Location(world, locationX, locationY, locationZ);
+                    final Generator generator = BlockUtil.getGeneratorFromMaterial(baseGeneratorLocation.getBlock().getType());
+                    generator.unregister(baseGeneratorLocation, baseGeneratorLocation.getWorld());
+                    if (ConfigManager.getConfig().getBoolean("options.debug"))
+                        System.out.println("Generator unregistered: " + baseGeneratorLocation);
+                    baseGeneratorLocation.getBlock().setType(Material.AIR);
+                    new Location(world, locationX, locationY + 1, locationZ).getBlock().setType(Material.AIR);
+                }
+            }
+        }
     }
 
     /**

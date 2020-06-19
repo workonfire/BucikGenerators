@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.workonfire.bucik.generators.Main;
@@ -36,16 +38,29 @@ public class BlockBreakListener implements Listener {
             if (BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld())) {
                 final Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
                 if (player.hasPermission(generator.getPermission())) {
-                    generator.unregister(block.getLocation(), block.getWorld());
-                    event.setCancelled(true);
-                    supposedGeneratorLocation.getBlock().setType(Material.AIR);
-                    block.setType(Material.AIR);
-                    block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack(1));
-                    if (ConfigManager.areSoundsEnabled())
-                        block.getWorld().playSound(block.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, 1.0F);
-                    if (ConfigManager.areParticlesEnabled())
-                        player.spawnParticle(Particle.SMOKE_LARGE, event.getBlock().getLocation(), 7);
-                    player.sendMessage(getPrefixedLanguageVariable("base-generator-destroyed"));
+                    if (generator.isDurabilityEnabled() && block.hasMetadata("durability")) {
+                        int currentDurability = 0;
+                        for (MetadataValue value : block.getMetadata("durability"))
+                            currentDurability = value.asInt();
+                        if (currentDurability > 0) {
+                            if (ConfigManager.areSoundsEnabled())
+                                player.playSound(block.getLocation(), Sound.ENTITY_BLAZE_HURT, 1.0F, 1.0F);
+                            player.sendMessage(getPrefixedLanguageVariable("cannot-break-the-base") + currentDurability);
+                            event.setCancelled(true);
+                        }
+                    }
+                    else {
+                        generator.unregister(block.getLocation(), block.getWorld());
+                        event.setCancelled(true);
+                        supposedGeneratorLocation.getBlock().setType(Material.AIR);
+                        block.setType(Material.AIR);
+                        block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack(1));
+                        if (ConfigManager.areSoundsEnabled())
+                            block.getWorld().playSound(block.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, 1.0F);
+                        if (ConfigManager.areParticlesEnabled())
+                            player.spawnParticle(Particle.SMOKE_LARGE, event.getBlock().getLocation(), 7);
+                        player.sendMessage(getPrefixedLanguageVariable("base-generator-destroyed"));
+                    }
                 }
                 else {
                     event.setCancelled(true);
@@ -56,12 +71,30 @@ public class BlockBreakListener implements Listener {
                     && BlockUtil.isBlockAGenerator(baseBlockLocation, block.getWorld())) {
                 event.setCancelled(true);
                 if (player.hasPermission(baseGenerator.getPermission())) {
-                    final int breakCooldown = baseGenerator.getBreakCooldown();
                     block.setType(Material.AIR);
                     Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
                         if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType().equals(Material.AIR))
                             block.setType(baseGenerator.getGeneratorMaterial());
-                    }, breakCooldown);
+                    }, baseGenerator.getBreakCooldown());
+                    if (baseGenerator.isDurabilityEnabled() && baseBlockLocation.getBlock().hasMetadata("durability")) {
+                        int currentDurability = 0;
+                        for (MetadataValue value : baseBlockLocation.getBlock().getMetadata("durability"))
+                            currentDurability = value.asInt();
+                        if (currentDurability == 1) {
+                            baseBlockLocation.getBlock().setType(Material.AIR);
+                            baseGenerator.unregister(baseBlockLocation, baseBlockLocation.getWorld());
+                            player.sendMessage(getPrefixedLanguageVariable("generator-has-worn-out"));
+                            if (ConfigManager.areSoundsEnabled())
+                                block.getWorld().playSound(block.getLocation(), Sound.ENTITY_WITHER_HURT, 1.0F, 1.0F);
+                            if (ConfigManager.areParticlesEnabled())
+                                player.spawnParticle(Particle.SMOKE_LARGE, event.getBlock().getLocation(), 7);
+                        }
+                        else {
+                            baseBlockLocation.getBlock().removeMetadata("durability", Main.getPlugin());
+                            baseBlockLocation.getBlock().setMetadata("durability",
+                                    new FixedMetadataValue(Main.getPlugin(), currentDurability - 1));
+                        }
+                    }
                     if (ConfigManager.areSoundsEnabled())
                          block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1.0F, 1.0F);
                     for (String permission : baseGenerator.getGeneratorDropPermissionList()) {

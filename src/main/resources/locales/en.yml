@@ -32,3 +32,6 @@ language:
   potion-duration: "&bPotion duration: &6"
   no-drop: "&f[&4&l❌&f] &cYou can't drop anything from this generator."
   contact-developer: "&4Below is the content of the BucikGenerators error. Make sure all fields have valid values. If you don't know how to solve it, contact the plugin author: workonfire#8262"
+  cannot-break-the-base: "&f[&6&l!&f] &eYou cannot destroy this generator because it has not been fully used. The remaining amount of uses: &f&l"
+  generator-has-worn-out: "&f[&3&li&f] &bThe generator has worn out."
+  force-destroy-block-is-not-a-generator: "&f[&6&l!&f] &eThe block you are looking at is not a generator."

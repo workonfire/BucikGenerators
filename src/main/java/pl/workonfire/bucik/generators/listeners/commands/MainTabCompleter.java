@@ -20,6 +20,7 @@ public class MainTabCompleter implements TabCompleter {
                 if (sender.hasPermission("bucik.generators.reload")) commands.add("reload");
                 if (sender.hasPermission("bucik.generators.get")) commands.add("get");
                 if (sender.hasPermission("bucik.generators.drop.manipulate")) commands.add("drop");
+                if (sender.hasPermission("bucik.generators.forcedestroy")) commands.add("forceDestroy");
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             case 2:
                 if (args[0].equalsIgnoreCase("get") && sender.hasPermission("bucik.generators.get")) {

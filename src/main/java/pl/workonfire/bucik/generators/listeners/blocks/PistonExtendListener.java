@@ -18,8 +18,7 @@ public class PistonExtendListener implements Listener {
                 final Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(baseBlockLocation.getBlock().getType());
                 if (BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld()))
                     event.setCancelled(true);
-                else if (baseGenerator != null && BlockUtil.isGeneratorDefined(baseGenerator.getId())
-                        && BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld()))
+                else if (baseGenerator != null && BlockUtil.isBlockAGenerator(baseBlockLocation, baseBlockLocation.getWorld()))
                     event.setCancelled(true);
             }
         }

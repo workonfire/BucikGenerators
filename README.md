@@ -9,15 +9,16 @@
 - Fully customizable block generators
 - Custom permissions for almost everything
 - Custom cooldown times
-- Custom crafting recipes
+- Custom **crafting recipes**
+- **Generator durability** system
 - Fully customizable items that can be dropped
 - Two item drop modes: `inventory` and `ground`
-- Custom item drop odds based on permissions and luck (percentage system)
-- Customizable potion effects that can be applied to player when mining
+- Custom item drop odds based on **permissions** and **luck** (percentage system)
+- Customizable **potion effects** that can be applied to player when mining
 - Changeable action-bar messages
-- Custom item drop multipliers (useful for events)
+- Custom item **drop multipliers** (useful for events)
 - Nice sound and particle effects
-- Previewable generator drop details (`/drop`)
+- Previewable **generator drop details** (`/drop`)
 - World blacklist
 - Database auto-save system
 
@@ -26,12 +27,14 @@
 - `bucik.generators.get`
 - `bucik.generators.drop.see`
 - `bucik.generators.drop.manipulate`
+- `bucik.generators.forcedestroy`
 - `bucik.generators.debug`
   
 ## Commands
 - `/generators reload`
 - `/generators drop <getMultiplier|setMultiplier>`
 - `/generators get <generatorID>`
+- `/generators forceDestroy`
 - `/drop`
   
 ## Screenshots
@@ -45,12 +48,17 @@
 
 ![Screenshot 5](https://i.imgur.com/SCI4KyO.png)
 
+![Screenshot 6](https://i.imgur.com/13ChMpe.png)
+
 ## Example generators config (`generators.yml`)
 ```yaml
 generators:
   normal:
     break-cooldown: 1 # In ticks. 20 ticks = 1 second
     permission: bucik.generators.normal
+    durability:
+      enabled: true
+      value: 30
     custom-crafting-recipe:
       slot-A: AIR
       slot-B: COBBLESTONE
