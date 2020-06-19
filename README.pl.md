@@ -5,26 +5,26 @@
 ![Spigot downloads](https://img.shields.io/spiget/downloads/80180)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
-[Polish version here](README.pl.md)
+[English version here](README.md)
 
-## Features
-- Fully customizable block generators
-- Custom permissions for almost everything
-- Custom cooldown times
-- Custom **crafting recipes**
-- **Generator durability** system
-- Fully customizable items that can be dropped, **including money** (requires `Vault`)
-- Two item drop modes: `inventory` and `ground`
-- Custom item drop odds based on **permissions** and **luck** (percentage system)
-- Customizable **potion effects** that can be applied to player when mining
-- Changeable action-bar messages
-- Custom item **drop multipliers** (useful for events)
-- Nice sound and particle effects
-- Previewable **generator drop details** (`/drop`)
-- World blacklist
-- Database auto-save system
+## Funkcje
+- W pełni dostosowywalne generatory bloków
+- Niestandardowe permisje do prawie wszystkiego
+- Dostosowywalne czasy odnowienia generatorów
+- Dostosowywalne **craftingi**
+- System **wytrzymałości generatorów**
+- W pełni dostosowywalne przedmioty z dropu, **w tym pieniądze** (wymaga `Vault`a)
+- Dwa tryby dropu przedmiotów: `inventory` (do ekwipunku) i `ground` (na ziemię)
+- Niestandardowe szanse na drop przedmiotów bazowane na **uprawnieniach** i systemie procentowym
+- Dostosowywalne **efekty mikstur**, które mogą zostać dane graczowi podczas kopania
+- Zmienialne komunikaty action-bar'a
+- Własne **mnożniki dropu** (przydatne na eventach)
+- Ładne efekty dźwiękowe i cząsteczkowe
+- Podgląd **dropu generatora** (`/drop`)
+- Czarna lista światów
+- System automatycznego zapisywania bazy danych
 
-## Permissions
+## Uprawnienia
 - `bucik.generators.reload`
 - `bucik.generators.get`
 - `bucik.generators.drop.see`
@@ -32,14 +32,14 @@
 - `bucik.generators.forcedestroy`
 - `bucik.generators.debug`
   
-## Commands
+## Komendy
 - `/generators reload`
 - `/generators drop <getMultiplier|setMultiplier>`
 - `/generators get <generatorID>`
 - `/generators forceDestroy`
 - `/drop`
   
-## Screenshots
+## Zrzuty ekranu
 ![Screenshot 1](https://i.imgur.com/XPQAbUr.png)
 
 ![Screenshot 2](https://i.imgur.com/QNcWJ8c.png)
@@ -52,11 +52,11 @@
 
 ![Screenshot 6](https://i.imgur.com/13ChMpe.png)
 
-## Example generators config (`generators.yml`)
+## Przykładowa konfiguracja (`generators.yml`)
 ```yaml
 generators:
   normal:
-    break-cooldown: 1 # In ticks. 20 ticks = 1 second
+    break-cooldown: 1 # W tickach. 20 ticków = 1 sekunds
     permission: bucik.generators.normal
     durability:
       enabled: true
@@ -85,11 +85,11 @@ generators:
         - "&6cobblestone."
     generator:
       item: STONE
-      item-drop-mode: inventory # available modes: inventory, ground
+      item-drop-mode: inventory # dostępne tryby: inventory, ground
       drop:
-        # EXTREMELY IMPORTANT:
-        # REPLACE "." with "-" IN PERMISSIONS.
-        # Permissions:
+        # BARDZO WAŻNE:
+        # ZAMIEŃ "." NA "-" W NAZWACH PERMISJI.
+        # Uprawnienia:
         bucik-generators-stone-vip:
           1:
             chance: 100 # %
@@ -128,6 +128,6 @@ generators:
             money-amount: 500
             action-bar-message: "&f&l+ &f&l[&2&l$&a&l500&f&l]"
 ```
-You can customize more options in `config.yml`.
+Możesz dostosować więcej opcji w pliku `config.yml`.
 
-This is one of my first plugins, so feel free to create a pull request if you think something can be done better.
+Jest to jeden z moich pierwszych pluginów, więc możesz utworzyć pull request'a, jeśli uważasz, że coś można zrobić lepiej.
