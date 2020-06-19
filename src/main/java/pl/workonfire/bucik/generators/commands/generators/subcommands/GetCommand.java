@@ -10,6 +10,7 @@ import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
 public class GetCommand implements CommandInterface {
+
     @Override
     public boolean executableByConsole() {
         return false;

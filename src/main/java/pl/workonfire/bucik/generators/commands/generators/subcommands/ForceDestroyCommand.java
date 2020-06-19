@@ -13,7 +13,9 @@ import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
+@SuppressWarnings("ConstantConditions")
 public class ForceDestroyCommand implements CommandInterface {
+
     @Override
     public boolean executableByConsole() {
         return false;

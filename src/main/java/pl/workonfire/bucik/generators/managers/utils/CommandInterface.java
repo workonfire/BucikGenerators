@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public interface CommandInterface {
+
     boolean executableByConsole();
 
     String permission();

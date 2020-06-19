@@ -23,20 +23,16 @@ public class MainTabCompleter implements TabCompleter {
                 if (sender.hasPermission("bucik.generators.forcedestroy")) commands.add("forceDestroy");
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             case 2:
-                if (args[0].equalsIgnoreCase("get") && sender.hasPermission("bucik.generators.get")) {
-                    final List<String> generatorIds = new ArrayList<>(BlockUtil.getGeneratorsIds());
-                    return StringUtil.copyPartialMatches(args[1], generatorIds, new ArrayList<>());
-                }
-                else if (args[0].equalsIgnoreCase("drop") && sender.hasPermission("bucik.generators.drop.manipulate")) {
-                    final List<String> dropCommands = new ArrayList<>(Arrays.asList("getMultiplier", "setMultiplier"));
-                    return StringUtil.copyPartialMatches(args[1], dropCommands, new ArrayList<>());
-                }
+                if (args[0].equalsIgnoreCase("get") && sender.hasPermission("bucik.generators.get"))
+                    return StringUtil.copyPartialMatches(args[1], BlockUtil.getGeneratorsIds(), new ArrayList<>());
+                else if (args[0].equalsIgnoreCase("drop") && sender.hasPermission("bucik.generators.drop.manipulate"))
+                    return StringUtil.copyPartialMatches(args[1], Arrays.asList("getMultiplier", "setMultiplier"), new ArrayList<>());
                 else return new ArrayList<>();
             case 3:
                 if (args[0].equalsIgnoreCase("get") && sender.hasPermission("bucik.generators.get"))
                     return new ArrayList<>(Arrays.asList("1", "32", "64"));
                 else if (args[1].equalsIgnoreCase("setMultiplier") && sender.hasPermission("bucik.generators.drop.manipulate"))
-                    return new ArrayList<>(Arrays.asList("1", "2", "100"));
+                    return new ArrayList<>(Arrays.asList("1", "2", "4"));
             default:
                 return new ArrayList<>();
         }

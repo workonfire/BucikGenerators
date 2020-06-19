@@ -7,7 +7,8 @@ import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
-public class ManipulateDropCommand implements CommandInterface {
+public class DropManipulateCommand implements CommandInterface {
+
     @Override
     public boolean executableByConsole() {
         return true;

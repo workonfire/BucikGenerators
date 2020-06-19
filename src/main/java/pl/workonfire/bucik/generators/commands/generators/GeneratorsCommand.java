@@ -5,18 +5,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.Main;
-import pl.workonfire.bucik.generators.commands.generators.subcommands.ManipulateDropCommand;
+import pl.workonfire.bucik.generators.commands.generators.subcommands.DropManipulateCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ForceDestroyCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.GetCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ReloadCommand;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 public class GeneratorsCommand implements CommandExecutor, CommandInterface {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         final ReloadCommand reloadCommand = new ReloadCommand();
         final GetCommand getCommand = new GetCommand();
-        final ManipulateDropCommand dropCommand = new ManipulateDropCommand();
+        final DropManipulateCommand dropCommand = new DropManipulateCommand();
         final ForceDestroyCommand forceDestroyCommand = new ForceDestroyCommand();
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase(reloadCommand.name()))

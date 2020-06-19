@@ -14,7 +14,9 @@ import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
-public class PeekDropCommand implements CommandExecutor, CommandInterface {
+@SuppressWarnings("ConstantConditions")
+public class DropPeekCommand implements CommandExecutor, CommandInterface {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         run(sender, command, label, args);
