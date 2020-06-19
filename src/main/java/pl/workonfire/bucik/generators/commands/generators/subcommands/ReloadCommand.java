@@ -3,11 +3,11 @@ package pl.workonfire.bucik.generators.commands.generators.subcommands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.utils.interfaces.SubCommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
-public class ReloadCommand implements SubCommandInterface {
+public class ReloadCommand implements CommandInterface {
     @Override
     public boolean executableByConsole() {
         return true;

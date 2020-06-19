@@ -9,7 +9,7 @@ import pl.workonfire.bucik.generators.commands.generators.subcommands.Manipulate
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ForceDestroyCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.GetCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ReloadCommand;
-import pl.workonfire.bucik.generators.managers.utils.interfaces.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 public class GeneratorsCommand implements CommandExecutor, CommandInterface {
     @Override

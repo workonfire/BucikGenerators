@@ -5,11 +5,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
-import pl.workonfire.bucik.generators.managers.utils.interfaces.SubCommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
-public class GetCommand implements SubCommandInterface {
+public class GetCommand implements CommandInterface {
     @Override
     public boolean executableByConsole() {
         return false;

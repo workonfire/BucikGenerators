@@ -1,4 +1,4 @@
-package pl.workonfire.bucik.generators.managers.utils.interfaces;
+package pl.workonfire.bucik.generators.managers.utils;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
