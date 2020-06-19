@@ -5,8 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import pl.workonfire.bucik.generators.commands.DropCommand;
-import pl.workonfire.bucik.generators.commands.MainCommand;
+import pl.workonfire.bucik.generators.commands.drop.PeekDropCommand;
+import pl.workonfire.bucik.generators.commands.generators.GeneratorsCommand;
 import pl.workonfire.bucik.generators.listeners.blocks.BlockBreakListener;
 import pl.workonfire.bucik.generators.listeners.blocks.BlockPlaceListener;
 import pl.workonfire.bucik.generators.listeners.blocks.EntityExplodeListener;
@@ -72,7 +72,7 @@ public abstract class Util {
                 player.sendMessage(getPrefixedLanguageVariable("config-load-error-debug-header"));
                 final StringWriter stringWriter = new StringWriter();
                 exception.printStackTrace(new PrintWriter(stringWriter));
-                System.out.println(ConfigManager.getLanguageVariable("contact-developer"));
+                System.out.println(getLanguageVariable("contact-developer"));
                 exception.printStackTrace();
                 String exceptionAsString = stringWriter.toString();
                 exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
@@ -105,9 +105,9 @@ public abstract class Util {
      * @since 1.0.5
      */
     public static void registerCommands() {
-        getPlugin().getCommand("generators").setExecutor(new MainCommand());
+        getPlugin().getCommand("generators").setExecutor(new GeneratorsCommand());
         getPlugin().getCommand("generators").setTabCompleter(new MainTabCompleter());
-        getPlugin().getCommand("drop").setExecutor(new DropCommand());
+        getPlugin().getCommand("drop").setExecutor(new PeekDropCommand());
         getPlugin().getCommand("drop").setTabCompleter(new DropTabCompleter());
     }
 

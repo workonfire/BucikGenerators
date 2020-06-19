@@ -1,4 +1,4 @@
-package pl.workonfire.bucik.generators.commands;
+package pl.workonfire.bucik.generators.commands.drop;
 
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -9,19 +9,39 @@ import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
+import pl.workonfire.bucik.generators.managers.utils.interfaces.CommandInterface;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
-@SuppressWarnings("ConstantConditions")
-public class DropCommand implements CommandExecutor {
-
+public class PeekDropCommand implements CommandExecutor, CommandInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        run(sender, command, label, args);
+        return true;
+    }
+
+    @Override
+    public boolean executableByConsole() {
+        return false;
+    }
+
+    @Override
+    public String permission() {
+        return "bucik.generators.drop.see";
+    }
+
+    @Override
+    public String name() {
+        return "drop";
+    }
+
+    @Override
+    public void run(CommandSender sender, Command command, String label, String[] args) {
         try {
             if (sender instanceof Player) {
                 final Player player = (Player) sender;
-                if (player.hasPermission("bucik.generators.drop.see")) {
+                if (player.hasPermission(permission())) {
                     final Block targetBlock = player.getTargetBlockExact(5);
                     if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                         player.sendMessage(getPrefixedLanguageVariable("items-drop-list"));
@@ -52,7 +72,7 @@ public class DropCommand implements CommandExecutor {
                             }
                             else {
                                 player.sendMessage(getPrefixedLanguageVariable("no-drop"));
-                                return false;
+                                return;
                             }
                         }
                     }
@@ -61,11 +81,9 @@ public class DropCommand implements CommandExecutor {
                 else player.sendMessage(getPrefixedLanguageVariable("no-permission"));
             }
             else sender.sendMessage(getPrefixedLanguageVariable("cannot-open-from-console"));
-            return true;
         }
         catch (Exception exception) {
             Util.handleErrors(sender, exception);
-            return false;
         }
     }
 }

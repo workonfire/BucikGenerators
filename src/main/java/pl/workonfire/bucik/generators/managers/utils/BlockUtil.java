@@ -124,7 +124,7 @@ public abstract class BlockUtil {
         final int currentLocationX = location.getBlockX();
         final int currentLocationY = location.getBlockY();
         final int currentLocationZ = location.getBlockZ();
-        final List<String> allGenerators = ConfigManager.getDataStorage().getStringList("generators");
+        final List<String> allGenerators = getDataStorage().getStringList("generators");
         for (String generatorDetails : allGenerators) {
             final String[] splittedDetails = generatorDetails.split("\\|");
             final String worldName = splittedDetails[0];
