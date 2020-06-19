@@ -10,6 +10,7 @@ import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
@@ -54,7 +55,7 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                                 for (String dropItemId : generator.getDropItemsIds(permission)) {
                                     final DropItem dropItem = new DropItem(generator, permission, Integer.parseInt(dropItemId));
                                     player.sendMessage("§c§m--------------");
-                                    player.sendMessage(getLanguageVariable("drop-item-material") + dropItem.getItemMaterial());
+                                    player.sendMessage(getLanguageVariable("drop-item-material") + dropItem.getItemMaterialName());
                                     if (dropItem.getItemName() != null)
                                         player.sendMessage(getLanguageVariable("drop-item-name") + Util.formatColors(dropItem.getItemName()));
                                     if (dropItem.getItemAmount() > 1)
@@ -62,8 +63,10 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                                     if (dropItem.isAPotion()) {
                                         player.sendMessage(getLanguageVariable("potion-type") + dropItem.getPotionEffectTypeName());
                                         player.sendMessage(getLanguageVariable("potion-amplifier") + dropItem.getPotionEffectAmplifier());
-                                        player.sendMessage(getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() + "s");
+                                        player.sendMessage(getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() / 20 + "s");
                                     }
+                                    if (dropItem.isMoney() && VaultHandler.getEconomy() != null)
+                                        player.sendMessage(getLanguageVariable("drop-item-money-amount") + dropItem.getMoneyAmount());
                                     if (!dropItem.getEnchantments().isEmpty()) {
                                         player.sendMessage(getLanguageVariable("drop-item-enchantments"));
                                         for (String enchantment : dropItem.getEnchantments()) player.sendMessage(enchantment);

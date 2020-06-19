@@ -74,9 +74,14 @@ public abstract class BlockUtil {
                     final int locationZ = Integer.parseInt(splittedDetails[3]);
                     final Location baseGeneratorLocation = new Location(world, locationX, locationY, locationZ);
                     final Generator generator = BlockUtil.getGeneratorFromMaterial(baseGeneratorLocation.getBlock().getType());
-                    generator.unregister(baseGeneratorLocation, baseGeneratorLocation.getWorld());
+                    try {
+                        generator.unregister(baseGeneratorLocation, baseGeneratorLocation.getWorld());
+                    }
+                    catch (NullPointerException exception) {
+                        System.err.println("DEBUG: Cannot unregister generator at " + baseGeneratorLocation);
+                    }
                     if (ConfigManager.getConfig().getBoolean("options.debug"))
-                        System.out.println("Generator unregistered: " + baseGeneratorLocation);
+                        System.out.println("DEBUG: Generator unregistered: " + baseGeneratorLocation);
                     baseGeneratorLocation.getBlock().setType(Material.AIR);
                     new Location(world, locationX, locationY + 1, locationZ).getBlock().setType(Material.AIR);
                 }

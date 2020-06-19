@@ -51,7 +51,7 @@ public class Generator {
         generatorMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("generator.item", id)).toUpperCase());
         generatorDropPermissionList = getGeneratorsConfig().getConfigurationSection(getPropertyName("generator.drop", id)).getKeys(false);
         worldBlacklist = getGeneratorsConfig().getStringList(getPropertyName("world-blacklist", id));
-        itemDropMode = getGeneratorsConfig().getString(getPropertyName("item-drop-mode", id));
+        itemDropMode = getGeneratorsConfig().getString(getPropertyName("generator.item-drop-mode", id));
         customRecipe = getGeneratorsConfig().getConfigurationSection(getPropertyName("custom-crafting-recipe", id));
         enchantments = getGeneratorsConfig().getStringList(getPropertyName("enchantments", id));
         hideEnchantments = getGeneratorsConfig().getBoolean(getPropertyName("hide-enchantments", id));

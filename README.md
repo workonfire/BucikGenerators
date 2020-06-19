@@ -11,7 +11,7 @@
 - Custom cooldown times
 - Custom **crafting recipes**
 - **Generator durability** system
-- Fully customizable items that can be dropped
+- Fully customizable items that can be dropped, **including money** (requires `Vault`)
 - Two item drop modes: `inventory` and `ground`
 - Custom item drop odds based on **permissions** and **luck** (percentage system)
 - Customizable **potion effects** that can be applied to player when mining
@@ -120,6 +120,11 @@ generators:
               amplifier: 2
               duration: 30 # In seconds.
             action-bar-message: "&f&l+ &f&l[&5&lHaste II&f&l]"
+          3:
+            chance: 10 # %
+            item: MONEY
+            money-amount: 500
+            action-bar-message: "&f&l+ &f&l[&2&l$&a&l500&f&l]"
 ```
 You can customize more options in `config.yml`.
 

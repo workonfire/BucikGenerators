@@ -110,6 +110,11 @@ generators:
             lore:
               - "&5:D"
             action-bar-message: "&f&l+ &f&l[&6&lGold Block&f&l]"
+          3:
+            chance: 10 # %
+            item: MONEY
+            money-amount: 500
+            action-bar-message: "&f&l+ &f&l[&2&l$&a&l500&f&l]"
   diaxgene10:
     break-cooldown: 1
     permission: bucik.generators.diax10

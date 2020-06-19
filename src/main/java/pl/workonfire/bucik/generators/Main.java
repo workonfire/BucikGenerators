@@ -6,13 +6,14 @@ import pl.workonfire.bucik.generators.data.Metrics;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Util;
+import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
 /**
  * A customizable plugin for setting up block generators.
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.1.0
+ * @version 1.1.1
  * @since   2020-06-13
  */
 
@@ -34,9 +35,10 @@ public final class Main extends JavaPlugin {
         ConfigManager.initializeStorage();
         Util.registerEvents();
         Util.registerCommands();
+        VaultHandler.setupEconomy();
         System.out.println(ConfigManager.getPrefix() + " §fBucikGenerators §6" + getPluginVersion() + " §fby Buty935. Discord: §9workonfire#8262");
         if (ConfigManager.getConfig().getBoolean("options.debug"))
-            System.out.println("Debug mode enabled: §4IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
+            System.err.println("Debug mode enabled. IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
         final int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         if (dataSaveInterval != 0)
             Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), ConfigManager::updateStorage, 0, dataSaveInterval);

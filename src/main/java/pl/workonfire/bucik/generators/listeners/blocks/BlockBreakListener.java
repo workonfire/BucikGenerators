@@ -18,6 +18,7 @@ import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Util;
+import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
@@ -58,7 +59,7 @@ public class BlockBreakListener implements Listener {
                         if (ConfigManager.areSoundsEnabled())
                             block.getWorld().playSound(block.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0F, 1.0F);
                         if (ConfigManager.areParticlesEnabled())
-                            player.spawnParticle(Particle.SMOKE_LARGE, event.getBlock().getLocation(), 7);
+                            player.spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 7);
                         player.sendMessage(getPrefixedLanguageVariable("base-generator-destroyed"));
                     }
                 }
@@ -87,7 +88,7 @@ public class BlockBreakListener implements Listener {
                             if (ConfigManager.areSoundsEnabled())
                                 block.getWorld().playSound(block.getLocation(), Sound.ENTITY_WITHER_HURT, 1.0F, 1.0F);
                             if (ConfigManager.areParticlesEnabled())
-                                player.spawnParticle(Particle.SMOKE_LARGE, event.getBlock().getLocation(), 7);
+                                player.spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 7);
                         }
                         else {
                             baseBlockLocation.getBlock().removeMetadata("durability", Main.getPlugin());
@@ -109,16 +110,21 @@ public class BlockBreakListener implements Listener {
                                                 item.getPotionEffectAmplifier());
                                         player.addPotionEffect(potionEffect);
                                     }
+                                    else if (item.isMoney() && item.getMoneyAmount() != 0 && VaultHandler.getEconomy() != null) {
+                                        VaultHandler.getEconomy().depositPlayer(player, item.getMoneyAmount());
+                                        if (ConfigManager.areParticlesEnabled())
+                                            player.spawnParticle(Particle.TOTEM, block.getLocation(), 1);
+                                    }
                                     else {
                                         if (baseGenerator.getItemDropMode() != null
                                                 && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory"))
                                             player.getInventory().addItem(item.getItemStack());
                                         else
                                             block.getWorld().dropItemNaturally(baseBlockLocation, item.getItemStack());
-                                        if (item.getActionBarMessage() != null)
-                                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                                                    TextComponent.fromLegacyText(Util.formatColors(item.getActionBarMessage())));
                                     }
+                                    if (item.getActionBarMessage() != null)
+                                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                                                TextComponent.fromLegacyText(Util.formatColors(item.getActionBarMessage())));
                                 }
                             }
                         }

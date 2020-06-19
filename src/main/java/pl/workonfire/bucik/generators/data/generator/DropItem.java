@@ -20,6 +20,7 @@ import java.util.Random;
 public class DropItem {
     private final double dropChance;
     private final Material itemMaterial;
+    private final String itemMaterialName;
     private final int itemAmount;
     private final String itemName;
     private final List<String> itemLore;
@@ -28,10 +29,12 @@ public class DropItem {
     private final String potionEffectTypeName;
     private final int potionEffectDuration;
     private final int potionEffectAmplifier;
+    private final double moneyAmount;
 
     public DropItem(Generator generator, String permission, int id) {
         dropChance = getGeneratorsConfig().getDouble(getPropertyName("chance", generator.getId(), id, permission));
         itemMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("item", generator.getId(), id, permission)).toUpperCase());
+        itemMaterialName = getGeneratorsConfig().getString(getPropertyName("item", generator.getId(), id, permission)).toUpperCase();
         itemAmount = getGeneratorsConfig().getInt(getPropertyName("amount", generator.getId(), id, permission));
         itemName = getGeneratorsConfig().getString(getPropertyName("name", generator.getId(), id, permission));
         itemLore = getGeneratorsConfig().getStringList(getPropertyName("lore", generator.getId(), id, permission));
@@ -40,6 +43,7 @@ public class DropItem {
         potionEffectTypeName = getGeneratorsConfig().getString(getPropertyName("potion.effect", generator.getId(), id, permission));
         potionEffectDuration = getGeneratorsConfig().getInt(getPropertyName("potion.duration", generator.getId(), id, permission));
         potionEffectAmplifier = getGeneratorsConfig().getInt(getPropertyName("potion.amplifier", generator.getId(), id, permission));
+        moneyAmount = getGeneratorsConfig().getDouble(getPropertyName("money-amount", generator.getId(), id, permission));
     }
 
     /**
@@ -82,9 +86,20 @@ public class DropItem {
      * @return true, if it is
      */
     public boolean isAPotion() {
-        return getItemMaterial().equals(Material.POTION)
+        if (getItemMaterial() != null)
+            return getItemMaterial().equals(Material.POTION)
                 || getItemMaterial().equals(Material.SPLASH_POTION)
                 || getItemMaterial().equals(Material.LINGERING_POTION);
+        return false;
+    }
+
+    /**
+     * Checks if the item is cash.
+     * @since 1.1.1
+     * @return true, if it is
+     */
+    public boolean isMoney() {
+        return getItemMaterialName().equalsIgnoreCase("MONEY");
     }
 
     /**
@@ -130,10 +145,18 @@ public class DropItem {
     }
 
     public int getPotionEffectDuration() {
-        return potionEffectDuration / 20;
+        return potionEffectDuration;
     }
 
     public int getPotionEffectAmplifier() {
         return potionEffectAmplifier;
+    }
+
+    public double getMoneyAmount() {
+        return moneyAmount;
+    }
+
+    public String getItemMaterialName() {
+        return itemMaterialName;
     }
 }
