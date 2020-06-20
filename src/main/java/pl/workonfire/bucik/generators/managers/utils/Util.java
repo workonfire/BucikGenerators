@@ -30,10 +30,6 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedL
 @SuppressWarnings("ConstantConditions")
 public abstract class Util {
 
-    public enum LoggerLevel {
-        INFO, WARN
-    }
-
     /**
      * Replaces "&" to "§" in order to show colors properly.
      * @since 1.0.0
@@ -79,7 +75,7 @@ public abstract class Util {
                 player.sendMessage(getPrefixedLanguageVariable("config-load-error-debug-header"));
                 final StringWriter stringWriter = new StringWriter();
                 exception.printStackTrace(new PrintWriter(stringWriter));
-                Util.systemMessage(LoggerLevel.WARN, getLanguageVariable("contact-developer"));
+                Util.systemMessage(Logger.WARN, getLanguageVariable("contact-developer"));
                 exception.printStackTrace();
                 String exceptionAsString = stringWriter.toString();
                 exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
@@ -133,14 +129,14 @@ public abstract class Util {
     /**
      * Shows a system message.
      * @since 1.1.3
-     * @param level Message level
+     * @param level Message level, for example WARN
      * @param message Message string
      */
-    public static void systemMessage(LoggerLevel level, String message) {
+    public static void systemMessage(Logger level, String message) {
         message = isServerLegacy() ? ChatColor.stripColor(message) : formatColors(message);
-        switch (level) {
-            case INFO: System.out.println(message); break;
-            case WARN: System.err.println(message); break;
-        }
+        final String pluginPrefix = isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
+        final String messagePrefix = pluginPrefix + "[" + level.name() + "] ";
+        if (!ConfigManager.getConfig().getBoolean("options.debug") && level.equals(Logger.DEBUG)) return;
+        level.getStream().println(messagePrefix + level.getColor() + message);
     }
 }

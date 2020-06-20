@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.workonfire.bucik.generators.data.Metrics;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
+import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
@@ -31,9 +32,9 @@ public final class Main extends JavaPlugin {
         Util.registerEvents();
         Util.registerCommands();
         VaultHandler.setupEconomy();
-        Util.systemMessage(Util.LoggerLevel.INFO, ConfigManager.getPrefix() + " §fBucikGenerators §6" + getPluginVersion() + " §fby Buty935. Discord: §9workonfire#8262");
-        if (ConfigManager.getConfig().getBoolean("options.debug"))
-            Util.systemMessage(Util.LoggerLevel.WARN, "Debug mode enabled. IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
+        Util.systemMessage(Logger.INFO, "§fBucikGenerators §6" + getPluginVersion() + " §fby Buty935. Discord: §9workonfire#8262");
+        Util.systemMessage(Logger.DEBUG, "Debug mode enabled. IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
+        Util.systemMessage(Logger.DEBUG, "Economy setup: " + VaultHandler.getEconomy());
         final int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         if (dataSaveInterval != 0)
             Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), ConfigManager::updateStorage, 0, dataSaveInterval);
@@ -41,7 +42,7 @@ public final class Main extends JavaPlugin {
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
             final int pluginId = 7854;
             new Metrics(getPlugin(), pluginId);
-            Util.systemMessage(Util.LoggerLevel.INFO, ConfigManager.getPrefix() + " bStats service has been §2enabled§r! Set §6metrics §rto §cfalse §rin §f§nconfig.yml§r in order to disable metrics.");
+            Util.systemMessage(Logger.INFO, "bStats service has been §2enabled§r! Set §6metrics §rto §cfalse §rin §f§nconfig.yml§r in order to disable metrics.");
         }
     }
 

@@ -78,10 +78,9 @@ public abstract class BlockUtil {
                         generator.unregister(baseGeneratorLocation, baseGeneratorLocation.getWorld());
                     }
                     catch (NullPointerException exception) {
-                        Util.systemMessage(Util.LoggerLevel.WARN, "DEBUG: Cannot unregister generator at " + baseGeneratorLocation);
+                        Util.systemMessage(Logger.DEBUG, "Cannot unregister generator at " + baseGeneratorLocation);
                     }
-                    if (ConfigManager.getConfig().getBoolean("options.debug"))
-                        Util.systemMessage(Util.LoggerLevel.INFO, "DEBUG: Generator unregistered: " + baseGeneratorLocation);
+                    Util.systemMessage(Logger.DEBUG, "Generator unregistered: " + baseGeneratorLocation);
                     baseGeneratorLocation.getBlock().setType(Material.AIR);
                     new Location(world, locationX, locationY + 1, locationZ).getBlock().setType(Material.AIR);
                 }
@@ -181,7 +180,7 @@ public abstract class BlockUtil {
             }
         }
         catch (Exception exception) {
-            Util.systemMessage(Util.LoggerLevel.WARN, ConfigManager.getLanguageVariable("contact-developer"));
+            Util.systemMessage(Logger.WARN, ConfigManager.getLanguageVariable("contact-developer"));
             exception.printStackTrace();
         }
     }

@@ -2,6 +2,7 @@ package pl.workonfire.bucik.generators.managers;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import java.io.File;
@@ -27,8 +28,8 @@ public abstract class ConfigManager {
         final File generatorsConfigFile = new File(getPlugin().getDataFolder(), "generators.yml");
         if (!languageConfigFile.exists()) {
             languageConfigFile.getParentFile().mkdirs();
-            getPlugin().saveResource("locales/pl.yml", false);
-            getPlugin().saveResource("locales/en.yml", false);
+            final String[] locales = {"pl", "en", "es", "it"};
+            for (String locale : locales) getPlugin().saveResource("locales/" + locale + ".yml", false);
         }
         if (!generatorsConfigFile.exists()) {
             generatorsConfigFile.getParentFile().mkdirs();
@@ -57,8 +58,7 @@ public abstract class ConfigManager {
     public static void updateStorage() {
         try {
             getDataStorage().save(dataStorageFile);
-            if (getConfig().getBoolean("options.debug"))
-                Util.systemMessage(Util.LoggerLevel.INFO, getPrefix() + " §fDEBUG: File saved.");
+            Util.systemMessage(Logger.DEBUG, "File saved.");
         } catch (IOException exception) {
             exception.printStackTrace();
         }

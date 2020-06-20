@@ -7,10 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
-import pl.workonfire.bucik.generators.managers.utils.Util;
-import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
-import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
+import pl.workonfire.bucik.generators.managers.utils.*;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
@@ -50,6 +47,7 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                         targetBlock = player.getTargetBlockExact(5);
                     }
                     catch (NoSuchMethodError error) {
+                        Util.systemMessage(Logger.DEBUG, error.getClass().getSimpleName() + ": Using the non-exact target block method.");
                         targetBlock = player.getTargetBlock(null, 5);
                     }
                     if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
