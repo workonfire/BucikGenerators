@@ -45,7 +45,13 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
             if (sender instanceof Player) {
                 final Player player = (Player) sender;
                 if (player.hasPermission(permission())) {
-                    final Block targetBlock = player.getTargetBlockExact(5);
+                    Block targetBlock;
+                    try {
+                        targetBlock = player.getTargetBlockExact(5);
+                    }
+                    catch (NoSuchMethodError error) {
+                        targetBlock = player.getTargetBlock(null, 5);
+                    }
                     if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                         player.sendMessage(getPrefixedLanguageVariable("items-drop-list"));
                         final Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(targetBlock.getType()).getId());

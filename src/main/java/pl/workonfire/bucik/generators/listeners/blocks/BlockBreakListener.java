@@ -96,8 +96,10 @@ public class BlockBreakListener implements Listener {
                                     new FixedMetadataValue(Main.getPlugin(), currentDurability - 1));
                         }
                     }
-                    if (ConfigManager.areSoundsEnabled())
-                         block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 1.0F, 1.0F);
+                    if (ConfigManager.areSoundsEnabled()) {
+                        final Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BLAZE_HURT : Sound.ENTITY_ENDER_DRAGON_HURT;
+                        block.getWorld().playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
+                    }
                     for (String permission : baseGenerator.getGeneratorDropPermissionList()) {
                         if (player.hasPermission(Util.getPermission(permission))) {
                             for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
@@ -112,7 +114,7 @@ public class BlockBreakListener implements Listener {
                                     }
                                     else if (item.isMoney() && item.getMoneyAmount() != 0 && VaultHandler.getEconomy() != null) {
                                         VaultHandler.getEconomy().depositPlayer(player, item.getMoneyAmount());
-                                        if (ConfigManager.areParticlesEnabled())
+                                        if (ConfigManager.areParticlesEnabled() && !Util.isServerLegacy())
                                             player.spawnParticle(Particle.TOTEM, block.getLocation(), 1);
                                     }
                                     else {

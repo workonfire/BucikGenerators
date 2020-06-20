@@ -35,7 +35,7 @@ public class DropManipulateCommand implements CommandInterface {
                     if (args.length == 2) sender.sendMessage(getPrefixedLanguageVariable("not-enough-arguments"));
                     else {
                         try {
-                            DropMultiplier.setDropMultiplier(Integer.parseInt(args[2]));
+                            DropMultiplier.setDropMultiplier(Integer.parseInt(args[2].replaceAll("x", "")));
                             sender.sendMessage(getPrefixedLanguageVariable("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
                         }
                         catch (NumberFormatException exception) {

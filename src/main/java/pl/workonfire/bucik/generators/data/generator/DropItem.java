@@ -73,7 +73,9 @@ public class DropItem {
             for (String enchantment : getEnchantments()) {
                 final String enchantmentName = enchantment.split(":")[0];
                 final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
-                final Enchantment enchantmentRepresentation = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName));
+                final Enchantment enchantmentRepresentation = (Util.isServerLegacy()) ?
+                        Enchantment.getByName(enchantmentName.toUpperCase())
+                        : EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
                 if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
             }
         item.setAmount(getItemAmount());

@@ -33,8 +33,10 @@ public class BlockPlaceListener implements Listener {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
                         player.sendMessage(getPrefixedLanguageVariable("cannot-place-in-this-world"));
-                        if (ConfigManager.areSoundsEnabled())
-                            player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1.0F, 1.0F);
+                        if (ConfigManager.areSoundsEnabled()) {
+                            final Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
+                            player.playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
+                        }
                         return;
                     }
                 }
@@ -43,8 +45,10 @@ public class BlockPlaceListener implements Listener {
                     if (BlockUtil.isBlockAGenerator(supposedBaseGeneratorLocation, supposedBaseGeneratorLocation.getWorld()))
                         event.setCancelled(true);
                     else {
-                        if (ConfigManager.areSoundsEnabled())
-                            block.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0F, 1.0F);
+                        if (ConfigManager.areSoundsEnabled()) {
+                            final Sound placeSound = Util.isServerLegacy() ? Sound.ITEM_FIRECHARGE_USE : Sound.BLOCK_BEACON_ACTIVATE;
+                            block.getWorld().playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
+                        }
                         if (ConfigManager.areParticlesEnabled())
                             player.spawnParticle(Particle.END_ROD, block.getLocation(), 25);
                         player.sendMessage(getPrefixedLanguageVariable("generator-placed") + generator.getId());

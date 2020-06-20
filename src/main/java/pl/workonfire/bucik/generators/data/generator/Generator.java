@@ -121,14 +121,17 @@ public class Generator {
             itemMeta.getPersistentDataContainer().set(uniqueKey, PersistentDataType.INTEGER, 1);
         }
         catch (NoSuchMethodError error) {
-            itemMeta.getCustomTagContainer().setCustomTag(uniqueKey, ItemTagType.INTEGER, 1);
+            if (!Util.isServerLegacy())
+                itemMeta.getCustomTagContainer().setCustomTag(uniqueKey, ItemTagType.INTEGER, 1);
         }
         item.setItemMeta(itemMeta);
         if (getEnchantments() != null)
             for (String enchantment : getEnchantments()) {
                 final String enchantmentName = enchantment.split(":")[0];
                 final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
-                final Enchantment enchantmentRepresentation = EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName));
+                final Enchantment enchantmentRepresentation = (Util.isServerLegacy()) ?
+                        Enchantment.getByName(enchantmentName.toUpperCase())
+                        : EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
                 if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
             }
         item.setAmount((amount == 0) ? 1 : amount);

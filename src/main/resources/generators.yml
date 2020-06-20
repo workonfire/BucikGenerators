@@ -29,7 +29,7 @@ generators:
       - "unbreaking:5"
     hide-enchantments: true
     base:
-      item: END_STONE
+      item: BEDROCK
       name: "&7&l&oGenerator"
       lore:
         - "&6It simply generates infinite"
@@ -119,7 +119,7 @@ generators:
     break-cooldown: 1
     permission: bucik.generators.diax10
     base:
-      item: CYAN_CONCRETE
+      item: CYAN_GLAZED_TERRACOTTA
       name: "&3&LDiamond Block Generator &F(10%)"
     generator:
       item: DIAMOND_BLOCK

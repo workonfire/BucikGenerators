@@ -32,7 +32,7 @@ public class MainTabCompleter implements TabCompleter {
                 if (args[0].equalsIgnoreCase("get") && sender.hasPermission("bucik.generators.get"))
                     return new ArrayList<>(Arrays.asList("1", "32", "64"));
                 else if (args[1].equalsIgnoreCase("setMultiplier") && sender.hasPermission("bucik.generators.drop.manipulate"))
-                    return new ArrayList<>(Arrays.asList("1", "2", "4"));
+                    return new ArrayList<>(Arrays.asList("1x", "2x", "4x"));
             default:
                 return new ArrayList<>();
         }

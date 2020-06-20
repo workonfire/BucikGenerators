@@ -108,9 +108,11 @@ public abstract class BlockUtil {
                         return container.has(new NamespacedKey(Main.getPlugin(), "unique-generator"), PersistentDataType.INTEGER);
                     }
                     catch (NoSuchMethodError error) {
-                        final NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
-                        final CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
-                        return tagContainer.hasCustomTag(uniqueKey, ItemTagType.INTEGER);
+                        if (!Util.isServerLegacy()) {
+                            final NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
+                            final CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
+                            return tagContainer.hasCustomTag(uniqueKey, ItemTagType.INTEGER);
+                        }
                     }
                 }
             }

@@ -36,7 +36,13 @@ public class ForceDestroyCommand implements CommandInterface {
         if (sender instanceof Player && !executableByConsole()) {
             final Player player = (Player) sender;
             if (player.hasPermission(permission())) {
-                final Block targetBlock = player.getTargetBlockExact(5);
+                Block targetBlock;
+                try {
+                    targetBlock = player.getTargetBlockExact(5);
+                }
+                catch (NoSuchMethodError error) {
+                    targetBlock = player.getTargetBlock(null, 5);
+                }
                 if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                     final Generator generator = BlockUtil.getGeneratorFromMaterial(targetBlock.getType());
                     generator.unregister(targetBlock.getLocation(), targetBlock.getWorld());

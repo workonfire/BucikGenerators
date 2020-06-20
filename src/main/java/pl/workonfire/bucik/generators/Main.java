@@ -13,7 +13,7 @@ import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.1.1
+ * @version 1.1.2
  * @since   2020-06-13
  */
 
@@ -25,11 +25,6 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         pluginVersion = getPlugin().getDescription().getVersion();
-        if (Util.isServerLegacy()) {
-            System.out.println("§41.12 and lower versions are not supported yet.");
-            Bukkit.getPluginManager().disablePlugin(getPlugin());
-            return;
-        }
         getPlugin().saveDefaultConfig();
         ConfigManager.initializeConfiguration();
         ConfigManager.initializeStorage();
@@ -52,11 +47,9 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (!Util.isServerLegacy()) {
-            BlockUtil.purgeAllGeneratorsWithDurability();
-            ConfigManager.updateStorage();
-            BlockUtil.unregisterRecipes();
-        }
+        BlockUtil.purgeAllGeneratorsWithDurability();
+        ConfigManager.updateStorage();
+        BlockUtil.unregisterRecipes();
     }
 
     public static Main getPlugin() {

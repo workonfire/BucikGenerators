@@ -60,7 +60,10 @@ public abstract class Util {
         if (commandSender instanceof Player) {
             final Player player = (Player) commandSender;
             if (ConfigManager.areSoundsEnabled()) {
-                player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1.0F, 1.0F);
+                if (ConfigManager.areSoundsEnabled()) {
+                    final Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
+                    player.playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
+                }
                 if (ConfigManager.getConfig().getBoolean("options.wzium")) {
                     final byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
                     final String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
