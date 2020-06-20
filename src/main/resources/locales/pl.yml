@@ -36,4 +36,3 @@ language:
   cannot-break-the-base: "&f[&6&l!&f] &eNie możesz zniszczyć tego generatora, ponieważ nie został do końca zużyty. Pozostała ilość użyć: &f&l"
   generator-has-worn-out: "&f[&3&li&f] &bGenerator zużył się."
   force-destroy-block-is-not-a-generator: "&f[&6&l!&f] &eBlok, na który patrzysz, nie jest generatorem."
-  drop-multiplier-has-been-reset: "&b&lEVENT POMNOŻONEGO DROPU SKOŃCZYŁ SIĘ! MNOŻNIK DROPU JEST TERAZ NORMALNY: &6&L1x"
