@@ -69,7 +69,7 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                                     if (dropItem.isAPotion()) {
                                         player.sendMessage(getLanguageVariable("potion-type") + dropItem.getPotionEffectTypeName());
                                         player.sendMessage(getLanguageVariable("potion-amplifier") + dropItem.getPotionEffectAmplifier());
-                                        player.sendMessage(getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() / 20 + "s");
+                                        player.sendMessage(getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() + "s");
                                     }
                                     if (dropItem.isMoney() && VaultHandler.getEconomy() != null)
                                         player.sendMessage(getLanguageVariable("drop-item-money-amount") + dropItem.getMoneyAmount());
