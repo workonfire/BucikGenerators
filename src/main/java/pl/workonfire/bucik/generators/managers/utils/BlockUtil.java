@@ -78,10 +78,10 @@ public abstract class BlockUtil {
                         generator.unregister(baseGeneratorLocation, baseGeneratorLocation.getWorld());
                     }
                     catch (NullPointerException exception) {
-                        System.err.println("DEBUG: Cannot unregister generator at " + baseGeneratorLocation);
+                        Util.systemMessage(Util.LoggerLevel.WARN, "DEBUG: Cannot unregister generator at " + baseGeneratorLocation);
                     }
                     if (ConfigManager.getConfig().getBoolean("options.debug"))
-                        System.out.println("DEBUG: Generator unregistered: " + baseGeneratorLocation);
+                        Util.systemMessage(Util.LoggerLevel.INFO, "DEBUG: Generator unregistered: " + baseGeneratorLocation);
                     baseGeneratorLocation.getBlock().setType(Material.AIR);
                     new Location(world, locationX, locationY + 1, locationZ).getBlock().setType(Material.AIR);
                 }
@@ -165,8 +165,14 @@ public abstract class BlockUtil {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
                 final Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
-                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
-                    final ShapedRecipe generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
+                    ShapedRecipe generatorRecipe;
+                    try {
+                        final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
+                        generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
+                    }
+                    catch (NoSuchMethodError | NoClassDefFoundError error) {
+                        generatorRecipe = new ShapedRecipe(generator.getItemStack(1));
+                    }
                     generatorRecipe.shape("ABC", "DEF", "GHI");
                     for (char ch = 'A'; ch <= 'I'; ++ch)
                         generatorRecipe.setIngredient(ch, Material.getMaterial(generator.getCustomRecipe().getString("slot-" + ch)));
@@ -175,7 +181,7 @@ public abstract class BlockUtil {
             }
         }
         catch (Exception exception) {
-            System.out.println(ConfigManager.getLanguageVariable("contact-developer"));
+            Util.systemMessage(Util.LoggerLevel.WARN, ConfigManager.getLanguageVariable("contact-developer"));
             exception.printStackTrace();
         }
     }
@@ -194,7 +200,7 @@ public abstract class BlockUtil {
                 }
             }
         }
-        catch (NoSuchMethodError error) {
+        catch (NoSuchMethodError | NoClassDefFoundError error) {
             Main.getPlugin().getServer().clearRecipes();
         }
     }

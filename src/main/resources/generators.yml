@@ -119,7 +119,7 @@ generators:
     break-cooldown: 1
     permission: bucik.generators.diax10
     base:
-      item: CYAN_GLAZED_TERRACOTTA
+      item: EMERALD_BLOCK
       name: "&3&LDiamond Block Generator &F(10%)"
     generator:
       item: DIAMOND_BLOCK

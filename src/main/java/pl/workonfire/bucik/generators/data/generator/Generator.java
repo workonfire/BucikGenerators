@@ -116,11 +116,12 @@ public class Generator {
         itemMeta.setDisplayName(getBaseItemName());
         itemMeta.setLore(getBaseItemLore());
         if (areEnchantmentsHidden()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        final NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
+        NamespacedKey uniqueKey = null;
         try {
+            uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
             itemMeta.getPersistentDataContainer().set(uniqueKey, PersistentDataType.INTEGER, 1);
         }
-        catch (NoSuchMethodError error) {
+        catch (NoSuchMethodError | NoClassDefFoundError error) {
             if (!Util.isServerLegacy())
                 itemMeta.getCustomTagContainer().setCustomTag(uniqueKey, ItemTagType.INTEGER, 1);
         }
@@ -129,12 +130,12 @@ public class Generator {
             for (String enchantment : getEnchantments()) {
                 final String enchantmentName = enchantment.split(":")[0];
                 final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
-                final Enchantment enchantmentRepresentation = (Util.isServerLegacy()) ?
-                        Enchantment.getByName(enchantmentName.toUpperCase())
+                final Enchantment enchantmentRepresentation = (Util.isServerLegacy())
+                        ? Enchantment.getByName(enchantmentName.toUpperCase())
                         : EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
                 if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
             }
-        item.setAmount((amount == 0) ? 1 : amount);
+        item.setAmount(amount == 0 ? 1 : amount);
         return item;
     }
 

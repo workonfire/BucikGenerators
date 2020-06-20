@@ -57,7 +57,8 @@ public abstract class ConfigManager {
     public static void updateStorage() {
         try {
             getDataStorage().save(dataStorageFile);
-            if (getConfig().getBoolean("options.debug")) System.out.println(getPrefix() + " §fDEBUG: File saved.");
+            if (getConfig().getBoolean("options.debug"))
+                Util.systemMessage(Util.LoggerLevel.INFO, getPrefix() + " §fDEBUG: File saved.");
         } catch (IOException exception) {
             exception.printStackTrace();
         }

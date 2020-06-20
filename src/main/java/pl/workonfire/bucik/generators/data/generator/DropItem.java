@@ -73,8 +73,8 @@ public class DropItem {
             for (String enchantment : getEnchantments()) {
                 final String enchantmentName = enchantment.split(":")[0];
                 final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
-                final Enchantment enchantmentRepresentation = (Util.isServerLegacy()) ?
-                        Enchantment.getByName(enchantmentName.toUpperCase())
+                final Enchantment enchantmentRepresentation = (Util.isServerLegacy())
+                        ? Enchantment.getByName(enchantmentName.toUpperCase())
                         : EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
                 if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
             }
@@ -88,10 +88,7 @@ public class DropItem {
      * @return true, if it is
      */
     public boolean isAPotion() {
-        if (getItemMaterial() != null)
-            return getItemMaterial().equals(Material.POTION)
-                || getItemMaterial().equals(Material.SPLASH_POTION)
-                || getItemMaterial().equals(Material.LINGERING_POTION);
+        if (getItemMaterial() != null) return getItemMaterial().equals(Material.POTION);
         return false;
     }
 
@@ -121,7 +118,7 @@ public class DropItem {
     }
 
     public int getItemAmount() {
-        return (itemAmount == 0) ? 1 : itemAmount;
+        return itemAmount == 0 ? 1 : itemAmount;
     }
 
     public String getItemName() {
