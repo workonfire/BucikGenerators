@@ -120,7 +120,7 @@ generators:
             potion:
               effect: FAST_DIGGING
               amplifier: 2
-              duration: 30 # In seconds.
+              duration: 30 # W sekundach.
             action-bar-message: "&f&l+ &f&l[&5&lHaste II&f&l]"
           3:
             chance: 10 # %
