@@ -40,6 +40,8 @@ public class Generator {
     private final boolean hideEnchantments;
     private final boolean isDurabilityEnabled;
     private final int durability;
+    private final boolean affectPickaxeDurability;
+    private final int affectPickaxeDurabilityValue;
 
     public Generator(String id) {
         this.id = id;
@@ -57,6 +59,8 @@ public class Generator {
         hideEnchantments = getGeneratorsConfig().getBoolean(getPropertyName("hide-enchantments", id));
         isDurabilityEnabled = getGeneratorsConfig().getBoolean(getPropertyName("durability.enabled", id));
         durability = getGeneratorsConfig().getInt(getPropertyName("durability.value", id));
+        affectPickaxeDurability = getGeneratorsConfig().getBoolean(getPropertyName("affect-pickaxe-durability.enabled", id));
+        affectPickaxeDurabilityValue = getGeneratorsConfig().getInt(getPropertyName("affect-pickaxe-durability.value", id));
     }
 
     /**
@@ -76,8 +80,8 @@ public class Generator {
      * @param world World object
      */
     public void register(Location location, World world) {
-        final List<String> currentLocations = getDataStorage().getStringList("generators");
-        final String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
+        List<String> currentLocations = getDataStorage().getStringList("generators");
+        String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
         currentLocations.add(data);
         getDataStorage().set("generators", currentLocations);
     }
@@ -89,8 +93,8 @@ public class Generator {
      * @param world World object
      */
     public void unregister(Location location, World world) {
-        final List<String> currentLocations = getDataStorage().getStringList("generators");
-        final String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
+        List<String> currentLocations = getDataStorage().getStringList("generators");
+        String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
         currentLocations.remove(data);
         getDataStorage().set("generators", currentLocations);
     }
@@ -111,8 +115,8 @@ public class Generator {
      * @return ItemStack object
      */
     public ItemStack getItemStack(int amount) {
-        final ItemStack item = new ItemStack(getBaseItemMaterial());
-        final ItemMeta itemMeta = item.getItemMeta();
+        ItemStack item = new ItemStack(getBaseItemMaterial());
+        ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(getBaseItemName());
         itemMeta.setLore(getBaseItemLore());
         if (areEnchantmentsHidden()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -128,9 +132,9 @@ public class Generator {
         item.setItemMeta(itemMeta);
         if (getEnchantments() != null)
             for (String enchantment : getEnchantments()) {
-                final String enchantmentName = enchantment.split(":")[0];
-                final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
-                final Enchantment enchantmentRepresentation = (Util.isServerLegacy())
+                String enchantmentName = enchantment.split(":")[0];
+                int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
+                Enchantment enchantmentRepresentation = (Util.isServerLegacy())
                         ? Enchantment.getByName(enchantmentName.toUpperCase())
                         : EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
                 if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
@@ -160,7 +164,7 @@ public class Generator {
     }
 
     public List<String> getBaseItemLore() {
-        final List<String> formattedLore = new ArrayList<>();
+        List<String> formattedLore = new ArrayList<>();
         for (String loreLine : baseItemLore) formattedLore.add(Util.formatColors(loreLine));
         return formattedLore;
     }
@@ -199,5 +203,13 @@ public class Generator {
 
     public int getDurability() {
         return durability;
+    }
+
+    public boolean isAffectPickaxeDurabilityEnabled() {
+        return affectPickaxeDurability;
+    }
+
+    public int getAffectPickaxeDurabilityValue() {
+        return affectPickaxeDurabilityValue;
     }
 }

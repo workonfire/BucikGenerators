@@ -32,7 +32,7 @@ language:
   potion-duration: "&bDurata della pozione: &6"
   drop-item-money-amount: "&bQuantità di denaro: &2$&a"
   no-drop: "&f[&4&l❌&f] &cNon puoi ottenere nulla da questo generatore."
-  contact-developer: "&4Qui sotto è presente l'errore di BucikGenerators. Se non sai risorverlo, contatta l'autore su discord: workonfire#8262"
+  contact-developer: "&4Qui sotto è presente l'errore di BucikGenerators. Se non sai risorverlo, contatta l'autore su Discord: workonfire#8262"
   cannot-break-the-base: "&f[&6&l!&f] &eNon puoi rompere questo generatore dato che gli rimangono degli utilizzi. Numero di utilizzi rimanenti: &f&l"
   generator-has-worn-out: "&f[&3&li&f] &bIl generatore si è consumato."
   force-destroy-block-is-not-a-generator: "&f[&6&l!&f] &eIl blocco che stai guardando non è un generatore."

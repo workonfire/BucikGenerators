@@ -23,12 +23,12 @@ public abstract class ConfigManager {
      */
     public static void initializeConfiguration() {
         config = getPlugin().getConfig();
-        final String languageFileName = config.getString("options.locale") + ".yml";
-        final File languageConfigFile = new File(getPlugin().getDataFolder() + "/locales", languageFileName);
-        final File generatorsConfigFile = new File(getPlugin().getDataFolder(), "generators.yml");
+        String languageFileName = config.getString("options.locale") + ".yml";
+        File languageConfigFile = new File(getPlugin().getDataFolder() + "/locales", languageFileName);
+        File generatorsConfigFile = new File(getPlugin().getDataFolder(), "generators.yml");
         if (!languageConfigFile.exists()) {
             languageConfigFile.getParentFile().mkdirs();
-            final String[] locales = {"pl", "en", "es", "it"};
+            String[] locales = {"pl", "en", "es", "it"};
             for (String locale : locales) getPlugin().saveResource("locales/" + locale + ".yml", false);
         }
         if (!generatorsConfigFile.exists()) {
@@ -71,24 +71,6 @@ public abstract class ConfigManager {
     public static void reloadAll() {
         getPlugin().reloadConfig();
         initializeConfiguration();
-    }
-
-    /**
-     * Check whether the sounds are enabled, or not.
-     * @since 1.0.0
-     * @return true if "play-sounds" is set to true
-     */
-    public static boolean areSoundsEnabled() {
-        return getConfig().getBoolean("options.play-sounds");
-    }
-
-    /**
-     * Check whether the particles are enabled, or not.
-     * @since 1.0.0
-     * @return true if "show-particles" is set to true
-     */
-    public static boolean areParticlesEnabled() {
-        return getConfig().getBoolean("options.show-particles");
     }
 
     /**

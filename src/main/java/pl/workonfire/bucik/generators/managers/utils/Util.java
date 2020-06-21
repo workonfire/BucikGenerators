@@ -2,15 +2,14 @@ package pl.workonfire.bucik.generators.managers.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.commands.drop.DropPeekCommand;
 import pl.workonfire.bucik.generators.commands.generators.GeneratorsCommand;
-import pl.workonfire.bucik.generators.listeners.blocks.BlockBreakListener;
-import pl.workonfire.bucik.generators.listeners.blocks.BlockPlaceListener;
-import pl.workonfire.bucik.generators.listeners.blocks.EntityExplodeListener;
-import pl.workonfire.bucik.generators.listeners.blocks.PistonExtendListener;
+import pl.workonfire.bucik.generators.listeners.blocks.*;
 import pl.workonfire.bucik.generators.listeners.commands.DropTabCompleter;
 import pl.workonfire.bucik.generators.listeners.commands.MainTabCompleter;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
@@ -58,22 +57,18 @@ public abstract class Util {
      */
     public static void handleErrors(CommandSender commandSender, Exception exception) {
         if (commandSender instanceof Player) {
-            final Player player = (Player) commandSender;
-            if (ConfigManager.areSoundsEnabled()) {
-                if (ConfigManager.areSoundsEnabled()) {
-                    final Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
-                    player.playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
-                }
-                if (ConfigManager.getConfig().getBoolean("options.wzium")) {
-                    final byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
-                    final String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
-                    player.sendTitle(t, null, 20, 60, 20);
-                }
+            Player player = (Player) commandSender;
+            Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
+            player.playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
+            if (ConfigManager.getConfig().getBoolean("options.wzium")) {
+                byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
+                String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
+                player.sendTitle(t, null, 20, 60, 20);
             }
             player.sendMessage(getPrefixedLanguageVariable("config-load-error"));
             if (ConfigManager.getConfig().getBoolean("options.debug") && player.hasPermission("bucik.generators.debug")) {
                 player.sendMessage(getPrefixedLanguageVariable("config-load-error-debug-header"));
-                final StringWriter stringWriter = new StringWriter();
+                StringWriter stringWriter = new StringWriter();
                 exception.printStackTrace(new PrintWriter(stringWriter));
                 Util.systemMessage(Logger.WARN, getLanguageVariable("contact-developer"));
                 exception.printStackTrace();
@@ -87,7 +82,7 @@ public abstract class Util {
             }
         }
         else {
-            commandSender.sendMessage(getLanguageVariable("contact-developer"));
+            Util.systemMessage(Logger.WARN, getLanguageVariable("contact-developer"));
             exception.printStackTrace();
         }
     }
@@ -114,14 +109,29 @@ public abstract class Util {
         getPlugin().getCommand("drop").setTabCompleter(new DropTabCompleter());
     }
 
+    public static void playSound(Player player, Sound sound) {
+        if (ConfigManager.getConfig().getBoolean("options.play-sounds"))
+            player.playSound(player.getLocation(), sound, 1.0F, 1.0F);
+    }
+
+    public static void playSound(Block block, Sound sound) {
+        if (ConfigManager.getConfig().getBoolean("options.play-sounds"))
+            block.getWorld().playSound(block.getLocation(), sound, 1.0F, 1.0F);
+    }
+
+    public static void showParticle(Player player, Block block, Particle particle, int count) {
+        if (ConfigManager.getConfig().getBoolean("options.show-particles"))
+            player.spawnParticle(particle, block.getLocation(), count);
+    }
+
     /**
      * Checks if the server is legacy.
      * @since 1.0.6
      * @return true, if the server is running on 1.12 or an earlier version.
      */
     public static boolean isServerLegacy() {
-        final List<String> newVersions = new ArrayList<>(Arrays.asList("1.13", "1.14", "1.15"));
-        for (final String version : newVersions)
+        List<String> newVersions = new ArrayList<>(Arrays.asList("1.13", "1.14", "1.15"));
+        for (String version : newVersions)
             if (Bukkit.getVersion().contains(version)) return false;
         return true;
     }
@@ -134,9 +144,9 @@ public abstract class Util {
      */
     public static void systemMessage(Logger level, String message) {
         message = isServerLegacy() ? ChatColor.stripColor(message) : formatColors(message);
-        final String pluginPrefix = isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
-        final String messagePrefix = pluginPrefix + "[" + level.name() + "] ";
-        if (!ConfigManager.getConfig().getBoolean("options.debug") && level.equals(Logger.DEBUG)) return;
-        level.getStream().println(messagePrefix + level.getColor() + message);
+        String pluginPrefix = isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
+        String messagePrefix = pluginPrefix + "[" + (isServerLegacy() ? "" : level.getColor()) + level.name() + ChatColor.RESET + "] ";
+        if (!ConfigManager.getConfig().getBoolean("options.debug") && level == Logger.DEBUG) return;
+        level.getStream().println(messagePrefix + message);
     }
 }

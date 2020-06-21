@@ -16,7 +16,7 @@ public class MainTabCompleter implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                final List<String> commands = new ArrayList<>();
+                List<String> commands = new ArrayList<>();
                 if (sender.hasPermission("bucik.generators.reload")) commands.add("reload");
                 if (sender.hasPermission("bucik.generators.get")) commands.add("get");
                 if (sender.hasPermission("bucik.generators.drop.manipulate")) commands.add("drop");

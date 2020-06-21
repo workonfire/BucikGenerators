@@ -14,7 +14,7 @@ import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.1.3
+ * @version 1.1.4-pre.1
  * @since   2020-06-13
  */
 
@@ -35,7 +35,8 @@ public final class Main extends JavaPlugin {
         Util.systemMessage(Logger.INFO, "§fBucikGenerators §6" + getPluginVersion() + " §fby Buty935. Discord: §9workonfire#8262");
         Util.systemMessage(Logger.DEBUG, "Debug mode enabled. IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
         Util.systemMessage(Logger.DEBUG, "Economy setup: " + VaultHandler.getEconomy());
-        final int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
+        BlockUtil.forcePurgeGeneratorsWithDurability();
+        int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         if (dataSaveInterval != 0)
             Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), ConfigManager::updateStorage, 0, dataSaveInterval);
         BlockUtil.registerRecipes();

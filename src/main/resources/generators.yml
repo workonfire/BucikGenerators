@@ -11,6 +11,9 @@ generators:
     durability:
       enabled: true
       value: 30
+    affect-pickaxe-durability:
+      enabled: true
+      value: 50
     # Redefining or removing the crafting recipe requires a full server restart.
     custom-crafting-recipe:
       slot-A: AIR

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.String.format;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getDataStorage;
 
 @SuppressWarnings("ConstantConditions")
@@ -37,8 +38,8 @@ public abstract class BlockUtil {
      */
     public static Generator getGeneratorFromMaterial(Material item) {
         for (String generatorId : getGeneratorsIds()) {
-            final Generator generator = new Generator(generatorId);
-            if (generator.getBaseItemMaterial().equals(item)) return generator;
+            Generator generator = new Generator(generatorId);
+            if (generator.getBaseItemMaterial() == item) return generator;
         }
         return null;
     }
@@ -49,9 +50,9 @@ public abstract class BlockUtil {
      * @return A set of materials.
      */
     public static List<Material> getAllGeneratorTypes() {
-        final List<Material> materialList = new ArrayList<>();
+        List<Material> materialList = new ArrayList<>();
         for (String generatorId : getGeneratorsIds()) {
-            final String materialName = ConfigManager.getGeneratorsConfig().getString("generators." + generatorId + ".base.item");
+            String materialName = ConfigManager.getGeneratorsConfig().getString("generators." + generatorId + ".base.item");
             materialList.add(Material.getMaterial(materialName.toUpperCase()));
         }
         return materialList;
@@ -62,23 +63,23 @@ public abstract class BlockUtil {
      * @since 1.1.0
      */
     public static void purgeAllGeneratorsWithDurability() {
-        final List<String> currentLocations = getDataStorage().getStringList("generators");
+        List<String> currentLocations = getDataStorage().getStringList("generators");
         for (String generatorDetails : currentLocations) {
-            final String[] splittedDetails = generatorDetails.split("\\|");
+            String[] splittedDetails = generatorDetails.split("\\|");
             if (splittedDetails.length == 5) {
-                final boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
+                boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
                 if (durabilityEnabled) {
-                    final World world = Main.getPlugin().getServer().getWorld(splittedDetails[0]);
-                    final int locationX = Integer.parseInt(splittedDetails[1]);
-                    final int locationY = Integer.parseInt(splittedDetails[2]);
-                    final int locationZ = Integer.parseInt(splittedDetails[3]);
-                    final Location baseGeneratorLocation = new Location(world, locationX, locationY, locationZ);
-                    final Generator generator = BlockUtil.getGeneratorFromMaterial(baseGeneratorLocation.getBlock().getType());
+                    World world = Main.getPlugin().getServer().getWorld(splittedDetails[0]);
+                    int locationX = Integer.parseInt(splittedDetails[1]);
+                    int locationY = Integer.parseInt(splittedDetails[2]);
+                    int locationZ = Integer.parseInt(splittedDetails[3]);
+                    Location baseGeneratorLocation = new Location(world, locationX, locationY, locationZ);
+                    Generator generator = BlockUtil.getGeneratorFromMaterial(baseGeneratorLocation.getBlock().getType());
                     try {
                         generator.unregister(baseGeneratorLocation, baseGeneratorLocation.getWorld());
                     }
                     catch (NullPointerException exception) {
-                        Util.systemMessage(Logger.DEBUG, "Cannot unregister generator at " + baseGeneratorLocation);
+                        Util.systemMessage(Logger.DEBUG, ChatColor.RED + "Cannot unregister generator at " + baseGeneratorLocation);
                     }
                     Util.systemMessage(Logger.DEBUG, "Generator unregistered: " + baseGeneratorLocation);
                     baseGeneratorLocation.getBlock().setType(Material.AIR);
@@ -89,27 +90,56 @@ public abstract class BlockUtil {
     }
 
     /**
+     * Forcibly removes all generators with durability.
+     * @see #forcePurgeGeneratorsWithDurability()
+     * @since 1.1.4
+     */
+    public static void forcePurgeGeneratorsWithDurability() {
+        List<String> currentLocations = getDataStorage().getStringList("generators");
+        List<String> modifiedLocations = new ArrayList<>();
+        for (String generatorDetails : currentLocations) {
+            String[] splittedDetails = generatorDetails.split("\\|");
+            if (splittedDetails.length == 5) {
+                boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
+                if (durabilityEnabled) {
+                    World world = Main.getPlugin().getServer().getWorld(splittedDetails[0]);
+                    int locationX = Integer.parseInt(splittedDetails[1]);
+                    int locationY = Integer.parseInt(splittedDetails[2]);
+                    int locationZ = Integer.parseInt(splittedDetails[3]);
+                    String data = format("%s|%d|%d|%d|%b", world.getName(), locationX, locationY, locationZ, durabilityEnabled);
+                    modifiedLocations.add(data);
+                }
+            }
+        }
+        for (String modifiedLocation : modifiedLocations) {
+            currentLocations.remove(modifiedLocation);
+            Util.systemMessage(Logger.DEBUG, "Forcibly unregistering the generator at " + ChatColor.DARK_AQUA + modifiedLocation);
+            getDataStorage().set("generators", currentLocations);
+        }
+    }
+
+    /**
      * Checks whether the block being held is a generator.
      * @since 1.0.0
      * @param item Item object
      * @return true, if the item specified is a generator
      */
     public static boolean isHeldBlockAGenerator(ItemStack item) {
-        final Material generatorBlock = item.getType();
+        Material generatorBlock = item.getType();
         if (getAllGeneratorTypes().contains(generatorBlock)) {
-            final Generator generator = getGeneratorFromMaterial(item.getType());
+            Generator generator = getGeneratorFromMaterial(item.getType());
             if (BlockUtil.isGeneratorDefined(generator.getId())) {
-                final ItemStack generatorItem = generator.getItemStack(1);
+                ItemStack generatorItem = generator.getItemStack(1);
                 if (item.isSimilar(generatorItem)) return true;
                 else {
                     try {
-                        final PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+                        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
                         return container.has(new NamespacedKey(Main.getPlugin(), "unique-generator"), PersistentDataType.INTEGER);
                     }
                     catch (NoSuchMethodError error) {
                         if (!Util.isServerLegacy()) {
-                            final NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
-                            final CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
+                            NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
+                            CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
                             return tagContainer.hasCustomTag(uniqueKey, ItemTagType.INTEGER);
                         }
                     }
@@ -127,16 +157,16 @@ public abstract class BlockUtil {
      * @return true, if the targeted block is a generator
      */
     public static boolean isBlockAGenerator(Location location, World world) {
-        final int currentLocationX = location.getBlockX();
-        final int currentLocationY = location.getBlockY();
-        final int currentLocationZ = location.getBlockZ();
-        final List<String> allGenerators = getDataStorage().getStringList("generators");
+        int currentLocationX = location.getBlockX();
+        int currentLocationY = location.getBlockY();
+        int currentLocationZ = location.getBlockZ();
+        List<String> allGenerators = getDataStorage().getStringList("generators");
         for (String generatorDetails : allGenerators) {
-            final String[] splittedDetails = generatorDetails.split("\\|");
-            final String worldName = splittedDetails[0];
-            final int locationX = Integer.parseInt(splittedDetails[1]);
-            final int locationY = Integer.parseInt(splittedDetails[2]);
-            final int locationZ = Integer.parseInt(splittedDetails[3]);
+            String[] splittedDetails = generatorDetails.split("\\|");
+            String worldName = splittedDetails[0];
+            int locationX = Integer.parseInt(splittedDetails[1]);
+            int locationY = Integer.parseInt(splittedDetails[2]);
+            int locationZ = Integer.parseInt(splittedDetails[3]);
             if (currentLocationX == locationX
                     && currentLocationY == locationY
                     && currentLocationZ == locationZ
@@ -162,11 +192,11 @@ public abstract class BlockUtil {
     public static void registerRecipes() {
         try {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
-                final Generator generator = new Generator(generatorId);
+                Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
                     ShapedRecipe generatorRecipe;
                     try {
-                        final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
+                        NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
                         generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
                     }
                     catch (NoSuchMethodError | NoClassDefFoundError error) {
@@ -192,9 +222,9 @@ public abstract class BlockUtil {
     public static void unregisterRecipes() {
         try {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
-                final Generator generator = new Generator(generatorId);
+                Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
-                    final NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
+                    NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
                     Bukkit.removeRecipe(recipeKey);
                 }
             }

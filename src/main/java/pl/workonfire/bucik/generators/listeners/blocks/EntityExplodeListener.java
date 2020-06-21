@@ -17,10 +17,10 @@ public class EntityExplodeListener implements Listener {
     public void onExplode(EntityExplodeEvent event) {
         if (!event.blockList().isEmpty()) {
             for (Block block : event.blockList()) {
-                final Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
-                final Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(baseBlockLocation.getBlock().getType());
+                Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
+                Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(baseBlockLocation.getBlock().getType());
                 if (BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld())) {
-                    final Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(block.getType()).getId());
+                    Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(block.getType()).getId());
                     if (generator.isDurabilityEnabled()) {
                         Util.systemMessage(Logger.DEBUG, event.getEventName() + ": This generator has durability enabled. Cancelling the event.");
                         event.setCancelled(true);

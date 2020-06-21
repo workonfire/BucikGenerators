@@ -15,10 +15,10 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        final ReloadCommand reloadCommand = new ReloadCommand();
-        final GetCommand getCommand = new GetCommand();
-        final DropManipulateCommand dropCommand = new DropManipulateCommand();
-        final ForceDestroyCommand forceDestroyCommand = new ForceDestroyCommand();
+        ReloadCommand reloadCommand = new ReloadCommand();
+        GetCommand getCommand = new GetCommand();
+        DropManipulateCommand dropCommand = new DropManipulateCommand();
+        ForceDestroyCommand forceDestroyCommand = new ForceDestroyCommand();
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase(reloadCommand.name()))
                 reloadCommand.run(sender, command, label, args);
@@ -50,7 +50,7 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
 
     @Override
     public void run(CommandSender sender, Command command, String label, String[] args) {
-        final String header;
+        String header;
         if (!(sender instanceof Player)) header = "\n§c§m--------------\n"; // for console
         else header = "§c§m--------------\n";
         sender.sendMessage(header +

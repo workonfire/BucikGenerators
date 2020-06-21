@@ -64,16 +64,16 @@ public class DropItem {
      * @return ItemStack object
      */
     public ItemStack getItemStack() {
-        final ItemStack item = new ItemStack(getItemMaterial());
-        final ItemMeta itemMeta = item.getItemMeta();
+        ItemStack item = new ItemStack(getItemMaterial());
+        ItemMeta itemMeta = item.getItemMeta();
         if (itemName != null) itemMeta.setDisplayName(Util.formatColors(getItemName()));
         if (itemLore != null) itemMeta.setLore(getItemLore());
         item.setItemMeta(itemMeta);
         if (getEnchantments() != null)
             for (String enchantment : getEnchantments()) {
-                final String enchantmentName = enchantment.split(":")[0];
-                final int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
-                final Enchantment enchantmentRepresentation = (Util.isServerLegacy())
+                String enchantmentName = enchantment.split(":")[0];
+                int enchantmentLevel = Integer.parseInt(enchantment.split(":")[1]);
+                Enchantment enchantmentRepresentation = (Util.isServerLegacy())
                         ? Enchantment.getByName(enchantmentName.toUpperCase())
                         : EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
                 if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
@@ -126,7 +126,7 @@ public class DropItem {
     }
 
     public List<String> getItemLore() {
-        final List<String> formattedLore = new ArrayList<>();
+        List<String> formattedLore = new ArrayList<>();
         for (String loreLine : itemLore) formattedLore.add(Util.formatColors(loreLine));
         return formattedLore;
     }

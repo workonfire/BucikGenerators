@@ -31,13 +31,13 @@ public class GetCommand implements CommandInterface {
     public void run(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player && !executableByConsole()) {
             if (sender.hasPermission(permission())) {
-                final Player player = (Player) sender;
+                Player player = (Player) sender;
                 try {
                     if (args.length == 1) sender.sendMessage(getPrefixedLanguageVariable("no-generator-name-specified"));
                     else {
-                        final String generatorName = args[1];
+                        String generatorName = args[1];
                         if (BlockUtil.isGeneratorDefined(generatorName)) {
-                            final Generator generator = new Generator(generatorName);
+                            Generator generator = new Generator(generatorName);
                             if (args.length == 3) {
                                 try {
                                     player.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));

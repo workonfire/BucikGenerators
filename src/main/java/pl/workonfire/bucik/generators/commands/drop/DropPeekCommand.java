@@ -40,7 +40,7 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
     public void run(CommandSender sender, Command command, String label, String[] args) {
         try {
             if (sender instanceof Player) {
-                final Player player = (Player) sender;
+                Player player = (Player) sender;
                 if (player.hasPermission(permission())) {
                     Block targetBlock;
                     try {
@@ -52,12 +52,12 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                     }
                     if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                         player.sendMessage(getPrefixedLanguageVariable("items-drop-list"));
-                        final Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(targetBlock.getType()).getId());
+                        Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(targetBlock.getType()).getId());
                         for (String permission : generator.getGeneratorDropPermissionList()) {
                             if (player.hasPermission(Util.getPermission(permission))) {
                                 sender.sendMessage(getLanguageVariable("items-for-permission") + Util.getPermission(permission) + "§f:");
                                 for (String dropItemId : generator.getDropItemsIds(permission)) {
-                                    final DropItem dropItem = new DropItem(generator, permission, Integer.parseInt(dropItemId));
+                                    DropItem dropItem = new DropItem(generator, permission, Integer.parseInt(dropItemId));
                                     player.sendMessage("§c§m--------------");
                                     player.sendMessage(getLanguageVariable("drop-item-material") + dropItem.getItemMaterialName());
                                     if (dropItem.getItemName() != null)

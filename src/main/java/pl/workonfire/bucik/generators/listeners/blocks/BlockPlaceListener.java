@@ -23,37 +23,32 @@ public class BlockPlaceListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent event) {
-        final Player player = event.getPlayer();
+        Player player = event.getPlayer();
         try {
-            final Block block = event.getBlock();
+            Block block = event.getBlock();
 
             if (BlockUtil.isHeldBlockAGenerator(event.getItemInHand())) {
-                final Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
+                Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
                 for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
                         player.sendMessage(getPrefixedLanguageVariable("cannot-place-in-this-world"));
-                        if (ConfigManager.areSoundsEnabled()) {
-                            final Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
-                            player.playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
-                        }
+                        Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
+                        Util.playSound(player, placeSound);
                         return;
                     }
                 }
                 if (player.hasPermission(generator.getPermission())) {
-                    final Location supposedBaseGeneratorLocation = block.getLocation().subtract(0, 1, 0);
+                    Location supposedBaseGeneratorLocation = block.getLocation().subtract(0, 1, 0);
                     if (BlockUtil.isBlockAGenerator(supposedBaseGeneratorLocation, supposedBaseGeneratorLocation.getWorld()))
                         event.setCancelled(true);
                     else {
-                        if (ConfigManager.areSoundsEnabled()) {
-                            final Sound placeSound = Util.isServerLegacy() ? Sound.ITEM_FIRECHARGE_USE : Sound.BLOCK_BEACON_ACTIVATE;
-                            block.getWorld().playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
-                        }
-                        if (ConfigManager.areParticlesEnabled())
-                            player.spawnParticle(Particle.END_ROD, block.getLocation(), 25);
+                        Sound placeSound = Util.isServerLegacy() ? Sound.ITEM_FIRECHARGE_USE : Sound.BLOCK_BEACON_ACTIVATE;
+                        Util.playSound(block, placeSound);
+                        Util.showParticle(player, block, Particle.END_ROD, 25);
                         player.sendMessage(getPrefixedLanguageVariable("generator-placed") + generator.getId());
                         generator.register(block.getLocation(), block.getWorld());
-                        final Location generatorLocation = block.getLocation().add(0, 1, 0);
+                        Location generatorLocation = block.getLocation().add(0, 1, 0);
                         generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
                         if (generator.isDurabilityEnabled() && generator.getDurability() != 0)
                             block.setMetadata("durability", new FixedMetadataValue(Main.getPlugin(), generator.getDurability()));

@@ -3,7 +3,7 @@
 # Contact: workonfire#8262 (Discord)
 
 options:
-  auto-save-interval: 6000 # in ticks. 1 second = 20 ticks. Currently set to 5 minutes
+  auto-save-interval: 18000 # in ticks. 1 second = 20 ticks. Currently set to 15 minutes
   locale: en
   play-sounds: true
   show-particles: true

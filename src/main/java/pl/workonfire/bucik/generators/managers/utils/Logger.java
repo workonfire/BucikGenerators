@@ -8,9 +8,9 @@ public enum Logger {
 
     INFO(ChatColor.WHITE, System.out),
     WARN(ChatColor.RED, System.err),
-    DEBUG(ChatColor.YELLOW, System.out);
+    DEBUG(ChatColor.DARK_PURPLE, System.out);
 
-    public final ChatColor color;
+    private final ChatColor color;
     private final PrintStream stream;
 
     Logger(ChatColor color, PrintStream stream) {
