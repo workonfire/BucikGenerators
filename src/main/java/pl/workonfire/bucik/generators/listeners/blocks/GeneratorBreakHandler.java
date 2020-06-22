@@ -16,7 +16,6 @@ import org.bukkit.potion.PotionEffectType;
 import pl.workonfire.bucik.generators.Main;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
@@ -76,7 +75,7 @@ public class GeneratorBreakHandler {
                     int currentDamage = ((Damageable) currentItemMeta).getDamage();
                     if (currentDamage >= currentItem.getType().getMaxDurability()) {
                         player.getInventory().setItemInMainHand(null);
-                        player.playSound(block.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+                        block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
                     }
                     else {
                         ((Damageable) currentItemMeta).setDamage(currentDamage + baseGenerator.getAffectPickaxeDurabilityValue());

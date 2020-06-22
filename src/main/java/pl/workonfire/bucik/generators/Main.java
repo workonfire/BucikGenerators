@@ -14,7 +14,7 @@ import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.1.4-pre.1
+ * @version 1.1.4
  * @since   2020-06-13
  */
 
@@ -32,7 +32,7 @@ public final class Main extends JavaPlugin {
         Util.registerEvents();
         Util.registerCommands();
         VaultHandler.setupEconomy();
-        Util.systemMessage(Logger.INFO, "§fBucikGenerators §6" + getPluginVersion() + " §fby Buty935. Discord: §9workonfire#8262");
+        Util.systemMessage(Logger.INFO, "&fBucikGenerators &6" + getPluginVersion() + " &fby Buty935. Discord: &9workonfire#8262");
         Util.systemMessage(Logger.DEBUG, "Debug mode enabled. IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
         Util.systemMessage(Logger.DEBUG, "Economy setup: " + VaultHandler.getEconomy());
         BlockUtil.forcePurgeGeneratorsWithDurability();
@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin {
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
             final int pluginId = 7854;
             new Metrics(getPlugin(), pluginId);
-            Util.systemMessage(Logger.INFO, "bStats service has been §2enabled§r! Set §6metrics §rto §cfalse §rin §f§nconfig.yml§r in order to disable metrics.");
+            Util.systemMessage(Logger.INFO, "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin &f&nconfig.yml&r in order to disable metrics.");
         }
     }
 

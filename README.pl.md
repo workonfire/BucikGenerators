@@ -2,7 +2,7 @@
 
 ![GitHub Workflow Status](https://github.com/workonfire/BucikGenerators/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/567c8bfa9c6b432f8b872fd59b6e7d90)](https://www.codacy.com/manual/workonfire/BucikGenerators?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=workonfire/BucikGenerators&amp;utm_campaign=Badge_Grade)
-![Spigot downloads](https://img.shields.io/spiget/downloads/80180)
+![Wzium](https://img.shields.io/badge/wzium-true-green)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
 [English version here](README.md)
@@ -16,6 +16,7 @@
 - W pełni dostosowywalne przedmioty z dropu, **w tym pieniądze** (wymaga `Vault`a)
 - Dwa tryby dropu przedmiotów: `inventory` (do ekwipunku) i `ground` (na ziemię)
 - Niestandardowe szanse na drop przedmiotów bazowane na **uprawnieniach** i systemie procentowym
+- Dostosowywalna **trwałość kilofa**
 - Dostosowywalne **efekty mikstur**, które mogą zostać dane graczowi podczas kopania
 - Zmienialne komunikaty action-bar'a
 - Własne **mnożniki dropu** (przydatne na eventach)
@@ -61,6 +62,9 @@ generators:
     durability:
       enabled: true
       value: 30
+    affect-pickaxe-durability:
+      enabled: true
+      value: 25
     custom-crafting-recipe:
       slot-A: AIR
       slot-B: COBBLESTONE

@@ -2,7 +2,7 @@
 
 ![GitHub Workflow Status](https://github.com/workonfire/BucikGenerators/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/567c8bfa9c6b432f8b872fd59b6e7d90)](https://www.codacy.com/manual/workonfire/BucikGenerators?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=workonfire/BucikGenerators&amp;utm_campaign=Badge_Grade)
-![Spigot downloads](https://img.shields.io/spiget/downloads/80180)
+![Wzium](https://img.shields.io/badge/wzium-true-green)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
 [Polish version here](README.pl.md)
@@ -16,6 +16,7 @@
 - Fully customizable items that can be dropped, **including money** (requires `Vault`)
 - Two item drop modes: `inventory` and `ground`
 - Custom item drop odds based on **permissions** and **luck** (percentage system)
+- Customizable **pickaxe damage**
 - Customizable **potion effects** that can be applied to player when mining
 - Changeable action-bar messages
 - Custom item **drop multipliers** (useful for events)
@@ -61,6 +62,9 @@ generators:
     durability:
       enabled: true
       value: 30
+    affect-pickaxe-durability:
+      enabled: true
+      value: 25
     custom-crafting-recipe:
       slot-A: AIR
       slot-B: COBBLESTONE
