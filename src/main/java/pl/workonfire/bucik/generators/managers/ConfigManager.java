@@ -2,9 +2,10 @@ package pl.workonfire.bucik.generators.managers;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
+
+import static pl.workonfire.bucik.generators.BucikGenerators.getInstance;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,25 +15,25 @@ public abstract class ConfigManager {
     private static FileConfiguration languageConfig;
     private static FileConfiguration generatorsConfig;
     private static FileConfiguration dataStorage;
-    private static final File dataStorageFile = new File(BucikGenerators.getInstance().getDataFolder(), "storage.yml");
+    private static final File dataStorageFile = new File(getInstance().getDataFolder(), "storage.yml");
 
     /**
      * Initializes the configuration files.
      * @since 1.0.0
      */
     public static void initializeConfiguration() {
-        config = BucikGenerators.getInstance().getConfig();
+        config = getInstance().getConfig();
         String languageFileName = config.getString("options.locale") + ".yml";
-        File languageConfigFile = new File(BucikGenerators.getInstance().getDataFolder() + "/locales", languageFileName);
-        File generatorsConfigFile = new File(BucikGenerators.getInstance().getDataFolder(), "generators.yml");
+        File languageConfigFile = new File(getInstance().getDataFolder() + "/locales", languageFileName);
+        File generatorsConfigFile = new File(getInstance().getDataFolder(), "generators.yml");
         if (!languageConfigFile.exists()) {
             languageConfigFile.getParentFile().mkdirs();
             String[] locales = {"pl", "en", "es", "it"};
-            for (String locale : locales) BucikGenerators.getInstance().saveResource("locales/" + locale + ".yml", false);
+            for (String locale : locales) getInstance().saveResource("locales/" + locale + ".yml", false);
         }
         if (!generatorsConfigFile.exists()) {
             generatorsConfigFile.getParentFile().mkdirs();
-            BucikGenerators.getInstance().saveResource("generators.yml", false);
+            getInstance().saveResource("generators.yml", false);
         }
         languageConfig = YamlConfiguration.loadConfiguration(languageConfigFile);
         generatorsConfig = YamlConfiguration.loadConfiguration(generatorsConfigFile);
@@ -45,7 +46,7 @@ public abstract class ConfigManager {
     public static void initializeStorage() {
         if (!dataStorageFile.exists()) {
             dataStorageFile.getParentFile().mkdirs();
-            BucikGenerators.getInstance().saveResource("storage.yml", false);
+            getInstance().saveResource("storage.yml", false);
         }
         dataStorage = YamlConfiguration.loadConfiguration(dataStorageFile);
     }
@@ -68,7 +69,7 @@ public abstract class ConfigManager {
      * @since 1.0.0
      */
     public static void reloadAll() {
-        BucikGenerators.getInstance().reloadConfig();
+        getInstance().reloadConfig();
         initializeConfiguration();
     }
 
