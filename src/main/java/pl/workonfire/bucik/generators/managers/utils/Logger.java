@@ -1,6 +1,6 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 
 import java.io.PrintStream;
 

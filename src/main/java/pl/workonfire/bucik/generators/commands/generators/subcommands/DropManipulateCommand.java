@@ -6,6 +6,7 @@ import pl.workonfire.bucik.generators.data.DropMultiplier;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 public class DropManipulateCommand implements CommandInterface {
 
@@ -30,21 +31,22 @@ public class DropManipulateCommand implements CommandInterface {
             if (args.length == 1) sender.sendMessage(getPrefixedLanguageVariable("not-enough-arguments"));
             else {
                 if (args[1].equalsIgnoreCase("getMultiplier"))
-                    sender.sendMessage(getPrefixedLanguageVariable("current-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x");
+                    sendMessage(sender, getPrefixedLanguageVariable("current-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x");
                 else if (args[1].equalsIgnoreCase("setMultiplier")) {
-                    if (args.length == 2) sender.sendMessage(getPrefixedLanguageVariable("not-enough-arguments"));
+                    if (args.length == 2) sendMessage(sender, getPrefixedLanguageVariable("not-enough-arguments"));
                     else {
                         try {
                             DropMultiplier.setDropMultiplier(Integer.parseInt(args[2].replaceAll("x", "")));
-                            sender.sendMessage(getPrefixedLanguageVariable("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
+                            sendMessage(sender, getPrefixedLanguageVariable("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
                         }
                         catch (NumberFormatException exception) {
-                            sender.sendMessage(getPrefixedLanguageVariable("argument-must-be-an-int"));
+                            sendMessage(sender, getPrefixedLanguageVariable("argument-must-be-an-int"));
                         }
                     }
                 }
+                else sendMessage(sender, getPrefixedLanguageVariable("subcommand-does-not-exist"));
             }
         }
-        else sender.sendMessage(getPrefixedLanguageVariable("no-permission"));
+        else sendMessage(sender, getPrefixedLanguageVariable("no-permission"));
     }
 }

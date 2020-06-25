@@ -9,6 +9,7 @@ import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 public class GetCommand implements CommandInterface {
 
@@ -33,7 +34,7 @@ public class GetCommand implements CommandInterface {
             if (sender.hasPermission(permission())) {
                 Player player = (Player) sender;
                 try {
-                    if (args.length == 1) sender.sendMessage(getPrefixedLanguageVariable("no-generator-name-specified"));
+                    if (args.length == 1) sendMessage(sender, getPrefixedLanguageVariable("no-generator-name-specified"));
                     else {
                         String generatorName = args[1];
                         if (BlockUtil.isGeneratorDefined(generatorName)) {
@@ -43,23 +44,24 @@ public class GetCommand implements CommandInterface {
                                     player.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));
                                 }
                                 catch (NumberFormatException exception) {
-                                    sender.sendMessage(getPrefixedLanguageVariable("argument-must-be-an-int"));
-                                    return;
+                                    sendMessage(sender, getPrefixedLanguageVariable("argument-must-be-an-int"));
                                 }
                             }
-                            else player.getInventory().addItem(generator.getItemStack(1));
-                            player.sendMessage(getPrefixedLanguageVariable("generator-given") + generator.getId());
+                            else {
+                                player.getInventory().addItem(generator.getItemStack(1));
+                                sendMessage(sender, getPrefixedLanguageVariable("generator-given") + generator.getId());
+                            }
                         }
-                        else player.sendMessage(getPrefixedLanguageVariable("generator-does-not-exist"));
+                        else sendMessage(sender, getPrefixedLanguageVariable("generator-does-not-exist"));
                     }
                 }
                 catch (Exception exception) {
                     Util.handleErrors(player, exception);
                 }
             }
-            else sender.sendMessage(getPrefixedLanguageVariable("no-permission"));
+            else sendMessage(sender, getPrefixedLanguageVariable("no-permission"));
         }
-        else sender.sendMessage(getPrefixedLanguageVariable("cannot-open-from-console"));
+        else sendMessage(sender, getPrefixedLanguageVariable("cannot-open-from-console"));
     }
 
 }

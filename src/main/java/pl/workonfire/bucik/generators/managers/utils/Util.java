@@ -1,12 +1,14 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.drop.DropPeekCommand;
 import pl.workonfire.bucik.generators.commands.generators.GeneratorsCommand;
 import pl.workonfire.bucik.generators.listeners.blocks.*;
@@ -17,12 +19,10 @@ import pl.workonfire.bucik.generators.managers.ConfigManager;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.bukkit.Bukkit.getServer;
-import static pl.workonfire.bucik.generators.Main.getPlugin;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 
@@ -31,12 +31,26 @@ public abstract class Util {
 
     /**
      * Replaces "&" to "§" in order to show colors properly.
+     * Parses RGB values on Minecraft 1.16.
+     * Borrowed from Esophose, because I suck at regular expressions.
      * @since 1.0.0
      * @param text String to format
      * @return Formatted string
      */
     public static String formatColors(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text);
+        String parsedText = text;
+        Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
+        if (getServer().getVersion().contains("1.16")) {
+            Matcher matcher = hexPattern.matcher(parsedText);
+            while (matcher.find()) {
+                ChatColor hexColor = ChatColor.of(matcher.group());
+                String before = parsedText.substring(0, matcher.start());
+                String after = parsedText.substring(matcher.end());
+                parsedText = before + hexColor + after;
+                matcher = hexPattern.matcher(parsedText);
+            }
+        }
+        return ChatColor.translateAlternateColorCodes('&', parsedText);
     }
 
     /**
@@ -65,20 +79,20 @@ public abstract class Util {
                 String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
                 player.sendTitle(t, null, 20, 60, 20);
             }
-            player.sendMessage(getPrefixedLanguageVariable("config-load-error"));
+            sendMessage(commandSender, getPrefixedLanguageVariable("config-load-error"));
             if (ConfigManager.getConfig().getBoolean("options.debug") && player.hasPermission("bucik.generators.debug")) {
-                player.sendMessage(getPrefixedLanguageVariable("config-load-error-debug-header"));
+                sendMessage(commandSender, getPrefixedLanguageVariable("config-load-error-debug-header"));
                 StringWriter stringWriter = new StringWriter();
                 exception.printStackTrace(new PrintWriter(stringWriter));
                 Util.systemMessage(Logger.WARN, getLanguageVariable("contact-developer"));
                 exception.printStackTrace();
                 String exceptionAsString = stringWriter.toString();
                 exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
-                player.sendMessage("§c" + exceptionAsString
+                sendMessage(commandSender, "§c" + exceptionAsString
                         .replaceAll("\u0009", "    ")
                         .replaceAll("\r", "\n") + "...")
                 ;
-                player.sendMessage(getPrefixedLanguageVariable("debug-more-info-in-console"));
+                sendMessage(commandSender, getPrefixedLanguageVariable("debug-more-info-in-console"));
             }
         }
         else {
@@ -92,10 +106,10 @@ public abstract class Util {
      * @since 1.0.1
      */
     public static void registerEvents() {
-        getServer().getPluginManager().registerEvents(new BlockBreakListener(), getPlugin());
-        getServer().getPluginManager().registerEvents(new BlockPlaceListener(), getPlugin());
-        getServer().getPluginManager().registerEvents(new PistonExtendListener(), getPlugin());
-        getServer().getPluginManager().registerEvents(new EntityExplodeListener(), getPlugin());
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), BucikGenerators.getInstance());
+        getServer().getPluginManager().registerEvents(new BlockPlaceListener(), BucikGenerators.getInstance());
+        getServer().getPluginManager().registerEvents(new PistonExtendListener(), BucikGenerators.getInstance());
+        getServer().getPluginManager().registerEvents(new EntityExplodeListener(), BucikGenerators.getInstance());
     }
 
     /**
@@ -103,22 +117,42 @@ public abstract class Util {
      * @since 1.0.5
      */
     public static void registerCommands() {
-        getPlugin().getCommand("generators").setExecutor(new GeneratorsCommand());
-        getPlugin().getCommand("generators").setTabCompleter(new MainTabCompleter());
-        getPlugin().getCommand("drop").setExecutor(new DropPeekCommand());
-        getPlugin().getCommand("drop").setTabCompleter(new DropTabCompleter());
+        BucikGenerators.getInstance().getCommand("generators").setExecutor(new GeneratorsCommand());
+        BucikGenerators.getInstance().getCommand("generators").setTabCompleter(new MainTabCompleter());
+        BucikGenerators.getInstance().getCommand("drop").setExecutor(new DropPeekCommand());
+        BucikGenerators.getInstance().getCommand("drop").setTabCompleter(new DropTabCompleter());
     }
 
+    /**
+     * Plays a sound, if sounds in the configuration file are enabled.
+     * @since 1.1.4
+     * @param player Player object
+     * @param sound Sound type
+     */
     public static void playSound(Player player, Sound sound) {
         if (ConfigManager.getConfig().getBoolean("options.play-sounds"))
             player.playSound(player.getLocation(), sound, 1.0F, 1.0F);
     }
 
+    /**
+     * Plays a sound, if sounds in the configuration file are enabled.
+     * @since 1.1.4
+     * @param block Block object
+     * @param sound Sound type
+     */
     public static void playSound(Block block, Sound sound) {
         if (ConfigManager.getConfig().getBoolean("options.play-sounds"))
             block.getWorld().playSound(block.getLocation(), sound, 1.0F, 1.0F);
     }
 
+    /**
+     * Shows a particle, if particle in the configuration file are enabled.
+     * @since 1.1.4
+     * @param player Player object
+     * @param block Block object
+     * @param particle Particle type
+     * @param count Particle count
+     */
     public static void showParticle(Player player, Block block, Particle particle, int count) {
         if (ConfigManager.getConfig().getBoolean("options.show-particles"))
             player.spawnParticle(particle, block.getLocation(), count);
@@ -130,7 +164,7 @@ public abstract class Util {
      * @return true, if the server is running on 1.12 or an earlier version.
      */
     public static boolean isServerLegacy() {
-        List<String> newVersions = new ArrayList<>(Arrays.asList("1.13", "1.14", "1.15"));
+        String[] newVersions = {"1.13", "1.14", "1.15", "1.16"};
         for (String version : newVersions)
             if (Bukkit.getVersion().contains(version)) return false;
         return true;
@@ -148,5 +182,16 @@ public abstract class Util {
         String messagePrefix = pluginPrefix + "[" + (isServerLegacy() ? "" : level.getColor()) + level.name() + ChatColor.RESET + "] ";
         if (!ConfigManager.getConfig().getBoolean("options.debug") && level == Logger.DEBUG) return;
         level.getStream().println(messagePrefix + message);
+    }
+
+    /**
+     * Shows a message to the player.
+     * @since 1.1.5
+     * @param sender Command executor
+     * @param message Message
+     */
+    public static void sendMessage(CommandSender sender, String message) {
+        if (getServer().getVersion().contains("1.16")) sender.spigot().sendMessage(TextComponent.fromLegacyText(formatColors(message)));
+        else sender.sendMessage(formatColors(message));
     }
 }

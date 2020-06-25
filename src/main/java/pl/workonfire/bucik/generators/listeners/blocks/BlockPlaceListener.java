@@ -10,13 +10,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import pl.workonfire.bucik.generators.Main;
+import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
-import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
 public class BlockPlaceListener implements Listener {
@@ -32,7 +32,7 @@ public class BlockPlaceListener implements Listener {
                 for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
-                        player.sendMessage(getPrefixedLanguageVariable("cannot-place-in-this-world"));
+                        sendMessage(player, getPrefixedLanguageVariable("cannot-place-in-this-world"));
                         Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
                         Util.playSound(player, placeSound);
                         return;
@@ -46,17 +46,17 @@ public class BlockPlaceListener implements Listener {
                         Sound placeSound = Util.isServerLegacy() ? Sound.ITEM_FIRECHARGE_USE : Sound.BLOCK_BEACON_ACTIVATE;
                         Util.playSound(block, placeSound);
                         Util.showParticle(player, block, Particle.END_ROD, 25);
-                        player.sendMessage(getPrefixedLanguageVariable("generator-placed") + generator.getId());
+                        sendMessage(player, getPrefixedLanguageVariable("generator-placed") + generator.getId());
                         generator.register(block.getLocation(), block.getWorld());
                         Location generatorLocation = block.getLocation().add(0, 1, 0);
                         generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
                         if (generator.isDurabilityEnabled() && generator.getDurability() != 0)
-                            block.setMetadata("durability", new FixedMetadataValue(Main.getPlugin(), generator.getDurability()));
+                            block.setMetadata("durability", new FixedMetadataValue(BucikGenerators.getInstance(), generator.getDurability()));
                     }
                 }
                 else {
                     event.setCancelled(true);
-                    player.sendMessage(getPrefixedLanguageVariable("no-permission"));
+                    sendMessage(player, getPrefixedLanguageVariable("no-permission"));
                 }
             }
         }

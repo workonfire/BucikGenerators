@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataType;
-import pl.workonfire.bucik.generators.Main;
+import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static java.lang.String.format;
@@ -122,7 +122,7 @@ public class Generator {
         if (areEnchantmentsHidden()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         NamespacedKey uniqueKey = null;
         try {
-            uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
+            uniqueKey = new NamespacedKey(BucikGenerators.getInstance(), "unique-generator");
             itemMeta.getPersistentDataContainer().set(uniqueKey, PersistentDataType.INTEGER, 1);
         }
         catch (NoSuchMethodError | NoClassDefFoundError error) {

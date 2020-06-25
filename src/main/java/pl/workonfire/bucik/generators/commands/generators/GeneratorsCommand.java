@@ -4,11 +4,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import pl.workonfire.bucik.generators.Main;
+import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.DropManipulateCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ForceDestroyCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.GetCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ReloadCommand;
+import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 
 public class GeneratorsCommand implements CommandExecutor, CommandInterface {
@@ -28,6 +29,7 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
                 dropCommand.run(sender, command, label, args);
             else if (args[0].equalsIgnoreCase(forceDestroyCommand.name()))
                 forceDestroyCommand.run(sender, command, label, args);
+            else sender.sendMessage(ConfigManager.getPrefixedLanguageVariable("subcommand-does-not-exist"));
         }
         else run(sender, command, label, args);
         return true;
@@ -54,7 +56,7 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
         if (!(sender instanceof Player)) header = "\n§c§m--------------\n"; // for console
         else header = "§c§m--------------\n";
         sender.sendMessage(header +
-                "§bBucikGenerators §6" + Main.getPluginVersion() + "\n" +
+                "§bBucikGenerators §6" + BucikGenerators.getPluginVersion() + "\n" +
                 "§6by §c§lB§6§lu§e§lt§a§ly§b§l9§3§l3§9§l5\n" +
                 "§6§ohttps://github.com/workonfire\n" +
                 "§c§m--------------");

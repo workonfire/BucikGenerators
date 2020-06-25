@@ -13,6 +13,7 @@ import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
 public class ForceDestroyCommand implements CommandInterface {
@@ -51,12 +52,12 @@ public class ForceDestroyCommand implements CommandInterface {
                     targetBlock.getLocation().add(0, 1, 0).getBlock().setType(Material.AIR);
                     Util.playSound(player, Sound.ENTITY_WITHER_HURT);
                     Util.showParticle(player, targetBlock, Particle.SMOKE_LARGE, 7);
-                    player.sendMessage(getPrefixedLanguageVariable("base-generator-destroyed"));
+                    sendMessage(sender, getPrefixedLanguageVariable("base-generator-destroyed"));
                 }
-                else player.sendMessage(getPrefixedLanguageVariable("force-destroy-block-is-not-a-generator"));
+                else sendMessage(sender, getPrefixedLanguageVariable("force-destroy-block-is-not-a-generator"));
             }
-            else player.sendMessage(getPrefixedLanguageVariable("no-permission"));
+            else sendMessage(sender, getPrefixedLanguageVariable("no-permission"));
         }
-        else sender.sendMessage(getPrefixedLanguageVariable("cannot-open-from-console"));
+        else sendMessage(sender, getPrefixedLanguageVariable("cannot-open-from-console"));
     }
 }

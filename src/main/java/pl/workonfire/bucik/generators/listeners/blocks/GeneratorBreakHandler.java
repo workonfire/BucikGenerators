@@ -13,13 +13,14 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.workonfire.bucik.generators.Main;
+import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
 public class GeneratorBreakHandler {
@@ -41,7 +42,7 @@ public class GeneratorBreakHandler {
         event.setCancelled(true);
         if (player.hasPermission(baseGenerator.getPermission())) {
             block.setType(Material.AIR);
-            Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
+            Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
                 if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
                     block.setType(baseGenerator.getGeneratorMaterial());
             }, baseGenerator.getBreakCooldown());
@@ -52,14 +53,14 @@ public class GeneratorBreakHandler {
                 if (currentDurability == 1) {
                     baseBlockLocation.getBlock().setType(Material.AIR);
                     baseGenerator.unregister(baseBlockLocation, baseBlockLocation.getWorld());
-                    player.sendMessage(getPrefixedLanguageVariable("generator-has-worn-out"));
+                    sendMessage(player, getPrefixedLanguageVariable("generator-has-worn-out"));
                     Util.playSound(block, Sound.ENTITY_WITHER_HURT);
                     Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
                 }
                 else {
-                    baseBlockLocation.getBlock().removeMetadata("durability", Main.getPlugin());
+                    baseBlockLocation.getBlock().removeMetadata("durability", BucikGenerators.getInstance());
                     baseBlockLocation.getBlock().setMetadata("durability",
-                            new FixedMetadataValue(Main.getPlugin(), currentDurability - 1));
+                            new FixedMetadataValue(BucikGenerators.getInstance(), currentDurability - 1));
                 }
             }
             Sound breakSound = Util.isServerLegacy() ? Sound.ENTITY_BLAZE_HURT : Sound.ENTITY_ENDER_DRAGON_HURT;
@@ -102,8 +103,11 @@ public class GeneratorBreakHandler {
                             }
                             else {
                                 if (baseGenerator.getItemDropMode() != null
-                                        && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory"))
-                                    player.getInventory().addItem(item.getItemStack());
+                                        && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory")) {
+                                    if (player.getInventory().firstEmpty() == -1)
+                                        block.getWorld().dropItemNaturally(baseBlockLocation, item.getItemStack());
+                                    else player.getInventory().addItem(item.getItemStack());
+                                }
                                 else
                                     block.getWorld().dropItemNaturally(baseBlockLocation, item.getItemStack());
                             }
@@ -115,6 +119,6 @@ public class GeneratorBreakHandler {
                 }
             }
         }
-        else player.sendMessage(getPrefixedLanguageVariable("no-permission"));
+        else sendMessage(player, getPrefixedLanguageVariable("no-permission"));
     }
 }

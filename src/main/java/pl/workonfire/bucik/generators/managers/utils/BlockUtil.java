@@ -7,7 +7,7 @@ import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import pl.workonfire.bucik.generators.Main;
+import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 
@@ -69,7 +69,7 @@ public abstract class BlockUtil {
             if (splittedDetails.length == 5) {
                 boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
                 if (durabilityEnabled) {
-                    World world = Main.getPlugin().getServer().getWorld(splittedDetails[0]);
+                    World world = BucikGenerators.getInstance().getServer().getWorld(splittedDetails[0]);
                     int locationX = Integer.parseInt(splittedDetails[1]);
                     int locationY = Integer.parseInt(splittedDetails[2]);
                     int locationZ = Integer.parseInt(splittedDetails[3]);
@@ -102,7 +102,7 @@ public abstract class BlockUtil {
             if (splittedDetails.length == 5) {
                 boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
                 if (durabilityEnabled) {
-                    World world = Main.getPlugin().getServer().getWorld(splittedDetails[0]);
+                    World world = BucikGenerators.getInstance().getServer().getWorld(splittedDetails[0]);
                     int locationX = Integer.parseInt(splittedDetails[1]);
                     int locationY = Integer.parseInt(splittedDetails[2]);
                     int locationZ = Integer.parseInt(splittedDetails[3]);
@@ -134,11 +134,11 @@ public abstract class BlockUtil {
                 else {
                     try {
                         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-                        return container.has(new NamespacedKey(Main.getPlugin(), "unique-generator"), PersistentDataType.INTEGER);
+                        return container.has(new NamespacedKey(BucikGenerators.getInstance(), "unique-generator"), PersistentDataType.INTEGER);
                     }
                     catch (NoSuchMethodError error) {
                         if (!Util.isServerLegacy()) {
-                            NamespacedKey uniqueKey = new NamespacedKey(Main.getPlugin(), "unique-generator");
+                            NamespacedKey uniqueKey = new NamespacedKey(BucikGenerators.getInstance(), "unique-generator");
                             CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
                             return tagContainer.hasCustomTag(uniqueKey, ItemTagType.INTEGER);
                         }
@@ -196,7 +196,7 @@ public abstract class BlockUtil {
                 if (generator.getCustomRecipe() != null) {
                     ShapedRecipe generatorRecipe;
                     try {
-                        NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
+                        NamespacedKey recipeKey = new NamespacedKey(BucikGenerators.getInstance(), generator.getId());
                         generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
                     }
                     catch (NoSuchMethodError | NoClassDefFoundError error) {
@@ -224,13 +224,13 @@ public abstract class BlockUtil {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
                 Generator generator = new Generator(generatorId);
                 if (generator.getCustomRecipe() != null) {
-                    NamespacedKey recipeKey = new NamespacedKey(Main.getPlugin(), generator.getId());
+                    NamespacedKey recipeKey = new NamespacedKey(BucikGenerators.getInstance(), generator.getId());
                     Bukkit.removeRecipe(recipeKey);
                 }
             }
         }
         catch (NoSuchMethodError | NoClassDefFoundError error) {
-            Main.getPlugin().getServer().clearRecipes();
+            BucikGenerators.getInstance().getServer().clearRecipes();
         }
     }
 }

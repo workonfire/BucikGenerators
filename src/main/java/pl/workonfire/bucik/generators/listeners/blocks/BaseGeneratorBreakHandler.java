@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.metadata.MetadataValue;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
 public class BaseGeneratorBreakHandler {
@@ -38,7 +38,7 @@ public class BaseGeneratorBreakHandler {
                     currentDurability = value.asInt();
                 if (currentDurability > 0) {
                     Util.playSound(player, Sound.ENTITY_BLAZE_HURT);
-                    player.sendMessage(getPrefixedLanguageVariable("cannot-break-the-base") + currentDurability);
+                    sendMessage(player, getPrefixedLanguageVariable("cannot-break-the-base") + currentDurability);
                     event.setCancelled(true);
                 }
             }
@@ -50,12 +50,12 @@ public class BaseGeneratorBreakHandler {
                 block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack(1));
                 Util.playSound(block, Sound.BLOCK_ANVIL_LAND);
                 Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
-                player.sendMessage(getPrefixedLanguageVariable("base-generator-destroyed"));
+                sendMessage(player, getPrefixedLanguageVariable("base-generator-destroyed"));
             }
         }
         else {
             event.setCancelled(true);
-            player.sendMessage(getPrefixedLanguageVariable("no-permission"));
+            sendMessage(player, getPrefixedLanguageVariable("no-permission"));
         }
     }
 }

@@ -14,19 +14,19 @@ import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.1.4
+ * @version 1.1.5
  * @since   2020-06-13
  */
 
-public final class Main extends JavaPlugin {
-    private static Main plugin;
+public final class BucikGenerators extends JavaPlugin {
+    private static BucikGenerators instance;
     private static String pluginVersion;
 
     @Override
     public void onEnable() {
-        plugin = this;
-        pluginVersion = getPlugin().getDescription().getVersion();
-        getPlugin().saveDefaultConfig();
+        instance = this;
+        pluginVersion = getInstance().getDescription().getVersion();
+        getInstance().saveDefaultConfig();
         ConfigManager.initializeConfiguration();
         ConfigManager.initializeStorage();
         Util.registerEvents();
@@ -38,11 +38,11 @@ public final class Main extends JavaPlugin {
         BlockUtil.forcePurgeGeneratorsWithDurability();
         int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         if (dataSaveInterval != 0)
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), ConfigManager::updateStorage, 0, dataSaveInterval);
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), ConfigManager::updateStorage, 0, dataSaveInterval);
         BlockUtil.registerRecipes();
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
             final int pluginId = 7854;
-            new Metrics(getPlugin(), pluginId);
+            new Metrics(getInstance(), pluginId);
             Util.systemMessage(Logger.INFO, "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin &f&nconfig.yml&r in order to disable metrics.");
         }
     }
@@ -54,8 +54,8 @@ public final class Main extends JavaPlugin {
         BlockUtil.unregisterRecipes();
     }
 
-    public static Main getPlugin() {
-        return plugin;
+    public static BucikGenerators getInstance() {
+        return instance;
     }
 
     public static String getPluginVersion() {
