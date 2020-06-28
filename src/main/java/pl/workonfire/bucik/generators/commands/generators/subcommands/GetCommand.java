@@ -1,6 +1,5 @@
 package pl.workonfire.bucik.generators.commands.generators.subcommands;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.Generator;
@@ -14,11 +13,6 @@ import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 public class GetCommand implements CommandInterface {
 
     @Override
-    public boolean executableByConsole() {
-        return false;
-    }
-
-    @Override
     public String permission() {
         return "bucik.generators.get";
     }
@@ -29,8 +23,8 @@ public class GetCommand implements CommandInterface {
     }
 
     @Override
-    public void run(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player && !executableByConsole()) {
+    public void run(CommandSender sender, String[] args) {
+        if (sender instanceof Player) {
             if (sender.hasPermission(permission())) {
                 Player player = (Player) sender;
                 try {

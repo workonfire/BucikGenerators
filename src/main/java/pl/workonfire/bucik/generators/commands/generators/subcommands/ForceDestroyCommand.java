@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.Generator;
@@ -19,11 +18,6 @@ import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 public class ForceDestroyCommand implements CommandInterface {
 
     @Override
-    public boolean executableByConsole() {
-        return false;
-    }
-
-    @Override
     public String permission() {
         return "bucik.generators.forcedestroy";
     }
@@ -34,8 +28,8 @@ public class ForceDestroyCommand implements CommandInterface {
     }
 
     @Override
-    public void run(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player && !executableByConsole()) {
+    public void run(CommandSender sender, String[] args) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission(permission())) {
                 Block targetBlock;

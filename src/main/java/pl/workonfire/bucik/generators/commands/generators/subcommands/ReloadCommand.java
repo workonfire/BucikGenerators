@@ -1,6 +1,5 @@
 package pl.workonfire.bucik.generators.commands.generators.subcommands;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
@@ -9,11 +8,6 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedL
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 public class ReloadCommand implements CommandInterface {
-
-    @Override
-    public boolean executableByConsole() {
-        return true;
-    }
 
     @Override
     public String permission() {
@@ -26,7 +20,7 @@ public class ReloadCommand implements CommandInterface {
     }
 
     @Override
-    public void run(CommandSender sender, Command command, String label, String[] args) {
+    public void run(CommandSender sender, String[] args) {
         if (sender.hasPermission(permission())) {
             ConfigManager.reloadAll();
             sendMessage(sender, getPrefixedLanguageVariable("plugin-reloaded"));

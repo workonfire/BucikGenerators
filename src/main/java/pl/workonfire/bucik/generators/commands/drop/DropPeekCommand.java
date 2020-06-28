@@ -18,13 +18,8 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        run(sender, command, label, args);
+        run(sender, args);
         return true;
-    }
-
-    @Override
-    public boolean executableByConsole() {
-        return false;
     }
 
     @Override
@@ -38,7 +33,7 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
     }
 
     @Override
-    public void run(CommandSender sender, Command command, String label, String[] args) {
+    public void run(CommandSender sender, String[] args) {
         try {
             if (sender instanceof Player) {
                 Player player = (Player) sender;

@@ -39,8 +39,8 @@ public abstract class Util {
      */
     public static String formatColors(String text) {
         String parsedText = text;
-        Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
         if (getServer().getVersion().contains("1.16")) {
+            Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
             Matcher matcher = hexPattern.matcher(parsedText);
             while (matcher.find()) {
                 ChatColor hexColor = ChatColor.of(matcher.group());

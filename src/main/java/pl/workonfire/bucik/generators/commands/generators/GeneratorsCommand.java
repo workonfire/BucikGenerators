@@ -22,21 +22,16 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
         ForceDestroyCommand forceDestroyCommand = new ForceDestroyCommand();
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase(reloadCommand.name()))
-                reloadCommand.run(sender, command, label, args);
+                reloadCommand.run(sender, args);
             else if (args[0].equalsIgnoreCase(getCommand.name()))
-                getCommand.run(sender, command, label, args);
+                getCommand.run(sender, args);
             else if (args[0].equalsIgnoreCase(dropCommand.name()))
-                dropCommand.run(sender, command, label, args);
+                dropCommand.run(sender, args);
             else if (args[0].equalsIgnoreCase(forceDestroyCommand.name()))
-                forceDestroyCommand.run(sender, command, label, args);
+                forceDestroyCommand.run(sender, args);
             else sender.sendMessage(ConfigManager.getPrefixedLanguageVariable("subcommand-does-not-exist"));
         }
-        else run(sender, command, label, args);
-        return true;
-    }
-
-    @Override
-    public boolean executableByConsole() {
+        else run(sender, args);
         return true;
     }
 
@@ -51,7 +46,7 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
     }
 
     @Override
-    public void run(CommandSender sender, Command command, String label, String[] args) {
+    public void run(CommandSender sender, String[] args) {
         String header;
         if (!(sender instanceof Player)) header = "\n§c§m--------------\n"; // for console
         else header = "§c§m--------------\n";
