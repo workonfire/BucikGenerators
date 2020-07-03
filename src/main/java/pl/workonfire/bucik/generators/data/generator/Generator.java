@@ -42,6 +42,7 @@ public class Generator {
     private final int durability;
     private final boolean affectPickaxeDurability;
     private final int affectPickaxeDurabilityValue;
+    private final boolean respectPickaxeFortune;
 
     public Generator(String id) {
         this.id = id;
@@ -61,6 +62,7 @@ public class Generator {
         durability = getGeneratorsConfig().getInt(getPropertyName("durability.value", id));
         affectPickaxeDurability = getGeneratorsConfig().getBoolean(getPropertyName("affect-pickaxe-durability.enabled", id));
         affectPickaxeDurabilityValue = getGeneratorsConfig().getInt(getPropertyName("affect-pickaxe-durability.value", id));
+        respectPickaxeFortune = getGeneratorsConfig().getBoolean(getPropertyName("respect-pickaxe-fortune", id));
     }
 
     /**
@@ -211,5 +213,9 @@ public class Generator {
 
     public int getAffectPickaxeDurabilityValue() {
         return affectPickaxeDurabilityValue;
+    }
+
+    public boolean isRespectPickaxeFortune() {
+        return respectPickaxeFortune;
     }
 }

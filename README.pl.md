@@ -47,11 +47,13 @@
 
 ![Screenshot 3](https://i.imgur.com/nI1UY74.png)
 
-![Screenshot 4](https://i.imgur.com/jdAO19o.png)
+![Screenshot 4](https://i.imgur.com/kMYCdYR.png)
 
-![Screenshot 5](https://i.imgur.com/SCI4KyO.png)
+![Screenshot 5](https://i.imgur.com/jdAO19o.png)
 
-![Screenshot 6](https://i.imgur.com/13ChMpe.png)
+![Screenshot 6](https://i.imgur.com/SCI4KyO.png)
+
+![Screenshot 7](https://i.imgur.com/13ChMpe.png)
 
 ## Przykładowa konfiguracja (`generators.yml`)
 ```yaml
@@ -59,6 +61,7 @@ generators:
   normal:
     break-cooldown: 1 # W tickach. 20 ticków = 1 sekunds
     permission: bucik.generators.normal
+    respect-pickaxe-fortune: true
     durability:
       enabled: true
       value: 30

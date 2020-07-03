@@ -233,4 +233,20 @@ public abstract class BlockUtil {
             BucikGenerators.getInstance().getServer().clearRecipes();
         }
     }
+
+    /**
+     * Checks if the held item is a pickaxe.
+     * @since 1.1.6
+     * @param item Held item object
+     * @return true, if it is
+     */
+    public static boolean isItemAPickaxe(ItemStack item) {
+        if (!Util.isServerLegacy())
+            return item.getType() == Material.DIAMOND_PICKAXE
+                || item.getType() == Material.GOLDEN_PICKAXE
+                || item.getType() == Material.IRON_PICKAXE
+                || item.getType() == Material.STONE_PICKAXE
+                || item.getType() == Material.WOODEN_PICKAXE;
+        else return false;
+    }
 }

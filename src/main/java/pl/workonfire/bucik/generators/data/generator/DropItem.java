@@ -7,6 +7,7 @@ import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.workonfire.bucik.generators.data.DropMultiplier;
+import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static java.lang.String.format;
@@ -103,10 +104,15 @@ public class DropItem {
 
     /**
      * Checks if the item was randomly selected.
+     * @since 1.0.0
+     * @param item Mining tool
      * @return true, if it was
      */
-    public boolean gotSelected() {
-        return Math.round(new Random().nextDouble() * 10000.0) / 100.0 <= getDropChance();
+    public boolean gotSelected(ItemStack item) {
+        double localDropMultiplier = 1;
+        if (BlockUtil.isItemAPickaxe(item) && item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
+            localDropMultiplier = item.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+        return Math.round(new Random().nextDouble() * 10000.0) / 100.0 <= getDropChance() * localDropMultiplier;
     }
 
     public double getDropChance() {

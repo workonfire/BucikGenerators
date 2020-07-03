@@ -8,6 +8,7 @@ generators:
   normal:
     break-cooldown: 1 # In ticks. 20 ticks = 1 second
     permission: bucik.generators.normal
+    respect-pickaxe-fortune: true
     durability:
       enabled: true
       value: 30

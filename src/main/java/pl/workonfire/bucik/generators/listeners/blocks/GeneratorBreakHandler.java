@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
@@ -68,11 +69,7 @@ public class GeneratorBreakHandler {
             if (baseGenerator.isAffectPickaxeDurabilityEnabled()) {
                 ItemStack currentItem = player.getInventory().getItemInMainHand();
                 ItemMeta currentItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
-                if (currentItem.getType() == Material.DIAMOND_PICKAXE
-                        || currentItem.getType() == Material.GOLDEN_PICKAXE
-                        || currentItem.getType() == Material.IRON_PICKAXE
-                        || currentItem.getType() == Material.STONE_PICKAXE
-                        || currentItem.getType() == Material.WOODEN_PICKAXE) {
+                if (BlockUtil.isItemAPickaxe(currentItem)) {
                     int currentDamage = ((Damageable) currentItemMeta).getDamage();
                     if (currentDamage >= currentItem.getType().getMaxDurability()) {
                         player.getInventory().setItemInMainHand(null);
@@ -89,7 +86,7 @@ public class GeneratorBreakHandler {
                 if (player.hasPermission(Util.getPermission(permission))) {
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                         DropItem item = new DropItem(baseGenerator, permission, Integer.parseInt(dropItemId));
-                        if (item.gotSelected()) {
+                        if (item.gotSelected(player.getInventory().getItemInMainHand())) {
                             if (item.isAPotion() && item.getPotionEffectTypeName() != null) {
                                 PotionEffect potionEffect = new PotionEffect(
                                         PotionEffectType.getByName(item.getPotionEffectTypeName()),
