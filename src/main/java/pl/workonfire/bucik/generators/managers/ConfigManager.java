@@ -60,7 +60,7 @@ public abstract class ConfigManager {
             getDataStorage().save(dataStorageFile);
             Util.systemMessage(Logger.DEBUG, "File saved.");
         } catch (IOException exception) {
-            exception.printStackTrace();
+            Util.systemMessage(Logger.WARN, "An error occured while trying to update the storage file.");
         }
     }
 
