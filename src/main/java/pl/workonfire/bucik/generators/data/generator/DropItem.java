@@ -31,6 +31,7 @@ public class DropItem {
     private final int potionEffectDuration;
     private final int potionEffectAmplifier;
     private final double moneyAmount;
+    private final int expAmount;
 
     public DropItem(Generator generator, String permission, int id) {
         dropChance = getGeneratorsConfig().getDouble(getPropertyName("chance", generator.getId(), id, permission));
@@ -45,6 +46,7 @@ public class DropItem {
         potionEffectDuration = getGeneratorsConfig().getInt(getPropertyName("potion.duration", generator.getId(), id, permission));
         potionEffectAmplifier = getGeneratorsConfig().getInt(getPropertyName("potion.amplifier", generator.getId(), id, permission));
         moneyAmount = getGeneratorsConfig().getDouble(getPropertyName("money-amount", generator.getId(), id, permission));
+        expAmount = getGeneratorsConfig().getInt(getPropertyName("exp-amount", generator.getId(), id, permission));
     }
 
     /**
@@ -91,6 +93,15 @@ public class DropItem {
     public boolean isAPotion() {
         if (getItemMaterial() != null) return getItemMaterial().equals(Material.POTION);
         return false;
+    }
+
+    /**
+     * Checks if the item is experience.
+     * @since 1.1.7
+     * @return true, if it is
+     */
+    public boolean isExp() {
+        return getItemMaterialName().equalsIgnoreCase("EXP") || getItemMaterialName().equalsIgnoreCase("XP");
     }
 
     /**
@@ -163,5 +174,9 @@ public class DropItem {
 
     public String getItemMaterialName() {
         return itemMaterialName;
+    }
+
+    public int getExpAmount() {
+        return expAmount;
     }
 }

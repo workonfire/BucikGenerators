@@ -98,6 +98,8 @@ public class GeneratorBreakHandler {
                                 VaultHandler.getEconomy().depositPlayer(player, item.getMoneyAmount());
                                 if (!Util.isServerLegacy()) Util.showParticle(player, block, Particle.TOTEM, 1);
                             }
+                            else if (item.isExp() && item.getExpAmount() != 0)
+                                player.giveExp(item.getExpAmount());
                             else {
                                 if (baseGenerator.getItemDropMode() != null
                                         && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory")) {

@@ -13,7 +13,7 @@
 - Custom cooldown times
 - Custom **crafting recipes**
 - **Generator durability** system
-- Fully customizable items that can be dropped, **including money** (requires `Vault`)
+- Fully customizable items that can be dropped, **including money** (requires `Vault`), and **experience**
 - Two item drop modes: `inventory` and `ground`
 - Custom item drop odds based on **permissions** and **luck** (percentage system)
 - Customizable **pickaxe damage**
@@ -134,6 +134,10 @@ generators:
             item: MONEY
             money-amount: 500
             action-bar-message: "&f&l+ &f&l[&2&l$&a&l500&f&l]"
+          4:
+            chance: 5 # %
+            item: EXP
+            exp-amount: 50
 ```
 You can customize more options in `config.yml`.
 

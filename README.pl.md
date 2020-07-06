@@ -13,7 +13,7 @@
 - Dostosowywalne czasy odnowienia generatorów
 - Dostosowywalne **craftingi**
 - System **wytrzymałości generatorów**
-- W pełni dostosowywalne przedmioty z dropu, **w tym pieniądze** (wymaga `Vault`a)
+- W pełni dostosowywalne przedmioty z dropu, **w tym pieniądze** (wymaga `Vault`a) i **punkty doświadczenia**
 - Dwa tryby dropu przedmiotów: `inventory` (do ekwipunku) i `ground` (na ziemię)
 - Niestandardowe szanse na drop przedmiotów bazowane na **uprawnieniach** i systemie procentowym
 - Dostosowywalna **trwałość kilofa**
@@ -134,6 +134,10 @@ generators:
             item: MONEY
             money-amount: 500
             action-bar-message: "&f&l+ &f&l[&2&l$&a&l500&f&l]"
+          4:
+            chance: 5 # %
+            item: EXP
+            exp-amount: 50
 ```
 Możesz dostosować więcej opcji w pliku `config.yml`.
 

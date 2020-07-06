@@ -137,3 +137,7 @@ generators:
             chance: 10 # %
             item: DIAMOND_BLOCK
             action-bar-message: "&f&l+ &f&l[&b&lDiamond block&f&l]"
+          3:
+            chance: 5 # %
+            item: EXP
+            exp-amount: 50
