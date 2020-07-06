@@ -79,8 +79,12 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                                             finalHoverMessage.add(getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() + "s");
                                             finalHoverMessage.add("\n");
                                         }
-                                        if (dropItem.isMoney() && VaultHandler.getEconomy() != null) {
+                                        else if (dropItem.isMoney() && VaultHandler.getEconomy() != null) {
                                             finalHoverMessage.add(getLanguageVariable("drop-item-money-amount") + dropItem.getMoneyAmount());
+                                            finalHoverMessage.add("\n");
+                                        }
+                                        else if (dropItem.isExp()) {
+                                            finalHoverMessage.add(getLanguageVariable("drop-item-exp-amount") + dropItem.getExpAmount());
                                             finalHoverMessage.add("\n");
                                         }
                                         if (!dropItem.getEnchantments().isEmpty()) {

@@ -27,6 +27,7 @@ language:
   drop-item-amount: "&bQuantità: &6"
   drop-item-chance: "&bPossibilità: &6"
   drop-item-enchantments: "&bIncantesimi: &6"
+  drop-item-exp-amount: "&bQuantità di exp: &6"
   potion-type: "&bTipo di pozione: &6"
   potion-amplifier: "&bAmplificatore della pozione: &6"
   potion-duration: "&bDurata della pozione: &6"

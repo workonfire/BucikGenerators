@@ -27,6 +27,7 @@ language:
   drop-item-amount: "&bIlość: &6"
   drop-item-chance: "&bSzansa na drop: &6"
   drop-item-enchantments: "&bEnchanty: &6"
+  drop-item-exp-amount: "&bIlość EXP'a: &6"
   potion-type: "&bTyp mikstury: &6"
   potion-amplifier: "&bMoc mikstury: &6"
   potion-duration: "&bTrwałość mikstury: &6"
