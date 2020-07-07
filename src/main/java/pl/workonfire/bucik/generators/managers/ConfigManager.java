@@ -28,7 +28,7 @@ public abstract class ConfigManager {
         File generatorsConfigFile = new File(getInstance().getDataFolder(), "generators.yml");
         if (!languageConfigFile.exists()) {
             languageConfigFile.getParentFile().mkdirs();
-            String[] locales = {"pl", "en", "es", "it"};
+            String[] locales = {"pl", "en", "es", "it", "hu"};
             for (String locale : locales) getInstance().saveResource("locales/" + locale + ".yml", false);
         }
         if (!generatorsConfigFile.exists()) {

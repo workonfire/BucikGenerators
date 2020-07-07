@@ -4,7 +4,8 @@ description: A customizable plugin for setting up block generators.
 main: pl.workonfire.bucik.generators.BucikGenerators
 api-version: 1.13
 softdepend: [Vault]
-authors: [Buty935]
+author: Buty935
+website: workonfi.re/bucik/generators
 commands:
   generators:
     description: "Main command."
