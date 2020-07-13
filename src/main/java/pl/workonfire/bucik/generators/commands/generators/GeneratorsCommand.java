@@ -11,6 +11,7 @@ import pl.workonfire.bucik.generators.commands.generators.subcommands.GetCommand
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ReloadCommand;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 public class GeneratorsCommand implements CommandExecutor, CommandInterface {
 
@@ -29,7 +30,7 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
                 dropCommand.run(sender, args);
             else if (args[0].equalsIgnoreCase(forceDestroyCommand.name()))
                 forceDestroyCommand.run(sender, args);
-            else sender.sendMessage(ConfigManager.getPrefixedLanguageVariable("subcommand-does-not-exist"));
+            else Util.sendMessage(sender, ConfigManager.getPrefixedLanguageVariable("subcommand-does-not-exist"));
         }
         else run(sender, args);
         return true;
@@ -47,14 +48,13 @@ public class GeneratorsCommand implements CommandExecutor, CommandInterface {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        String header;
-        if (!(sender instanceof Player)) header = "\n§c§m--------------\n"; // for console
-        else header = "§c§m--------------\n";
-        sender.sendMessage(header +
+        String line = "§c§m--------------";
+        if (!(sender instanceof Player)) line = "\n" + line; // for console
+        sender.sendMessage(line + "\n" +
                 "§bBucikGenerators §6" + BucikGenerators.getPluginVersion() + "\n" +
                 "§6by §c§lB§6§lu§e§lt§a§ly§b§l9§3§l3§9§l5\n" +
                 "§6§ohttps://github.com/workonfire\n" +
-                "§c§m--------------");
+                line.replace("\n", ""));
     }
 
 }

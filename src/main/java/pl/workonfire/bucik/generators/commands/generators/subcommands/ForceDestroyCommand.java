@@ -29,9 +29,9 @@ public class ForceDestroyCommand implements CommandInterface {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (player.hasPermission(permission())) {
+        if (Util.isAuthorized(sender, permission())) {
+            if (Util.isPlayer(sender)) {
+                Player player = (Player) sender;
                 Block targetBlock;
                 try {
                     targetBlock = player.getTargetBlockExact(5);
@@ -50,8 +50,6 @@ public class ForceDestroyCommand implements CommandInterface {
                 }
                 else sendMessage(sender, getPrefixedLanguageVariable("force-destroy-block-is-not-a-generator"));
             }
-            else sendMessage(sender, getPrefixedLanguageVariable("no-permission"));
         }
-        else sendMessage(sender, getPrefixedLanguageVariable("cannot-open-from-console"));
     }
 }

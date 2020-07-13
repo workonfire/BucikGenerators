@@ -41,7 +41,7 @@ public final class BucikGenerators extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), ConfigManager::updateStorage, 0, dataSaveInterval);
         BlockUtil.registerRecipes();
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
-            final int pluginId = 7854;
+            int pluginId = 7854;
             new Metrics(getInstance(), pluginId);
             Util.systemMessage(Logger.INFO, "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin &f&nconfig.yml&r in order to disable metrics.");
         }

@@ -3,6 +3,7 @@ package pl.workonfire.bucik.generators.commands.generators.subcommands;
 import org.bukkit.command.CommandSender;
 import pl.workonfire.bucik.generators.data.DropMultiplier;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
@@ -21,7 +22,7 @@ public class DropManipulateCommand implements CommandInterface {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        if (sender.hasPermission(permission())) {
+        if (Util.isAuthorized(sender, permission())) {
             if (args.length == 1) sender.sendMessage(getPrefixedLanguageVariable("not-enough-arguments"));
             else {
                 if (args[1].equalsIgnoreCase("getMultiplier"))
@@ -41,6 +42,5 @@ public class DropManipulateCommand implements CommandInterface {
                 else sendMessage(sender, getPrefixedLanguageVariable("subcommand-does-not-exist"));
             }
         }
-        else sendMessage(sender, getPrefixedLanguageVariable("no-permission"));
     }
 }

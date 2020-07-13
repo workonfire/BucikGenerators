@@ -76,8 +76,9 @@ public abstract class Util {
             player.playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
             if (ConfigManager.getConfig().getBoolean("options.wzium")) {
                 byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
-                String t = "§4§l" + new String(c, StandardCharsets.US_ASCII);
+                String t = "§4§l" + new String(c, StandardCharsets.US_ASCII) + "!";
                 player.sendTitle(t, null, 20, 60, 20);
+                player.getWorld().strikeLightning(player.getLocation());
             }
             sendMessage(commandSender, getPrefixedLanguageVariable("config-load-error"));
             if (ConfigManager.getConfig().getBoolean("options.debug") && player.hasPermission("bucik.generators.debug")) {
@@ -193,5 +194,34 @@ public abstract class Util {
     public static void sendMessage(CommandSender sender, String message) {
         if (getServer().getVersion().contains("1.16")) sender.spigot().sendMessage(TextComponent.fromLegacyText(formatColors(message)));
         else sender.sendMessage(formatColors(message));
+    }
+
+    /**
+     * Acts as a shortcut for requiring permissions.
+     * @since 1.1.8
+     * @param commandSender Command executor
+     * @param permissionNode Permission name
+     * @return true, if the command sender has the specified permission
+     */
+    public static boolean isAuthorized(CommandSender commandSender, String permissionNode) {
+        if (!commandSender.hasPermission(permissionNode)) {
+            sendMessage(commandSender, getPrefixedLanguageVariable("no-permission"));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Acts as a shortcut for requiring non-console command sender.
+     * @since 1.1.8
+     * @param commandSender Command executor
+     * @return true, if the command sender is a player
+     */
+    public static boolean isPlayer(CommandSender commandSender) {
+        if (!(commandSender instanceof Player)) {
+            sendMessage(commandSender, getPrefixedLanguageVariable("cannot-open-from-console"));
+            return false;
+        }
+        return true;
     }
 }

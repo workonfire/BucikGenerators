@@ -40,10 +40,10 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        try {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                if (player.hasPermission(permission())) {
+        if (Util.isAuthorized(sender, permission())) {
+            if (Util.isPlayer(sender)) {
+                try {
+                    Player player = (Player) sender;
                     Block targetBlock;
                     try {
                         targetBlock = player.getTargetBlockExact(5);
@@ -131,12 +131,10 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                     }
                     else sendMessage(sender, getPrefixedLanguageVariable("block-is-not-a-generator"));
                 }
-                else sendMessage(sender, getPrefixedLanguageVariable("no-permission"));
+                catch (Exception exception) {
+                    Util.handleErrors(sender, exception);
+                }
             }
-            else sendMessage(sender, getPrefixedLanguageVariable("cannot-open-from-console"));
-        }
-        catch (Exception exception) {
-            Util.handleErrors(sender, exception);
         }
     }
 }

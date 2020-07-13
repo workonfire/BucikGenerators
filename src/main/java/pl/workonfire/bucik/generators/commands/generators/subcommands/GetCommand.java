@@ -24,8 +24,8 @@ public class GetCommand implements CommandInterface {
 
     @Override
     public void run(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            if (sender.hasPermission(permission())) {
+        if (Util.isAuthorized(sender, permission())) {
+            if (Util.isPlayer(sender)) {
                 Player player = (Player) sender;
                 try {
                     if (args.length == 1) sendMessage(sender, getPrefixedLanguageVariable("no-generator-name-specified"));
@@ -53,9 +53,7 @@ public class GetCommand implements CommandInterface {
                     Util.handleErrors(player, exception);
                 }
             }
-            else sendMessage(sender, getPrefixedLanguageVariable("no-permission"));
         }
-        else sendMessage(sender, getPrefixedLanguageVariable("cannot-open-from-console"));
     }
 
 }
