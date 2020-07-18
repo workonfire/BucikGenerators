@@ -56,8 +56,8 @@ public abstract class Util {
     /**
      * Replaces "-" to "." in a permission node.
      * @since 1.0.0
-     * @param unparsedPermission unparsed permission with minuses
-     * @return parsed permission with dots
+     * @param unparsedPermission Unparsed permission with minuses
+     * @return Parsed permission with dots
      */
     public static String getPermission(String unparsedPermission) {
         return unparsedPermission.replaceAll("-", ".");
