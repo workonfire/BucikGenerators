@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.commands.generators.subcommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.Generator;
@@ -33,18 +34,26 @@ public class GetCommand implements CommandInterface {
                         String generatorName = args[1];
                         if (BlockUtil.isGeneratorDefined(generatorName)) {
                             Generator generator = new Generator(generatorName);
-                            if (args.length == 3) {
+                            if (args.length >= 3) {
                                 try {
-                                    player.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));
+                                    Player targetPlayer;
+                                    if (args.length == 4) {
+                                        targetPlayer = Bukkit.getServer().getPlayer(args[3]);
+                                        if (targetPlayer == null) {
+                                            sendMessage(sender, getPrefixedLanguageVariable("this-player-does-not-exist"));
+                                            return;
+                                        }
+                                    }
+                                    else targetPlayer = player;
+                                    targetPlayer.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));
                                 }
                                 catch (NumberFormatException exception) {
                                     sendMessage(sender, getPrefixedLanguageVariable("argument-must-be-an-int"));
+                                    return;
                                 }
                             }
-                            else {
-                                player.getInventory().addItem(generator.getItemStack(1));
-                                sendMessage(sender, getPrefixedLanguageVariable("generator-given") + generator.getId());
-                            }
+                            else player.getInventory().addItem(generator.getItemStack(1));
+                            sendMessage(sender, getPrefixedLanguageVariable("generator-given") + generator.getId());
                         }
                         else sendMessage(sender, getPrefixedLanguageVariable("generator-does-not-exist"));
                     }

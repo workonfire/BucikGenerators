@@ -37,3 +37,4 @@ language:
   cannot-break-the-base: "&f[&6&l!&f] &eNem törölheted a generátort, mert rombolták le teljesen. Maradék életerő: &f&l"
   generator-has-worn-out: "&f[&3&li&f] &bGenerátor lerombolva."
   force-destroy-block-is-not-a-generator: "&f[&6&l!&f] &eA block, amire nézel, nem egy generátor."
+  this-player-does-not-exist: "&f[&4&l❌&f] &cEz a játékos nem létezik."

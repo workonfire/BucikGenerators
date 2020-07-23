@@ -1,8 +1,10 @@
 package pl.workonfire.bucik.generators.listeners.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 
@@ -33,6 +35,12 @@ public class MainTabCompleter implements TabCompleter {
                     return new ArrayList<>(Arrays.asList("1", "32", "64"));
                 else if (args[1].equalsIgnoreCase("setMultiplier") && sender.hasPermission("bucik.generators.drop.manipulate"))
                     return new ArrayList<>(Arrays.asList("1x", "2x", "4x"));
+            case 4:
+                if (args[0].equalsIgnoreCase("get") && sender.hasPermission("bucik.generators.get")) {
+                    List<String> playerNames = new ArrayList<>();
+                    for (Player player : Bukkit.getOnlinePlayers()) playerNames.add(player.getName());
+                    return StringUtil.copyPartialMatches(args[3], playerNames, new ArrayList<>());
+                }
             default:
                 return new ArrayList<>();
         }

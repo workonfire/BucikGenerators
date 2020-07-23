@@ -35,8 +35,8 @@
   
 ## Komendy
 - `/generators reload`
-- `/generators drop <getMultiplier|setMultiplier>`
-- `/generators get <generatorID>`
+- `/generators drop <getMultiplier|setMultiplier> [wartość]`
+- `/generators get <generatorID> [ilość] [gracz]`
 - `/generators forceDestroy`
 - `/drop`
   

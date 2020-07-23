@@ -37,3 +37,4 @@ language:
   cannot-break-the-base: "&f[&6&l!&f] &eNon puoi rompere questo generatore dato che gli rimangono degli utilizzi. Numero di utilizzi rimanenti: &f&l"
   generator-has-worn-out: "&f[&3&li&f] &bIl generatore si è consumato."
   force-destroy-block-is-not-a-generator: "&f[&6&l!&f] &eIl blocco che stai guardando non è un generatore."
+  this-player-does-not-exist: "&f[&4&l❌&f] &cQuesto giocatore non esiste."

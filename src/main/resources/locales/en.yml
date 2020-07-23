@@ -37,3 +37,4 @@ language:
   cannot-break-the-base: "&f[&6&l!&f] &eYou cannot destroy this generator because it has not been fully used. The remaining amount of uses: &f&l"
   generator-has-worn-out: "&f[&3&li&f] &bThe generator has worn out."
   force-destroy-block-is-not-a-generator: "&f[&6&l!&f] &eThe block you are looking at is not a generator."
+  this-player-does-not-exist: "&f[&4&l❌&f] &cThis player does not exist."
