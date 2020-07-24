@@ -26,43 +26,44 @@ public class GetCommand implements CommandInterface {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (Util.isAuthorized(sender, permission())) {
-            if (Util.isPlayer(sender)) {
-                Player player = (Player) sender;
-                try {
-                    if (args.length == 1) sendMessage(sender, getPrefixedLanguageVariable("no-generator-name-specified"));
-                    else {
-                        String generatorName = args[1];
-                        if (BlockUtil.isGeneratorDefined(generatorName)) {
-                            Generator generator = new Generator(generatorName);
-                            if (args.length >= 3) {
-                                try {
-                                    Player targetPlayer;
-                                    if (args.length == 4) {
-                                        targetPlayer = Bukkit.getServer().getPlayer(args[3]);
-                                        if (targetPlayer == null) {
-                                            sendMessage(sender, getPrefixedLanguageVariable("this-player-does-not-exist"));
-                                            return;
-                                        }
-                                    }
-                                    else targetPlayer = player;
-                                    targetPlayer.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));
-                                }
-                                catch (NumberFormatException exception) {
-                                    sendMessage(sender, getPrefixedLanguageVariable("argument-must-be-an-int"));
+            if (args.length == 1) sendMessage(sender, getPrefixedLanguageVariable("no-generator-name-specified"));
+            else {
+                String generatorName = args[1];
+                if (BlockUtil.isGeneratorDefined(generatorName)) {
+                    Generator generator = new Generator(generatorName);
+                    if (args.length >= 3) {
+                        try {
+                            Player targetPlayer;
+                            if (args.length == 4) {
+                                targetPlayer = Bukkit.getServer().getPlayer(args[3]);
+                                if (targetPlayer == null) {
+                                    sendMessage(sender, getPrefixedLanguageVariable("this-player-does-not-exist"));
                                     return;
                                 }
                             }
-                            else player.getInventory().addItem(generator.getItemStack(1));
-                            sendMessage(sender, getPrefixedLanguageVariable("generator-given") + generator.getId());
+                            else {
+                                if (Util.isPlayer(sender)) targetPlayer = (Player) sender;
+                                else return;
+                            }
+                            targetPlayer.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));
                         }
-                        else sendMessage(sender, getPrefixedLanguageVariable("generator-does-not-exist"));
+                        catch (NumberFormatException exception) {
+                            sendMessage(sender, getPrefixedLanguageVariable("argument-must-be-an-int"));
+                            return;
+                        }
                     }
+                    else {
+                        Player player;
+                        if (Util.isPlayer(sender)) {
+                            player = (Player) sender;
+                            player.getInventory().addItem(generator.getItemStack(1));
+                        }
+                        else return;
+                    }
+                    sendMessage(sender, getPrefixedLanguageVariable("generator-given") + generator.getId());
                 }
-                catch (Exception exception) {
-                    Util.handleErrors(player, exception);
-                }
+                else sendMessage(sender, getPrefixedLanguageVariable("generator-does-not-exist"));
             }
         }
     }
-
 }
