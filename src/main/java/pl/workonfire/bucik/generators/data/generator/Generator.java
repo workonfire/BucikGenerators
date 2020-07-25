@@ -215,7 +215,7 @@ public class Generator {
         return affectPickaxeDurabilityValue;
     }
 
-    public boolean isRespectPickaxeFortune() {
+    public boolean respectPickaxeFortune() {
         return respectPickaxeFortune;
     }
 }

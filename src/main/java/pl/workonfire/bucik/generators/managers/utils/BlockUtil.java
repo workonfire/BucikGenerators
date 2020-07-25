@@ -58,40 +58,9 @@ public abstract class BlockUtil {
         return materialList;
     }
 
-    /**
-     * Deletes all generator with enabled durability from the database.
-     * @since 1.1.0
-     */
-    public static void purgeAllGeneratorsWithDurability() {
-        List<String> currentLocations = getDataStorage().getStringList("generators");
-        for (String generatorDetails : currentLocations) {
-            String[] splittedDetails = generatorDetails.split("\\|");
-            if (splittedDetails.length == 5) {
-                boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
-                if (durabilityEnabled) {
-                    World world = BucikGenerators.getInstance().getServer().getWorld(splittedDetails[0]);
-                    int locationX = Integer.parseInt(splittedDetails[1]);
-                    int locationY = Integer.parseInt(splittedDetails[2]);
-                    int locationZ = Integer.parseInt(splittedDetails[3]);
-                    Location baseGeneratorLocation = new Location(world, locationX, locationY, locationZ);
-                    Generator generator = BlockUtil.getGeneratorFromMaterial(baseGeneratorLocation.getBlock().getType());
-                    try {
-                        generator.unregister(baseGeneratorLocation, baseGeneratorLocation.getWorld());
-                    }
-                    catch (NullPointerException exception) {
-                        Util.systemMessage(Logger.DEBUG, ChatColor.RED + "Cannot unregister generator at " + baseGeneratorLocation);
-                    }
-                    Util.systemMessage(Logger.DEBUG, "Generator unregistered: " + baseGeneratorLocation);
-                    baseGeneratorLocation.getBlock().setType(Material.AIR);
-                    new Location(world, locationX, locationY + 1, locationZ).getBlock().setType(Material.AIR);
-                }
-            }
-        }
-    }
 
     /**
      * Forcibly removes all generators with durability.
-     * @see #forcePurgeGeneratorsWithDurability()
      * @since 1.1.4
      */
     public static void forcePurgeGeneratorsWithDurability() {
@@ -99,23 +68,25 @@ public abstract class BlockUtil {
         List<String> modifiedLocations = new ArrayList<>();
         for (String generatorDetails : currentLocations) {
             String[] splittedDetails = generatorDetails.split("\\|");
-            if (splittedDetails.length == 5) {
-                boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
-                if (durabilityEnabled) {
-                    World world = BucikGenerators.getInstance().getServer().getWorld(splittedDetails[0]);
-                    int locationX = Integer.parseInt(splittedDetails[1]);
-                    int locationY = Integer.parseInt(splittedDetails[2]);
-                    int locationZ = Integer.parseInt(splittedDetails[3]);
-                    String data = format("%s|%d|%d|%d|%b", world.getName(), locationX, locationY, locationZ, durabilityEnabled);
-                    modifiedLocations.add(data);
-                }
+            boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
+            if (durabilityEnabled) {
+                World world = BucikGenerators.getInstance().getServer().getWorld(splittedDetails[0]);
+                int locationX = Integer.parseInt(splittedDetails[1]);
+                int locationY = Integer.parseInt(splittedDetails[2]);
+                int locationZ = Integer.parseInt(splittedDetails[3]);
+                Location generatorLocation = new Location(world, locationX, locationY, locationZ);
+                generatorLocation.getBlock().setType(Material.AIR);
+                new Location(world, locationX, locationY + 1, locationZ).getBlock().setType(Material.AIR);
+                String data = format("%s|%d|%d|%d|%b", world.getName(), locationX, locationY, locationZ, durabilityEnabled);
+                modifiedLocations.add(data);
             }
         }
         for (String modifiedLocation : modifiedLocations) {
             currentLocations.remove(modifiedLocation);
             Util.systemMessage(Logger.DEBUG, "Forcibly unregistering the generator at " + ChatColor.DARK_AQUA + modifiedLocation);
-            getDataStorage().set("generators", currentLocations);
         }
+        Util.systemMessage(Logger.DEBUG, "The database is now being updated.1");
+        getDataStorage().set("generators", currentLocations);
     }
 
     /**

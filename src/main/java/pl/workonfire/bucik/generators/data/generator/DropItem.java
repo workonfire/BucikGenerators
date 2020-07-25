@@ -117,11 +117,14 @@ public class DropItem {
      * Checks if the item was randomly selected.
      * @since 1.0.0
      * @param item Mining tool
+     * @param respectPickaxeFortune Whether to respect the pickaxe fortune or not
      * @return true, if it was
      */
-    public boolean gotSelected(ItemStack item) {
+    public boolean gotSelected(ItemStack item, boolean respectPickaxeFortune) {
         double localDropMultiplier = 1;
-        if (BlockUtil.isItemAPickaxe(item) && item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
+        if (respectPickaxeFortune
+                && BlockUtil.isItemAPickaxe(item)
+                && item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
             localDropMultiplier = item.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
         return Math.round(new Random().nextDouble() * 10000.0) / 100.0 <= getDropChance() * localDropMultiplier;
     }

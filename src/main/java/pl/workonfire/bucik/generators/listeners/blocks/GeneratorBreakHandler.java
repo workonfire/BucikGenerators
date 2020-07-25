@@ -86,7 +86,7 @@ public class GeneratorBreakHandler {
                 if (player.hasPermission(Util.getPermission(permission))) {
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                         DropItem item = new DropItem(baseGenerator, permission, Integer.parseInt(dropItemId));
-                        if (item.gotSelected(player.getInventory().getItemInMainHand())) {
+                        if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.respectPickaxeFortune())) {
                             if (item.isAPotion() && item.getPotionEffectTypeName() != null) {
                                 PotionEffect potionEffect = new PotionEffect(
                                         PotionEffectType.getByName(item.getPotionEffectTypeName()),
