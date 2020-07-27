@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -76,7 +77,11 @@ public class GeneratorBreakHandler {
                         block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
                     }
                     else {
-                        ((Damageable) currentItemMeta).setDamage(currentDamage + baseGenerator.getAffectPickaxeDurabilityValue());
+                        int dropDivider = 1;
+                        if (currentItem.containsEnchantment(Enchantment.DURABILITY))
+                            dropDivider = currentItem.getEnchantmentLevel(Enchantment.DURABILITY);
+                        currentDamage += baseGenerator.getAffectPickaxeDurabilityValue() / dropDivider;
+                        ((Damageable) currentItemMeta).setDamage(currentDamage);
                         currentItem.setItemMeta(currentItemMeta);
                         player.getInventory().setItemInMainHand(currentItem);
                     }
