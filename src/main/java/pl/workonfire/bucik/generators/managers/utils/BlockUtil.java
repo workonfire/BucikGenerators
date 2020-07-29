@@ -85,7 +85,7 @@ public abstract class BlockUtil {
             currentLocations.remove(modifiedLocation);
             Util.systemMessage(Logger.DEBUG, "Forcibly unregistering the generator at " + ChatColor.DARK_AQUA + modifiedLocation);
         }
-        Util.systemMessage(Logger.DEBUG, "The database is now being updated.1");
+        Util.systemMessage(Logger.DEBUG, "The database is now being updated.");
         getDataStorage().set("generators", currentLocations);
     }
 
