@@ -27,7 +27,7 @@ public class BlockPlaceListener implements Listener {
         try {
             Block block = event.getBlock();
 
-            if (BlockUtil.isHeldBlockAGenerator(event.getItemInHand())) {
+            if (BlockUtil.isItemAGenerator(event.getItemInHand())) {
                 Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
                 for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {

@@ -95,7 +95,7 @@ public abstract class BlockUtil {
      * @param item Item object
      * @return true, if the item specified is a generator
      */
-    public static boolean isHeldBlockAGenerator(ItemStack item) {
+    public static boolean isItemAGenerator(ItemStack item) {
         Material generatorBlock = item.getType();
         if (getAllGeneratorTypes().contains(generatorBlock)) {
             Generator generator = getGeneratorFromMaterial(item.getType());
