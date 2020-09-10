@@ -112,6 +112,7 @@ generators:
             lore:
               - "&5:D"
             action-bar-message: "&f&l+ &f&l[&b&lDiamond&f&l]"
+            hide-enchantments: true
           3:
             chance: 0.45 # %
             item: EMERALD

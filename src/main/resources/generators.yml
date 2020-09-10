@@ -52,6 +52,7 @@ generators:
             enchantments:
               - "silk_touch:1"
             action-bar-message: "&f&l+ &f&l[&7&lCobblestone&f&l]"
+            hide-enchantments: true
           2:
             chance: 7 # %
             item: DIAMOND
