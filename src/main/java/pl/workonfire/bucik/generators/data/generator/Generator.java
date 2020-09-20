@@ -43,6 +43,8 @@ public class Generator {
     private final boolean affectPickaxeDurability;
     private final int affectPickaxeDurabilityValue;
     private final boolean respectPickaxeFortune;
+    private final boolean whitelistEnabled;
+    private final List<String> whitelistedItems;
 
     public Generator(String id) {
         this.id = id;
@@ -63,6 +65,8 @@ public class Generator {
         affectPickaxeDurability = getGeneratorsConfig().getBoolean(getPropertyName("affect-pickaxe-durability.enabled", id));
         affectPickaxeDurabilityValue = getGeneratorsConfig().getInt(getPropertyName("affect-pickaxe-durability.value", id));
         respectPickaxeFortune = getGeneratorsConfig().getBoolean(getPropertyName("respect-pickaxe-fortune", id));
+        whitelistEnabled = getGeneratorsConfig().getBoolean(getPropertyName("whitelist.enabled", id));
+        whitelistedItems = getGeneratorsConfig().getStringList(getPropertyName("whitelist.items", id));
     }
 
     /**
@@ -217,5 +221,13 @@ public class Generator {
 
     public boolean respectPickaxeFortune() {
         return respectPickaxeFortune;
+    }
+
+    public boolean isWhitelistEnabled() {
+        return whitelistEnabled;
+    }
+
+    public List<String> getWhitelistedItems() {
+        return whitelistedItems;
     }
 }

@@ -24,6 +24,7 @@
 - Previewable **generator drop details** (`/drop`)
 - World blacklist
 - Database auto-save system
+- A whitelist of items that can be used to destroy the generator
 
 ## Permissions
 - `bucik.generators.reload`
@@ -84,6 +85,10 @@ generators:
     enchantments:
       - "unbreaking:5"
     hide-enchantments: true
+    whitelist:
+      enabled: false
+      items:
+        - DIAMOND_PICKAXE
     base:
       item: END_STONE
       name: "&7&l&oGenerator"

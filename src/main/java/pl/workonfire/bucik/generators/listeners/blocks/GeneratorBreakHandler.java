@@ -42,7 +42,18 @@ public class GeneratorBreakHandler {
     protected void run() {
         Block block = event.getBlock();
         event.setCancelled(true);
-        if (player.hasPermission(baseGenerator.getPermission())) {
+        boolean breakable = true;
+        if (baseGenerator.isWhitelistEnabled()) {
+            breakable = false;
+            for (String materialName : baseGenerator.getWhitelistedItems()) {
+                Material material = Material.getMaterial(materialName);
+                if (player.getInventory().getItemInMainHand().getType().equals(material)) {
+                    breakable = true;
+                    break;
+                }
+            }
+        }
+        if (player.hasPermission(baseGenerator.getPermission()) && breakable) {
             block.setType(Material.AIR);
             Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
                 if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)

@@ -24,6 +24,7 @@
 - Podgląd **dropu generatora** (`/drop`)
 - Czarna lista światów
 - System automatycznego zapisywania bazy danych
+- Biała lista przedmiotów, którymi można zniszczyć generator
 
 ## Uprawnienia
 - `bucik.generators.reload`
@@ -84,6 +85,10 @@ generators:
     enchantments:
       - "unbreaking:5"
     hide-enchantments: true
+    whitelist:
+      enabled: false
+      items:
+        - DIAMOND_PICKAXE
     base:
       item: END_STONE
       name: "&7&l&oGenerator"

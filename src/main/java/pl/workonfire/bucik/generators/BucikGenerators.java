@@ -14,7 +14,7 @@ import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.2.3
+ * @version 1.2.4
  * @since   2020-06-13
  */
 

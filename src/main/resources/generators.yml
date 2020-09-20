@@ -32,6 +32,10 @@ generators:
     enchantments:
       - "unbreaking:5"
     hide-enchantments: true
+    whitelist:
+      enabled: false
+      items:
+        - DIAMOND_PICKAXE
     base:
       item: BEDROCK
       name: "&7&l&oGenerator"
