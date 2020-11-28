@@ -192,7 +192,8 @@ public abstract class Util {
      * @param message Message
      */
     public static void sendMessage(CommandSender sender, String message) {
-        if (getServer().getVersion().contains("1.16")) sender.spigot().sendMessage(TextComponent.fromLegacyText(formatColors(message)));
+        if (getServer().getVersion().contains("1.16"))
+            sender.spigot().sendMessage(TextComponent.fromLegacyText(formatColors(message)));
         else sender.sendMessage(formatColors(message));
     }
 

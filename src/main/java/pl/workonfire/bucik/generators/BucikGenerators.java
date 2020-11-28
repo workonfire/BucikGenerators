@@ -3,6 +3,7 @@ package pl.workonfire.bucik.generators;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.workonfire.bucik.generators.data.Metrics;
+import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
@@ -14,7 +15,7 @@ import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.2.4
+ * @version 1.2.5
  * @since   2020-06-13
  */
 
@@ -43,6 +44,14 @@ public final class BucikGenerators extends JavaPlugin {
             int pluginId = 7854;
             new Metrics(getInstance(), pluginId);
             Util.systemMessage(Logger.INFO, "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin &f&nconfig.yml&r in order to disable metrics.");
+        }
+        for (String generatorId : BlockUtil.getGeneratorsIds()) {
+            if (new Generator(generatorId).isDurabilityEnabled()) {
+                Util.systemMessage(Logger.WARN, "There is at least one generator with the durability system enabled." +
+                        " Please note that due to block metadata limitations, all generators with set durability that have" +
+                        " not been destroyed, will be removed upon server restart.");
+                break;
+            }
         }
     }
 
