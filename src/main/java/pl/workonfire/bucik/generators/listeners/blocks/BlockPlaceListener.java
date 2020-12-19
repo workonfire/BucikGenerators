@@ -1,6 +1,7 @@
 package pl.workonfire.bucik.generators.listeners.blocks;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -47,8 +48,13 @@ public class BlockPlaceListener implements Listener {
                         Util.playSound(block, placeSound);
                         Util.showParticle(player, block, Particle.END_ROD, 25);
                         sendMessage(player, getPrefixedLanguageVariable("generator-placed") + generator.getId());
-                        generator.register(block.getLocation(), block.getWorld());
                         Location generatorLocation = block.getLocation().add(0, 1, 0);
+                        if (generatorLocation.getBlock().getType() == Material.BEDROCK) {
+                            event.setCancelled(true);
+                            sendMessage(player, getPrefixedLanguageVariable("no-permission"));
+                            return;
+                        }
+                        generator.register(block.getLocation(), block.getWorld());
                         generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
                         if (generator.isDurabilityEnabled() && generator.getDurability() != 0)
                             block.setMetadata("durability", new FixedMetadataValue(BucikGenerators.getInstance(), generator.getDurability()));
