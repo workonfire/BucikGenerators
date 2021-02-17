@@ -17,9 +17,11 @@ import java.io.IOException;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.2.6
+ * @version 1.2.7
  * @since   2020-06-13
  */
+
+// TODO: Unify Location and GeneratorLocation
 
 public final class BucikGenerators extends JavaPlugin {
     private static BucikGenerators instance;
