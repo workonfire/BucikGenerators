@@ -17,7 +17,7 @@ import java.io.IOException;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.2.7
+ * @version 1.2.8
  * @since   2020-06-13
  */
 

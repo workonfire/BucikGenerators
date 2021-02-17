@@ -46,7 +46,8 @@ public class BlockPlaceListener implements Listener {
                         Util.showParticle(player, block, Particle.END_ROD, 25);
                         sendMessage(player, getPrefixedLanguageVariable("generator-placed") + generator.getId());
                         Location generatorLocation = block.getLocation().add(0, 1, 0);
-                        if (generatorLocation.getBlock().getType() == Material.BEDROCK) {
+                        if (generatorLocation.getBlock().getType() == Material.BEDROCK
+                                || BlockUtil.isBlockAGenerator(generatorLocation, generatorLocation.getWorld())) {
                             event.setCancelled(true);
                             sendMessage(player, getPrefixedLanguageVariable("no-permission"));
                             return;
