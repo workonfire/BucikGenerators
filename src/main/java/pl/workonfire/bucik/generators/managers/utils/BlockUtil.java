@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static java.lang.String.format;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getDataStorage;
 
 @SuppressWarnings("ConstantConditions")
@@ -58,36 +58,6 @@ public abstract class BlockUtil {
         return materialList;
     }
 
-
-    /**
-     * Forcibly removes all generators with durability.
-     * @since 1.1.4
-     */
-    public static void forcePurgeGeneratorsWithDurability() {
-        List<String> currentLocations = getDataStorage().getStringList("generators");
-        List<String> modifiedLocations = new ArrayList<>();
-        for (String generatorDetails : currentLocations) {
-            String[] splittedDetails = generatorDetails.split("\\|");
-            boolean durabilityEnabled = Boolean.parseBoolean(splittedDetails[4]);
-            if (durabilityEnabled) {
-                World world = BucikGenerators.getInstance().getServer().getWorld(splittedDetails[0]);
-                int locationX = Integer.parseInt(splittedDetails[1]);
-                int locationY = Integer.parseInt(splittedDetails[2]);
-                int locationZ = Integer.parseInt(splittedDetails[3]);
-                Location generatorLocation = new Location(world, locationX, locationY, locationZ);
-                generatorLocation.getBlock().setType(Material.AIR);
-                new Location(world, locationX, locationY + 1, locationZ).getBlock().setType(Material.AIR);
-                String data = format("%s|%d|%d|%d|%b", world.getName(), locationX, locationY, locationZ, durabilityEnabled);
-                modifiedLocations.add(data);
-            }
-        }
-        for (String modifiedLocation : modifiedLocations) {
-            currentLocations.remove(modifiedLocation);
-            Util.systemMessage(Logger.DEBUG, "Forcibly unregistering the generator at " + ChatColor.DARK_AQUA + modifiedLocation);
-        }
-        Util.systemMessage(Logger.DEBUG, "The database is now being updated.");
-        getDataStorage().set("generators", currentLocations);
-    }
 
     /**
      * Checks whether the block being held is a generator.
@@ -219,5 +189,31 @@ public abstract class BlockUtil {
                 || item.getType() == Material.STONE_PICKAXE
                 || item.getType() == Material.WOODEN_PICKAXE;
         else return false;
+    }
+
+    /**
+     * Checks if the generator at the specified location has some durability left.
+     * @since 1.2.7
+     * @param location Location object (X, Y, Z and world)
+     * @return true, if the generator durability differs from 0
+     */
+    public static boolean hasDurabilityLeft(GeneratorLocation location) {
+        return BucikGenerators.getGeneratorDurabilities().getValue(location) != 0;
+    }
+
+    /**
+     * Converts the regular Location object to {@see GeneratorLocation}
+     * @since 1.2.7
+     * @param location Location object
+     * @param worldName world name
+     * @return GeneratorLocation object
+     */
+    public static GeneratorLocation convertLocation(Location location, String worldName) {
+        return new GeneratorLocation(
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ(),
+                worldName
+        );
     }
 }

@@ -1,13 +1,11 @@
 package pl.workonfire.bucik.generators.listeners.blocks;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.metadata.MetadataValue;
+import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
@@ -30,12 +28,11 @@ public class BaseGeneratorBreakHandler {
 
     protected void run() {
         Block block = event.getBlock();
+        GeneratorLocation fullBlockLocation = BlockUtil.convertLocation(block.getLocation(), block.getWorld().getName());
         Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
         if (player.hasPermission(generator.getPermission())) {
-            if (generator.isDurabilityEnabled() && block.hasMetadata("durability")) {
-                int currentDurability = 0;
-                for (MetadataValue value : block.getMetadata("durability"))
-                    currentDurability = value.asInt();
+            if (generator.isDurabilityEnabled() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
+                int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);
                 if (currentDurability > 0) {
                     Util.playSound(player, Sound.ENTITY_BLAZE_HURT);
                     sendMessage(player, getPrefixedLanguageVariable("cannot-break-the-base") + currentDurability);
@@ -50,6 +47,8 @@ public class BaseGeneratorBreakHandler {
                 block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack(1));
                 Util.playSound(block, Sound.BLOCK_ANVIL_LAND);
                 Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
+                if (generator.isDurabilityEnabled())
+                    GeneratorDurabilities.getInstance().unregister(fullBlockLocation);
                 sendMessage(player, getPrefixedLanguageVariable("base-generator-destroyed"));
             }
         }

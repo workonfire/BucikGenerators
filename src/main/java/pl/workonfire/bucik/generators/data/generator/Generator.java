@@ -47,6 +47,7 @@ public class Generator {
     private final List<String> whitelistedItems;
 
     public Generator(String id) {
+        // Huh, I know this constructor is ugly. Don't judge me, I'm too lazy to refactor everything.
         this.id = id;
         breakCooldown = getGeneratorsConfig().getInt(getPropertyName("break-cooldown", id));
         permission = getGeneratorsConfig().getString(getPropertyName("permission", id));

@@ -6,6 +6,8 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
@@ -42,6 +44,9 @@ public class ForceDestroyCommand implements CommandInterface {
                 if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                     Generator generator = BlockUtil.getGeneratorFromMaterial(targetBlock.getType());
                     generator.unregister(targetBlock.getLocation(), targetBlock.getWorld());
+                    GeneratorLocation generatorLocation =
+                            BlockUtil.convertLocation(targetBlock.getLocation(), targetBlock.getWorld().getName());
+                    GeneratorDurabilities.getInstance().unregister(generatorLocation);
                     targetBlock.setType(Material.AIR);
                     targetBlock.getLocation().add(0, 1, 0).getBlock().setType(Material.AIR);
                     Util.playSound(player, Sound.ENTITY_WITHER_HURT);

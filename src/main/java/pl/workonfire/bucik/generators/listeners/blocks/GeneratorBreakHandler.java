@@ -10,14 +10,15 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
+import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
@@ -31,12 +32,15 @@ public class GeneratorBreakHandler {
     private final Player player;
     private final Generator baseGenerator;
     private final Location baseBlockLocation;
+    private final GeneratorLocation fullBlockLocation;
 
     protected GeneratorBreakHandler(BlockBreakEvent event, Player player, Generator baseGenerator, Location baseBlockLocation) {
         this.event = event;
         this.player = player;
         this.baseGenerator = baseGenerator;
         this.baseBlockLocation = baseBlockLocation;
+        this.fullBlockLocation = BlockUtil.convertLocation(
+                this.baseBlockLocation, this.baseBlockLocation.getWorld().getName());
     }
 
     protected void run() {
@@ -59,10 +63,8 @@ public class GeneratorBreakHandler {
                 if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
                     block.setType(baseGenerator.getGeneratorMaterial());
             }, baseGenerator.getBreakCooldown());
-            if (baseGenerator.isDurabilityEnabled() && baseBlockLocation.getBlock().hasMetadata("durability")) {
-                int currentDurability = 0;
-                for (MetadataValue value : baseBlockLocation.getBlock().getMetadata("durability"))
-                    currentDurability = value.asInt();
+            if (baseGenerator.isDurabilityEnabled() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
+                int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);
                 if (currentDurability == 1) {
                     baseBlockLocation.getBlock().setType(Material.AIR);
                     baseGenerator.unregister(baseBlockLocation, baseBlockLocation.getWorld());
@@ -70,11 +72,7 @@ public class GeneratorBreakHandler {
                     Util.playSound(block, Sound.ENTITY_WITHER_HURT);
                     Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
                 }
-                else {
-                    baseBlockLocation.getBlock().removeMetadata("durability", BucikGenerators.getInstance());
-                    baseBlockLocation.getBlock().setMetadata("durability",
-                            new FixedMetadataValue(BucikGenerators.getInstance(), currentDurability - 1));
-                }
+                else GeneratorDurabilities.getInstance().update(fullBlockLocation, currentDurability - 1);
             }
             Sound breakSound = Util.isServerLegacy() ? Sound.ENTITY_BLAZE_HURT : Sound.ENTITY_ENDER_DRAGON_HURT;
             Util.playSound(block, breakSound);
