@@ -13,8 +13,6 @@ import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import java.util.HashMap;
-
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
@@ -57,8 +55,8 @@ public class BlockPlaceListener implements Listener {
                         generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
                         if (generator.isDurabilityEnabled() && generator.getDurability() != 0) {
                             GeneratorLocation fullLocation =
-                                    BlockUtil.convertLocation(block.getLocation(), block.getWorld());
-                            GeneratorDurabilities.getInstance().register(fullLocation);
+                                    BlockUtil.convertLocation(block.getLocation(), block.getWorld().getName());
+                            GeneratorDurabilities.getInstance().update(fullLocation, generator.getDurability());
                         }
                     }
                 }

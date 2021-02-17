@@ -1,5 +1,7 @@
 package pl.workonfire.bucik.generators.data;
 
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
@@ -9,9 +11,10 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class GeneratorDurabilities implements Serializable {
-    private static GeneratorDurabilities instance;
-    public HashMap<GeneratorLocation, Integer> durabilities; // make private
-    private static final String FILE_PATH = BucikGenerators.getInstance().getDataFolder().getPath() + "/durabilities.ser";
+    private transient static GeneratorDurabilities instance;
+    private HashMap<GeneratorLocation, Integer> durabilities;
+    private transient static final String FILE_PATH
+            = BucikGenerators.getInstance().getDataFolder().getPath() + "/durabilities.ser";
 
     public GeneratorDurabilities() {
         try {
@@ -23,8 +26,8 @@ public class GeneratorDurabilities implements Serializable {
     }
 
     public void serialize() throws IOException {
-        ObjectOutputStream objectStream = new ObjectOutputStream(new FileOutputStream(FILE_PATH));
-        objectStream.writeObject(this);
+        BukkitObjectOutputStream objectStream = new BukkitObjectOutputStream(new FileOutputStream(FILE_PATH));
+        objectStream.writeObject(getInstance());
         objectStream.flush();
         objectStream.close();
     }
@@ -37,17 +40,12 @@ public class GeneratorDurabilities implements Serializable {
             durabilities = new HashMap<>();
             return;
         }
-        ObjectInputStream objectStream = new ObjectInputStream(new FileInputStream(FILE_PATH));
+        BukkitObjectInputStream objectStream = new BukkitObjectInputStream(new FileInputStream(FILE_PATH));
         GeneratorDurabilities receivedObject = (GeneratorDurabilities) objectStream.readObject();
-        Field durabilitiesField = receivedObject.getClass().getField("durabilities");
+        Field durabilitiesField = receivedObject.getClass().getDeclaredField("durabilities");
         durabilitiesField.setAccessible(true);
         Object receivedField = durabilitiesField.get(receivedObject);
         durabilities = (HashMap<GeneratorLocation, Integer>) receivedField;
-    }
-
-    public void register(GeneratorLocation location) {
-        update(location, 0);
-        Util.systemMessage(Logger.DEBUG, "Generator durability registered at " + location);
     }
 
     public void unregister(GeneratorLocation location) {

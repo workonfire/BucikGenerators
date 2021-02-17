@@ -53,13 +53,13 @@ public final class BucikGenerators extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        BlockUtil.forcePurgeGeneratorsWithDurability();
         ConfigManager.updateStorage();
         BlockUtil.unregisterRecipes();
         try {
             getGeneratorDurabilities().serialize();
         } catch (IOException exception) {
             Util.systemMessage(Logger.WARN, "Something went wrong during the serialization process.");
+            exception.printStackTrace();
         }
     }
 

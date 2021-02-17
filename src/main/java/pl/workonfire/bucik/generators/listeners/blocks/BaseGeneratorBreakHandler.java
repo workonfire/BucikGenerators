@@ -10,8 +10,6 @@ import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import java.util.HashMap;
-
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
@@ -30,7 +28,7 @@ public class BaseGeneratorBreakHandler {
 
     protected void run() {
         Block block = event.getBlock();
-        GeneratorLocation fullBlockLocation = BlockUtil.convertLocation(block.getLocation(), block.getWorld());
+        GeneratorLocation fullBlockLocation = BlockUtil.convertLocation(block.getLocation(), block.getWorld().getName());
         Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
         if (player.hasPermission(generator.getPermission())) {
             if (generator.isDurabilityEnabled() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {

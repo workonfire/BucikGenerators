@@ -1,28 +1,29 @@
 package pl.workonfire.bucik.generators.data;
 
-import org.bukkit.World;
+import java.io.Serializable;
+import java.util.Objects;
 
-public class GeneratorLocation {
+public class GeneratorLocation implements Serializable {
     private final int X, Y, Z;
-    private final World world;
+    private final String worldName;
 
-    public GeneratorLocation(int x, int y, int z, World world) {
+    public GeneratorLocation(int x, int y, int z, String worldName) {
         this.X = x;
         this.Y = y;
         this.Z = z;
-        this.world = world;
+        this.worldName = worldName;
     }
 
-    public boolean equals(GeneratorLocation xyz) {
-        return X == xyz.X && Y == xyz.Y && Z == xyz.Z && world.getName().equals(xyz.world.getName());
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GeneratorLocation that = (GeneratorLocation) o;
+        return X == that.X && Y == that.Y && Z == that.Z && worldName.equals(that.worldName);
     }
 
+    @Override
     public int hashCode() {
-        int result = 69;
-        int xHash = X ^ (X >>> 32);
-        int yHash = Y ^ (Y >>> 32);
-        int zHash = Z ^ (Z >>> 32);
-        int worldHash = world.hashCode();
-        return  37 * result + (xHash + yHash + zHash + worldHash);
+        return Objects.hash(X, Y, Z, worldName);
     }
 }
