@@ -1,20 +1,19 @@
 package pl.workonfire.bucik.generators.listeners.blocks;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.metadata.FixedMetadataValue;
-import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
+
+import java.util.HashMap;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
@@ -56,8 +55,11 @@ public class BlockPlaceListener implements Listener {
                         }
                         generator.register(block.getLocation(), block.getWorld());
                         generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
-                        if (generator.isDurabilityEnabled() && generator.getDurability() != 0)
-                            block.setMetadata("durability", new FixedMetadataValue(BucikGenerators.getInstance(), generator.getDurability()));
+                        if (generator.isDurabilityEnabled() && generator.getDurability() != 0) {
+                            GeneratorLocation fullLocation =
+                                    BlockUtil.convertLocation(block.getLocation(), block.getWorld());
+                            GeneratorDurabilities.getInstance().register(fullLocation);
+                        }
                     }
                 }
                 else {

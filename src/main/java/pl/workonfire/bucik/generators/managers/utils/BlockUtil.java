@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 
@@ -219,5 +220,18 @@ public abstract class BlockUtil {
                 || item.getType() == Material.STONE_PICKAXE
                 || item.getType() == Material.WOODEN_PICKAXE;
         else return false;
+    }
+
+    public static boolean hasDurabilityLeft(GeneratorLocation location) {
+        return BucikGenerators.getGeneratorDurabilities().getValue(location) != 0;
+    }
+
+    public static GeneratorLocation convertLocation(Location location, World world) {
+        return new GeneratorLocation(
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ(),
+                world
+        );
     }
 }
