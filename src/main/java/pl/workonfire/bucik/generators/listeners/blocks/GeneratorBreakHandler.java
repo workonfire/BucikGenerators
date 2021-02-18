@@ -33,7 +33,10 @@ public class GeneratorBreakHandler {
     private final Location baseBlockLocation;
     private final GeneratorLocation fullBlockLocation;
 
-    protected GeneratorBreakHandler(BlockBreakEvent event, Player player, Generator baseGenerator, Location baseBlockLocation) {
+    protected GeneratorBreakHandler(BlockBreakEvent event,
+                                    Player player,
+                                    Generator baseGenerator,
+                                    Location baseBlockLocation) {
         this.event = event;
         this.player = player;
         this.baseGenerator = baseGenerator;
@@ -100,11 +103,12 @@ public class GeneratorBreakHandler {
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                         DropItem item = new DropItem(baseGenerator.getId(), permission, Integer.parseInt(dropItemId));
                         if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.respectPickaxeFortune())) {
-                            if (item.isAPotion() && item.getPotionEffectTypeName() != null) {
+                            if (item.isPotion() && item.getPotionEffectTypeName() != null) {
                                 PotionEffect potionEffect = new PotionEffect(
                                         PotionEffectType.getByName(item.getPotionEffectTypeName()),
                                         item.getPotionEffectDuration() * 20,
-                                        item.getPotionEffectAmplifier());
+                                        item.getPotionEffectAmplifier()
+                                );
                                 player.addPotionEffect(potionEffect);
                             }
                             else if (item.isMoney() && item.getMoneyAmount() != 0 && VaultHandler.getEconomy() != null) {

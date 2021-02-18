@@ -71,6 +71,7 @@ public class Generator implements ItemProperty {
         whitelistedItems = (List<String>) getProperty("whitelist.items", STRING_LIST);
     }
 
+    @Override
     public String getPropName(String property) {
         return String.format("generators.%s.%s", this.id, property);
     }
@@ -81,7 +82,8 @@ public class Generator implements ItemProperty {
                 location.getBlockX(),
                 location.getBlockY(),
                 location.getBlockZ(),
-                isDurabilityOn());
+                isDurabilityOn()
+        );
     }
 
     /**

@@ -72,7 +72,7 @@ public class DropPeekCommand implements CommandExecutor, Command {
                                             hoverMsg.add(getLangVar("drop-item-amount") + dropItem.getAmount());
                                             hoverMsg.add("\n");
                                         }
-                                        if (dropItem.isAPotion()) {
+                                        if (dropItem.isPotion()) {
                                             hoverMsg.add(getLangVar("potion-type") + dropItem.getPotionEffectTypeName() + "\n");
                                             hoverMsg.add(getLangVar("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x\n");
                                             hoverMsg.add(getLangVar("potion-duration") + dropItem.getPotionEffectDuration() + "s");
@@ -106,7 +106,7 @@ public class DropPeekCommand implements CommandExecutor, Command {
                                             sendMessage(sender, getLangVar("drop-item-name") + Util.formatColors(dropItem.getItemName()));
                                         if (dropItem.getAmount() > 1)
                                             sendMessage(sender, getLangVar("drop-item-amount") + dropItem.getAmount());
-                                        if (dropItem.isAPotion()) {
+                                        if (dropItem.isPotion()) {
                                             sendMessage(sender, getLangVar("potion-type") + dropItem.getPotionEffectTypeName());
                                             sendMessage(sender, getLangVar("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x");
                                             sendMessage(sender, getLangVar("potion-duration") + dropItem.getPotionEffectDuration() + "s");

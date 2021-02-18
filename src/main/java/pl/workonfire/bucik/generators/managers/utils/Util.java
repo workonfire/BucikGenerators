@@ -118,10 +118,12 @@ public abstract class Util {
      * @since 1.0.5
      */
     public static void registerCommands() {
-        BucikGenerators.getInstance().getCommand("generators").setExecutor(new GeneratorsCommand());
-        BucikGenerators.getInstance().getCommand("generators").setTabCompleter(new MainTabCompleter());
-        BucikGenerators.getInstance().getCommand("drop").setExecutor(new DropPeekCommand());
-        BucikGenerators.getInstance().getCommand("drop").setTabCompleter(new DropTabCompleter());
+        String generatorsCommand = "generators";
+        String dropCommand = "drop";
+        BucikGenerators.getInstance().getCommand(generatorsCommand).setExecutor(new GeneratorsCommand());
+        BucikGenerators.getInstance().getCommand(generatorsCommand).setTabCompleter(new MainTabCompleter());
+        BucikGenerators.getInstance().getCommand(dropCommand).setExecutor(new DropPeekCommand());
+        BucikGenerators.getInstance().getCommand(dropCommand).setTabCompleter(new DropTabCompleter());
     }
 
     /**

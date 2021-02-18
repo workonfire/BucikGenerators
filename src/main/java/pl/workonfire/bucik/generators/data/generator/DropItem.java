@@ -64,7 +64,8 @@ public class DropItem implements ItemProperty {
                 this.generatorId,
                 this.permission,
                 this.itemId,
-                property);
+                property
+        );
     }
 
     /**
@@ -99,7 +100,7 @@ public class DropItem implements ItemProperty {
      * @since 1.0.8
      * @return true, if it is
      */
-    public boolean isAPotion() {
+    public boolean isPotion() {
         if (getMaterial() != null) return getMaterial().equals(Material.POTION);
         return false;
     }
