@@ -15,8 +15,8 @@ import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static java.lang.String.format;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getGeneratorsConfig;
+import static pl.workonfire.bucik.generators.managers.utils.ConfigProperty.*;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getGensConf;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getDataStorage;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
-public class Generator {
+public class Generator implements ItemProperty {
     private final String id;
     private final int breakCooldown;
     private final String permission;
@@ -32,52 +32,56 @@ public class Generator {
     private final String baseItemName;
     private final List<String> baseItemLore;
     private final Material generatorMaterial;
-    private final Set<String> generatorDropPermissionList;
+    private final Set<String> generatorDropPermissions;
     private final List<String> worldBlacklist;
     private final String itemDropMode;
     private final ConfigurationSection customRecipe;
     private final List<String> enchantments;
     private final boolean hideEnchantments;
-    private final boolean isDurabilityEnabled;
+    private final boolean isDurabilityOn;
     private final int durability;
-    private final boolean affectPickaxeDurability;
-    private final int affectPickaxeDurabilityValue;
+    private final boolean affectPxDurability;
+    private final int affectPxDurabilityValue;
     private final boolean respectPickaxeFortune;
-    private final boolean whitelistEnabled;
+    private final boolean whitelistOn;
     private final List<String> whitelistedItems;
 
+    @SuppressWarnings("unchecked")
     public Generator(String id) {
-        // Huh, I know this constructor is ugly. Don't judge me, I'm too lazy to refactor everything.
         this.id = id;
-        breakCooldown = getGeneratorsConfig().getInt(getPropertyName("break-cooldown", id));
-        permission = getGeneratorsConfig().getString(getPropertyName("permission", id));
-        baseItemMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("base.item", id)).toUpperCase());
-        baseItemName = getGeneratorsConfig().getString(getPropertyName("base.name", id));
-        baseItemLore = getGeneratorsConfig().getStringList(getPropertyName("base.lore", id));
-        generatorMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("generator.item", id)).toUpperCase());
-        generatorDropPermissionList = getGeneratorsConfig().getConfigurationSection(getPropertyName("generator.drop", id)).getKeys(false);
-        worldBlacklist = getGeneratorsConfig().getStringList(getPropertyName("world-blacklist", id));
-        itemDropMode = getGeneratorsConfig().getString(getPropertyName("generator.item-drop-mode", id));
-        customRecipe = getGeneratorsConfig().getConfigurationSection(getPropertyName("custom-crafting-recipe", id));
-        enchantments = getGeneratorsConfig().getStringList(getPropertyName("enchantments", id));
-        hideEnchantments = getGeneratorsConfig().getBoolean(getPropertyName("hide-enchantments", id));
-        isDurabilityEnabled = getGeneratorsConfig().getBoolean(getPropertyName("durability.enabled", id));
-        durability = getGeneratorsConfig().getInt(getPropertyName("durability.value", id));
-        affectPickaxeDurability = getGeneratorsConfig().getBoolean(getPropertyName("affect-pickaxe-durability.enabled", id));
-        affectPickaxeDurabilityValue = getGeneratorsConfig().getInt(getPropertyName("affect-pickaxe-durability.value", id));
-        respectPickaxeFortune = getGeneratorsConfig().getBoolean(getPropertyName("respect-pickaxe-fortune", id));
-        whitelistEnabled = getGeneratorsConfig().getBoolean(getPropertyName("whitelist.enabled", id));
-        whitelistedItems = getGeneratorsConfig().getStringList(getPropertyName("whitelist.items", id));
+        breakCooldown = (int) getProperty("break-cooldown", INTEGER);
+        permission = (String) getProperty("permission", STRING);
+        baseItemMaterial = (Material) getProperty("base.item", MATERIAL);
+        baseItemName = (String) getProperty("base.name", STRING);
+        baseItemLore = (List<String>) getProperty("base.lore", STRING_LIST);
+        generatorMaterial = (Material) getProperty("generator.item", MATERIAL);
+        generatorDropPermissions = ((ConfigurationSection) getProperty("generator.drop", CONFIG_SECTION))
+                .getKeys(false);
+        worldBlacklist = (List<String>) getProperty("world-blacklist", STRING_LIST);
+        itemDropMode = (String) getProperty("generator.item-drop-mode", STRING);
+        customRecipe = (ConfigurationSection) getProperty("custom-crafting-recipe", CONFIG_SECTION);
+        enchantments = (List<String>) getProperty("enchantments", STRING_LIST);
+        hideEnchantments = (boolean) getProperty("hide-enchantments", BOOLEAN);
+        isDurabilityOn = (boolean) getProperty("durability.enabled", BOOLEAN);
+        durability = (int) getProperty("durability.value", INTEGER);
+        affectPxDurability = (boolean) getProperty("affect-pickaxe-durability.enabled", BOOLEAN);
+        affectPxDurabilityValue = (int) getProperty("affect-pickaxe-durability.value", INTEGER);
+        respectPickaxeFortune = (boolean) getProperty("respect-pickaxe-fortune", BOOLEAN);
+        whitelistOn = (boolean) getProperty("whitelist.enabled", BOOLEAN);
+        whitelistedItems = (List<String>) getProperty("whitelist.items", STRING_LIST);
     }
 
-    /**
-     * Gets the specified configuration section.
-     * @param property Section name
-     * @param generatorName Generator handler
-     * @return Formatted property name
-     */
-    private String getPropertyName(String property, String generatorName) {
-        return format("generators.%s.%s", generatorName, property);
+    public String getPropName(String property) {
+        return String.format("generators.%s.%s", this.id, property);
+    }
+
+    private String formatData(Location location, World world) {
+        return String.format("%s|%d|%d|%d|%b",
+                world.getName(),
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ(),
+                isDurabilityOn());
     }
 
     /**
@@ -88,8 +92,7 @@ public class Generator {
      */
     public void register(Location location, World world) {
         List<String> currentLocations = getDataStorage().getStringList("generators");
-        String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
-        currentLocations.add(data);
+        currentLocations.add(formatData(location, world));
         getDataStorage().set("generators", currentLocations);
     }
 
@@ -101,8 +104,7 @@ public class Generator {
      */
     public void unregister(Location location, World world) {
         List<String> currentLocations = getDataStorage().getStringList("generators");
-        String data = format("%s|%d|%d|%d|%b", world.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), isDurabilityEnabled());
-        currentLocations.remove(data);
+        currentLocations.remove(formatData(location, world));
         getDataStorage().set("generators", currentLocations);
     }
 
@@ -113,7 +115,8 @@ public class Generator {
      * @return A set of item IDs.
      */
     public Set<String> getDropItemsIds(String permission) {
-        return getGeneratorsConfig().getConfigurationSection(format("generators.%s.generator.drop.%s", getId(), permission)).getKeys(false);
+        return getGensConf().getConfigurationSection(
+                String.format("generators.%s.generator.drop.%s", getId(), permission)).getKeys(false);
     }
 
     /**
@@ -144,7 +147,8 @@ public class Generator {
                 Enchantment enchantmentRepresentation = (Util.isServerLegacy())
                         ? Enchantment.getByName(enchantmentName.toUpperCase())
                         : EnchantmentWrapper.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
-                if (enchantmentRepresentation != null) item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
+                if (enchantmentRepresentation != null)
+                    item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
             }
         item.setAmount(amount == 0 ? 1 : amount);
         return item;
@@ -180,8 +184,8 @@ public class Generator {
         return generatorMaterial;
     }
 
-    public Set<String> getGeneratorDropPermissionList() {
-        return generatorDropPermissionList;
+    public Set<String> getGeneratorDropPermissions() {
+        return generatorDropPermissions;
     }
 
     public List<String> getWorldBlacklist() {
@@ -204,31 +208,31 @@ public class Generator {
         return hideEnchantments;
     }
 
-    public boolean isDurabilityEnabled() {
-        return isDurabilityEnabled;
+    public boolean isDurabilityOn() {
+        return isDurabilityOn;
     }
 
     public int getDurability() {
         return durability;
     }
 
-    public boolean isAffectPickaxeDurabilityEnabled() {
-        return affectPickaxeDurability;
+    public boolean isAffectPxDurabilityOn() {
+        return affectPxDurability;
     }
 
-    public int getAffectPickaxeDurabilityValue() {
-        return affectPickaxeDurabilityValue;
+    public int getAffectPxDurabilityValue() {
+        return affectPxDurabilityValue;
     }
 
     public boolean respectPickaxeFortune() {
         return respectPickaxeFortune;
     }
 
-    public boolean isWhitelistEnabled() {
-        return whitelistEnabled;
+    public boolean isWhitelistOn() {
+        return whitelistOn;
     }
 
-    public List<String> getWhitelistedItems() {
+    public List<String> getWhitelistItems() {
         return whitelistedItems;
     }
 }

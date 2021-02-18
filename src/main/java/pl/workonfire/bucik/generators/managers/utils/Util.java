@@ -23,8 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.bukkit.Bukkit.getServer;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 
 @SuppressWarnings("ConstantConditions")
 public abstract class Util {
@@ -80,12 +80,12 @@ public abstract class Util {
                 player.sendTitle(t, null, 20, 60, 20);
                 player.getWorld().strikeLightning(player.getLocation());
             }
-            sendMessage(commandSender, getPrefixedLanguageVariable("config-load-error"));
+            sendMessage(commandSender, getPrefixedLangVar("config-load-error"));
             if (ConfigManager.getConfig().getBoolean("options.debug") && player.hasPermission("bucik.generators.debug")) {
-                sendMessage(commandSender, getPrefixedLanguageVariable("config-load-error-debug-header"));
+                sendMessage(commandSender, getPrefixedLangVar("config-load-error-debug-header"));
                 StringWriter stringWriter = new StringWriter();
                 exception.printStackTrace(new PrintWriter(stringWriter));
-                Util.systemMessage(Logger.WARN, getLanguageVariable("contact-developer"));
+                Util.systemMessage(Logger.WARN, getLangVar("contact-developer"));
                 exception.printStackTrace();
                 String exceptionAsString = stringWriter.toString();
                 exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
@@ -93,11 +93,11 @@ public abstract class Util {
                         .replaceAll("\u0009", "    ")
                         .replaceAll("\r", "\n") + "...")
                 ;
-                sendMessage(commandSender, getPrefixedLanguageVariable("debug-more-info-in-console"));
+                sendMessage(commandSender, getPrefixedLangVar("debug-more-info-in-console"));
             }
         }
         else {
-            Util.systemMessage(Logger.WARN, getLanguageVariable("contact-developer"));
+            Util.systemMessage(Logger.WARN, getLangVar("contact-developer"));
             exception.printStackTrace();
         }
     }
@@ -179,8 +179,10 @@ public abstract class Util {
      */
     public static void systemMessage(Logger level, String message) {
         message = isServerLegacy() ? ChatColor.stripColor(message) : formatColors(message);
-        String pluginPrefix = isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
-        String messagePrefix = pluginPrefix + "[" + (isServerLegacy() ? "" : level.getColor()) + level.name() + ChatColor.RESET + "] ";
+        String pluginPrefix =
+                isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
+        String messagePrefix =
+                pluginPrefix + "[" + (isServerLegacy() ? "" : level.getColor()) + level.name() + ChatColor.RESET + "] ";
         if (!ConfigManager.getConfig().getBoolean("options.debug") && level == Logger.DEBUG) return;
         level.getStream().println(messagePrefix + message);
     }
@@ -206,7 +208,7 @@ public abstract class Util {
      */
     public static boolean isAuthorized(CommandSender commandSender, String permissionNode) {
         if (!commandSender.hasPermission(permissionNode)) {
-            sendMessage(commandSender, getPrefixedLanguageVariable("no-permission"));
+            sendMessage(commandSender, getPrefixedLangVar("no-permission"));
             return false;
         }
         return true;
@@ -220,7 +222,7 @@ public abstract class Util {
      */
     public static boolean isPlayer(CommandSender commandSender) {
         if (!(commandSender instanceof Player)) {
-            sendMessage(commandSender, getPrefixedLanguageVariable("cannot-open-from-console"));
+            sendMessage(commandSender, getPrefixedLangVar("cannot-open-from-console"));
             return false;
         }
         return true;

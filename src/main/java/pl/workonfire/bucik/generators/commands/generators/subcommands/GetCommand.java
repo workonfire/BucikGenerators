@@ -8,7 +8,7 @@ import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 public class GetCommand implements CommandInterface {
@@ -26,7 +26,7 @@ public class GetCommand implements CommandInterface {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (Util.isAuthorized(sender, permission())) {
-            if (args.length == 1) sendMessage(sender, getPrefixedLanguageVariable("no-generator-name-specified"));
+            if (args.length == 1) sendMessage(sender, getPrefixedLangVar("no-generator-name-specified"));
             else {
                 String generatorName = args[1];
                 if (BlockUtil.isGeneratorDefined(generatorName)) {
@@ -37,7 +37,7 @@ public class GetCommand implements CommandInterface {
                             if (args.length == 4) {
                                 targetPlayer = Bukkit.getServer().getPlayer(args[3]);
                                 if (targetPlayer == null) {
-                                    sendMessage(sender, getPrefixedLanguageVariable("this-player-does-not-exist"));
+                                    sendMessage(sender, getPrefixedLangVar("this-player-does-not-exist"));
                                     return;
                                 }
                             }
@@ -48,7 +48,7 @@ public class GetCommand implements CommandInterface {
                             targetPlayer.getInventory().addItem(generator.getItemStack(Integer.parseInt(args[2])));
                         }
                         catch (NumberFormatException exception) {
-                            sendMessage(sender, getPrefixedLanguageVariable("argument-must-be-an-int"));
+                            sendMessage(sender, getPrefixedLangVar("argument-must-be-an-int"));
                             return;
                         }
                     }
@@ -60,9 +60,9 @@ public class GetCommand implements CommandInterface {
                         }
                         else return;
                     }
-                    sendMessage(sender, getPrefixedLanguageVariable("generator-given") + generator.getId());
+                    sendMessage(sender, getPrefixedLangVar("generator-given") + generator.getId());
                 }
-                else sendMessage(sender, getPrefixedLanguageVariable("generator-does-not-exist"));
+                else sendMessage(sender, getPrefixedLangVar("generator-does-not-exist"));
             }
         }
     }

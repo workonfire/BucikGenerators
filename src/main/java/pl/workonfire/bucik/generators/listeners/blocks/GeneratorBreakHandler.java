@@ -21,7 +21,7 @@ import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
@@ -46,9 +46,9 @@ public class GeneratorBreakHandler {
         Block block = event.getBlock();
         event.setCancelled(true);
         boolean breakable = true;
-        if (baseGenerator.isWhitelistEnabled()) {
+        if (baseGenerator.isWhitelistOn()) {
             breakable = false;
-            for (String materialName : baseGenerator.getWhitelistedItems()) {
+            for (String materialName : baseGenerator.getWhitelistItems()) {
                 Material material = Material.getMaterial(materialName);
                 if (player.getInventory().getItemInMainHand().getType().equals(material)) {
                     breakable = true;
@@ -62,12 +62,12 @@ public class GeneratorBreakHandler {
                 if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
                     block.setType(baseGenerator.getGeneratorMaterial());
             }, baseGenerator.getBreakCooldown());
-            if (baseGenerator.isDurabilityEnabled() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
+            if (baseGenerator.isDurabilityOn() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
                 int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);
                 if (currentDurability == 1) {
                     baseBlockLocation.getBlock().setType(Material.AIR);
                     baseGenerator.unregister(baseBlockLocation, baseBlockLocation.getWorld());
-                    sendMessage(player, getPrefixedLanguageVariable("generator-has-worn-out"));
+                    sendMessage(player, getPrefixedLangVar("generator-has-worn-out"));
                     Util.playSound(block, Sound.ENTITY_WITHER_HURT);
                     Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
                 }
@@ -75,7 +75,7 @@ public class GeneratorBreakHandler {
             }
             Sound breakSound = Util.isServerLegacy() ? Sound.ENTITY_BLAZE_HURT : Sound.ENTITY_ENDER_DRAGON_HURT;
             Util.playSound(block, breakSound);
-            if (baseGenerator.isAffectPickaxeDurabilityEnabled()) {
+            if (baseGenerator.isAffectPxDurabilityOn()) {
                 ItemStack currentItem = player.getInventory().getItemInMainHand();
                 ItemMeta currentItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
                 if (BlockUtil.isItemAPickaxe(currentItem)) {
@@ -88,17 +88,17 @@ public class GeneratorBreakHandler {
                         int dropDivider = 1;
                         if (currentItem.containsEnchantment(Enchantment.DURABILITY))
                             dropDivider = currentItem.getEnchantmentLevel(Enchantment.DURABILITY);
-                        currentDamage += baseGenerator.getAffectPickaxeDurabilityValue() / dropDivider;
+                        currentDamage += baseGenerator.getAffectPxDurabilityValue() / dropDivider;
                         ((Damageable) currentItemMeta).setDamage(currentDamage);
                         currentItem.setItemMeta(currentItemMeta);
                         player.getInventory().setItemInMainHand(currentItem);
                     }
                 }
             }
-            for (String permission : baseGenerator.getGeneratorDropPermissionList()) {
+            for (String permission : baseGenerator.getGeneratorDropPermissions()) {
                 if (player.hasPermission(Util.getPermission(permission))) {
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
-                        DropItem item = new DropItem(baseGenerator, permission, Integer.parseInt(dropItemId));
+                        DropItem item = new DropItem(baseGenerator.getId(), permission, Integer.parseInt(dropItemId));
                         if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.respectPickaxeFortune())) {
                             if (item.isAPotion() && item.getPotionEffectTypeName() != null) {
                                 PotionEffect potionEffect = new PotionEffect(
@@ -131,6 +131,6 @@ public class GeneratorBreakHandler {
                 }
             }
         }
-        else sendMessage(player, getPrefixedLanguageVariable("no-permission"));
+        else sendMessage(player, getPrefixedLangVar("no-permission"));
     }
 }

@@ -15,8 +15,8 @@ import pl.workonfire.bucik.generators.managers.utils.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getLanguageVariable;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
@@ -53,42 +53,42 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                         targetBlock = player.getTargetBlock(null, 5);
                     }
                     if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
-                        sendMessage(sender, getPrefixedLanguageVariable("items-drop-list"));
+                        sendMessage(sender, getPrefixedLangVar("items-drop-list"));
                         Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(targetBlock.getType()).getId());
-                        for (String permission : generator.getGeneratorDropPermissionList()) {
+                        for (String permission : generator.getGeneratorDropPermissions()) {
                             if (player.hasPermission(Util.getPermission(permission))) {
-                                sendMessage(sender, getLanguageVariable("items-for-permission") + Util.getPermission(permission) + "§f:");
+                                sendMessage(sender, getLangVar("items-for-permission") + Util.getPermission(permission) + "§f:");
                                 for (String dropItemId : generator.getDropItemsIds(permission)) {
-                                    DropItem dropItem = new DropItem(generator, permission, Integer.parseInt(dropItemId));
+                                    DropItem dropItem = new DropItem(generator.getId(), permission, Integer.parseInt(dropItemId));
                                     sendMessage(sender, "§c§m--------------");
                                     try {
                                         ComponentBuilder componentBuilder = new ComponentBuilder();
                                         List<String> finalHoverMessage = new ArrayList<>();
-                                        TextComponent dropHover = new TextComponent(getLanguageVariable("drop-item-material") + dropItem.getItemMaterialName());
+                                        TextComponent dropHover = new TextComponent(getLangVar("drop-item-material") + dropItem.getMaterialName());
                                         if (dropItem.getItemName() != null) {
-                                            finalHoverMessage.add(getLanguageVariable("drop-item-name") + Util.formatColors(dropItem.getItemName()));
+                                            finalHoverMessage.add(getLangVar("drop-item-name") + Util.formatColors(dropItem.getItemName()));
                                             finalHoverMessage.add("\n");
                                         }
-                                        if (dropItem.getItemAmount() > 1) {
-                                            finalHoverMessage.add(getLanguageVariable("drop-item-amount") + dropItem.getItemAmount());
+                                        if (dropItem.getAmount() > 1) {
+                                            finalHoverMessage.add(getLangVar("drop-item-amount") + dropItem.getAmount());
                                             finalHoverMessage.add("\n");
                                         }
                                         if (dropItem.isAPotion()) {
-                                            finalHoverMessage.add(getLanguageVariable("potion-type") + dropItem.getPotionEffectTypeName() + "\n");
-                                            finalHoverMessage.add(getLanguageVariable("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x\n");
-                                            finalHoverMessage.add(getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() + "s");
+                                            finalHoverMessage.add(getLangVar("potion-type") + dropItem.getPotionEffectTypeName() + "\n");
+                                            finalHoverMessage.add(getLangVar("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x\n");
+                                            finalHoverMessage.add(getLangVar("potion-duration") + dropItem.getPotionEffectDuration() + "s");
                                             finalHoverMessage.add("\n");
                                         }
                                         else if (dropItem.isMoney() && VaultHandler.getEconomy() != null) {
-                                            finalHoverMessage.add(getLanguageVariable("drop-item-money-amount") + dropItem.getMoneyAmount());
+                                            finalHoverMessage.add(getLangVar("drop-item-money-amount") + dropItem.getMoneyAmount());
                                             finalHoverMessage.add("\n");
                                         }
                                         else if (dropItem.isExp()) {
-                                            finalHoverMessage.add(getLanguageVariable("drop-item-exp-amount") + dropItem.getExpAmount());
+                                            finalHoverMessage.add(getLangVar("drop-item-exp-amount") + dropItem.getExpAmount());
                                             finalHoverMessage.add("\n");
                                         }
                                         if (!dropItem.getEnchantments().isEmpty()) {
-                                            finalHoverMessage.add(getLanguageVariable("drop-item-enchantments"));
+                                            finalHoverMessage.add(getLangVar("drop-item-enchantments"));
                                             finalHoverMessage.add("\n");
                                             for (String enchantment : dropItem.getEnchantments()) {
                                                 finalHoverMessage.add(enchantment);
@@ -102,34 +102,34 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                                         player.spigot().sendMessage(dropHover);
                                     }
                                     catch (NoSuchMethodError error) {
-                                        sendMessage(sender, getLanguageVariable("drop-item-material") + dropItem.getItemMaterialName());
+                                        sendMessage(sender, getLangVar("drop-item-material") + dropItem.getMaterialName());
                                         if (dropItem.getItemName() != null)
-                                            sendMessage(sender, getLanguageVariable("drop-item-name") + Util.formatColors(dropItem.getItemName()));
-                                        if (dropItem.getItemAmount() > 1)
-                                            sendMessage(sender, getLanguageVariable("drop-item-amount") + dropItem.getItemAmount());
+                                            sendMessage(sender, getLangVar("drop-item-name") + Util.formatColors(dropItem.getItemName()));
+                                        if (dropItem.getAmount() > 1)
+                                            sendMessage(sender, getLangVar("drop-item-amount") + dropItem.getAmount());
                                         if (dropItem.isAPotion()) {
-                                            sendMessage(sender, getLanguageVariable("potion-type") + dropItem.getPotionEffectTypeName());
-                                            sendMessage(sender, getLanguageVariable("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x");
-                                            sendMessage(sender, getLanguageVariable("potion-duration") + dropItem.getPotionEffectDuration() + "s");
+                                            sendMessage(sender, getLangVar("potion-type") + dropItem.getPotionEffectTypeName());
+                                            sendMessage(sender, getLangVar("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x");
+                                            sendMessage(sender, getLangVar("potion-duration") + dropItem.getPotionEffectDuration() + "s");
                                         }
                                         if (dropItem.isMoney() && VaultHandler.getEconomy() != null)
-                                            sendMessage(sender, getLanguageVariable("drop-item-money-amount") + dropItem.getMoneyAmount());
+                                            sendMessage(sender, getLangVar("drop-item-money-amount") + dropItem.getMoneyAmount());
                                         if (!dropItem.getEnchantments().isEmpty()) {
-                                            sendMessage(sender, getLanguageVariable("drop-item-enchantments"));
+                                            sendMessage(sender, getLangVar("drop-item-enchantments"));
                                             for (String enchantment : dropItem.getEnchantments()) player.sendMessage(enchantment);
                                         }
                                     }
-                                    sendMessage(sender, getLanguageVariable("drop-item-chance") + dropItem.getDropChance() + "%");
+                                    sendMessage(sender, getLangVar("drop-item-chance") + dropItem.getDropChance() + "%");
                                 }
                                 sendMessage(sender, "§c§m--------------");
                             }
                             else {
-                                sendMessage(sender, getPrefixedLanguageVariable("no-drop"));
+                                sendMessage(sender, getPrefixedLangVar("no-drop"));
                                 return;
                             }
                         }
                     }
-                    else sendMessage(sender, getPrefixedLanguageVariable("block-is-not-a-generator"));
+                    else sendMessage(sender, getPrefixedLangVar("block-is-not-a-generator"));
                 }
                 catch (Exception exception) {
                     Util.handleErrors(sender, exception);

@@ -11,19 +11,21 @@ import pl.workonfire.bucik.generators.data.DropMultiplier;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static java.lang.String.format;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getGeneratorsConfig;
+import static pl.workonfire.bucik.generators.managers.utils.ConfigProperty.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
-public class DropItem {
+public class DropItem implements ItemProperty {
+    private final String generatorId;
+    private final String permission;
+    private final int itemId;
     private final double dropChance;
-    private final Material itemMaterial;
-    private final String itemMaterialName;
-    private final int itemAmount;
+    private final Material material;
+    private final String materialName;
+    private final int amount;
     private final String itemName;
     private final List<String> itemLore;
     private final String actionBarMessage;
@@ -35,33 +37,34 @@ public class DropItem {
     private final int expAmount;
     private final boolean hideEnchantments;
 
-    public DropItem(Generator generator, String permission, int id) {
-        dropChance = getGeneratorsConfig().getDouble(getPropertyName("chance", generator.getId(), id, permission));
-        itemMaterial = Material.getMaterial(getGeneratorsConfig().getString(getPropertyName("item", generator.getId(), id, permission)).toUpperCase());
-        itemMaterialName = getGeneratorsConfig().getString(getPropertyName("item", generator.getId(), id, permission)).toUpperCase();
-        itemAmount = getGeneratorsConfig().getInt(getPropertyName("amount", generator.getId(), id, permission));
-        itemName = getGeneratorsConfig().getString(getPropertyName("name", generator.getId(), id, permission));
-        itemLore = getGeneratorsConfig().getStringList(getPropertyName("lore", generator.getId(), id, permission));
-        actionBarMessage = getGeneratorsConfig().getString(getPropertyName("action-bar-message", generator.getId(), id, permission));
-        enchantments = getGeneratorsConfig().getStringList(getPropertyName("enchantments", generator.getId(), id, permission));
-        potionEffectTypeName = getGeneratorsConfig().getString(getPropertyName("potion.effect", generator.getId(), id, permission));
-        potionEffectDuration = getGeneratorsConfig().getInt(getPropertyName("potion.duration", generator.getId(), id, permission));
-        potionEffectAmplifier = getGeneratorsConfig().getInt(getPropertyName("potion.amplifier", generator.getId(), id, permission));
-        moneyAmount = getGeneratorsConfig().getDouble(getPropertyName("money-amount", generator.getId(), id, permission));
-        expAmount = getGeneratorsConfig().getInt(getPropertyName("exp-amount", generator.getId(), id, permission));
-        hideEnchantments = getGeneratorsConfig().getBoolean(getPropertyName("hide-enchantments", generator.getId(), id, permission));
+    @SuppressWarnings("unchecked")
+    public DropItem(String generatorId, String permission, int itemId) {
+        this.generatorId = generatorId;
+        this.permission = permission;
+        this.itemId = itemId;
+        dropChance = (double) getProperty("chance", DOUBLE);
+        material = (Material) getProperty("item", MATERIAL);
+        materialName = ((String) getProperty("item", STRING)).toUpperCase();
+        amount = (int) getProperty("amount", INTEGER);
+        itemName = (String) getProperty("name", STRING);
+        itemLore = (List<String>) getProperty("lore", STRING_LIST);
+        actionBarMessage = (String) getProperty("action-bar-message", STRING);
+        enchantments = (List<String>) getProperty("enchantments", STRING_LIST);
+        potionEffectTypeName = (String) getProperty("potion.effect", STRING);
+        potionEffectDuration = (int) getProperty("potion.duration", INTEGER);
+        potionEffectAmplifier = (int) getProperty("potion.amplifier", INTEGER);
+        moneyAmount = (double) getProperty("money-amount", DOUBLE);
+        expAmount = (int) getProperty("exp-amount", INTEGER);
+        hideEnchantments = (boolean) getProperty("hide-enchantments", BOOLEAN);
     }
 
-    /**
-     * Gets the specified configuration section.
-     * @param property Section name
-     * @param generatorName Generator handler
-     * @param generatorId Generator ID
-     * @param permission Generator permission
-     * @return Formatted property name
-     */
-    private String getPropertyName(String property, String generatorName, int generatorId, String permission) {
-        return format("generators.%s.generator.drop.%s.%d.%s", generatorName, permission, generatorId, property);
+    @Override
+    public String getPropName(String property) {
+        return String.format("generators.%s.generator.drop.%s.%d.%s",
+                this.generatorId,
+                this.permission,
+                this.itemId,
+                property);
     }
 
     /**
@@ -70,7 +73,7 @@ public class DropItem {
      * @return ItemStack object
      */
     public ItemStack getItemStack() {
-        ItemStack item = new ItemStack(getItemMaterial());
+        ItemStack item = new ItemStack(getMaterial());
         ItemMeta itemMeta = item.getItemMeta();
         if (itemName != null) itemMeta.setDisplayName(Util.formatColors(getItemName()));
         if (itemLore != null) itemMeta.setLore(getItemLore());
@@ -87,7 +90,7 @@ public class DropItem {
                     item.addUnsafeEnchantment(enchantmentRepresentation, enchantmentLevel);
             }
         }
-        item.setAmount(getItemAmount());
+        item.setAmount(getAmount());
         return item;
     }
 
@@ -97,7 +100,7 @@ public class DropItem {
      * @return true, if it is
      */
     public boolean isAPotion() {
-        if (getItemMaterial() != null) return getItemMaterial().equals(Material.POTION);
+        if (getMaterial() != null) return getMaterial().equals(Material.POTION);
         return false;
     }
 
@@ -107,7 +110,8 @@ public class DropItem {
      * @return true, if it is
      */
     public boolean isExp() {
-        return getItemMaterialName().equalsIgnoreCase("EXP") || getItemMaterialName().equalsIgnoreCase("XP");
+        return getMaterialName().equalsIgnoreCase("EXP")
+                || getMaterialName().equalsIgnoreCase("XP");
     }
 
     /**
@@ -116,7 +120,7 @@ public class DropItem {
      * @return true, if it is
      */
     public boolean isMoney() {
-        return getItemMaterialName().equalsIgnoreCase("MONEY");
+        return getMaterialName().equalsIgnoreCase("MONEY");
     }
 
     /**
@@ -139,12 +143,12 @@ public class DropItem {
         return dropChance * DropMultiplier.getDropMultiplier();
     }
 
-    public Material getItemMaterial() {
-        return itemMaterial;
+    public Material getMaterial() {
+        return material;
     }
 
-    public int getItemAmount() {
-        return itemAmount == 0 ? 1 : itemAmount;
+    public int getAmount() {
+        return amount == 0 ? 1 : amount;
     }
 
     public String getItemName() {
@@ -181,8 +185,8 @@ public class DropItem {
         return moneyAmount;
     }
 
-    public String getItemMaterialName() {
-        return itemMaterialName;
+    public String getMaterialName() {
+        return materialName;
     }
 
     public int getExpAmount() {

@@ -5,7 +5,7 @@ import pl.workonfire.bucik.generators.data.DropMultiplier;
 import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLanguageVariable;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 public class DropManipulateCommand implements CommandInterface {
@@ -23,23 +23,23 @@ public class DropManipulateCommand implements CommandInterface {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (Util.isAuthorized(sender, permission())) {
-            if (args.length == 1) sender.sendMessage(getPrefixedLanguageVariable("not-enough-arguments"));
+            if (args.length == 1) sender.sendMessage(getPrefixedLangVar("not-enough-arguments"));
             else {
                 if (args[1].equalsIgnoreCase("getMultiplier"))
-                    sendMessage(sender, getPrefixedLanguageVariable("current-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x");
+                    sendMessage(sender, getPrefixedLangVar("current-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x");
                 else if (args[1].equalsIgnoreCase("setMultiplier")) {
-                    if (args.length == 2) sendMessage(sender, getPrefixedLanguageVariable("not-enough-arguments"));
+                    if (args.length == 2) sendMessage(sender, getPrefixedLangVar("not-enough-arguments"));
                     else {
                         try {
                             DropMultiplier.setDropMultiplier(Integer.parseInt(args[2].replaceAll("x", "")));
-                            sendMessage(sender, getPrefixedLanguageVariable("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
+                            sendMessage(sender, getPrefixedLangVar("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
                         }
                         catch (NumberFormatException exception) {
-                            sendMessage(sender, getPrefixedLanguageVariable("argument-must-be-an-int"));
+                            sendMessage(sender, getPrefixedLangVar("argument-must-be-an-int"));
                         }
                     }
                 }
-                else sendMessage(sender, getPrefixedLanguageVariable("subcommand-does-not-exist"));
+                else sendMessage(sender, getPrefixedLangVar("subcommand-does-not-exist"));
             }
         }
     }

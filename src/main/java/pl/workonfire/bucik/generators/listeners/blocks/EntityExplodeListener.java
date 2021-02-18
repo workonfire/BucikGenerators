@@ -26,7 +26,7 @@ public class EntityExplodeListener implements Listener {
                     BucikGenerators.getGeneratorDurabilities().unregister(fullLocation);
                 }
                 else if (baseGenerator != null && BlockUtil.isBlockAGenerator(baseBlockLocation, baseBlockLocation.getWorld())
-                        && !baseGenerator.isDurabilityEnabled())
+                        && !baseGenerator.isDurabilityOn())
                     baseGenerator.unregister(baseBlockLocation, block.getWorld());
             }
         }

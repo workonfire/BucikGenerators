@@ -21,7 +21,7 @@ public abstract class ConfigManager {
      * Initializes the configuration files.
      * @since 1.0.0
      */
-    public static void initializeConfiguration() {
+    public static void initializeConfig() {
         config = getInstance().getConfig();
         String languageFileName = config.getString("options.locale") + ".yml";
         File languageConfigFile = new File(getInstance().getDataFolder() + "/locales", languageFileName);
@@ -43,7 +43,7 @@ public abstract class ConfigManager {
      * Initializes the database.
      * @since 1.0.1
      */
-    public static void initializeStorage() {
+    public static void initializeDb() {
         if (!dataStorageFile.exists()) {
             dataStorageFile.getParentFile().mkdirs();
             getInstance().saveResource("storage.yml", false);
@@ -55,7 +55,7 @@ public abstract class ConfigManager {
      * Saves the database.yml file.
      * @since 1.0.0
      */
-    public static void updateStorage() {
+    public static void updateDb() {
         try {
             getDataStorage().save(dataStorageFile);
             Util.systemMessage(Logger.DEBUG, "File saved.");
@@ -70,7 +70,7 @@ public abstract class ConfigManager {
      */
     public static void reloadAll() {
         getInstance().reloadConfig();
-        initializeConfiguration();
+        initializeConfig();
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class ConfigManager {
      * @param variable Unparsed language variable, e.g. "no-permission"
      * @return Language string
      */
-    public static String getLanguageVariable(String variable) {
+    public static String getLangVar(String variable) {
         return Util.formatColors(getLanguageConfig().getString("language." + variable));
     }
 
@@ -89,8 +89,8 @@ public abstract class ConfigManager {
      * @param variable Unparsed language variable, e.g. "no-permission"
      * @return Language string with prefix.
      */
-    public static String getPrefixedLanguageVariable(String variable) {
-        return getPrefix() + " " + getLanguageVariable(variable);
+    public static String getPrefixedLangVar(String variable) {
+        return getPrefix() + " " + getLangVar(variable);
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class ConfigManager {
      * @return Plugin prefix
      */
     public static String getPrefix() {
-        return getLanguageVariable("plugin-prefix");
+        return getLangVar("plugin-prefix");
     }
 
     public static FileConfiguration getConfig() {
@@ -110,7 +110,7 @@ public abstract class ConfigManager {
         return languageConfig;
     }
 
-    public static FileConfiguration getGeneratorsConfig() {
+    public static FileConfiguration getGensConf() {
         return generatorsConfig;
     }
 

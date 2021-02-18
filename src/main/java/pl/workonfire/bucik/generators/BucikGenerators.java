@@ -21,7 +21,6 @@ import java.io.IOException;
  * @since   2020-06-13
  */
 
-// TODO: Unify Location and GeneratorLocation
 
 public final class BucikGenerators extends JavaPlugin {
     private static BucikGenerators instance;
@@ -33,8 +32,8 @@ public final class BucikGenerators extends JavaPlugin {
         instance = this;
         pluginVersion = getInstance().getDescription().getVersion();
         getInstance().saveDefaultConfig();
-        ConfigManager.initializeConfiguration();
-        ConfigManager.initializeStorage();
+        ConfigManager.initializeConfig();
+        ConfigManager.initializeDb();
         generatorDurabilities = GeneratorDurabilities.getInstance();
         Util.registerEvents();
         Util.registerCommands();
@@ -44,7 +43,7 @@ public final class BucikGenerators extends JavaPlugin {
         Util.systemMessage(Logger.DEBUG, "Economy setup: " + VaultHandler.getEconomy());
         int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         if (dataSaveInterval != 0)
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), ConfigManager::updateStorage, 0, dataSaveInterval);
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), ConfigManager::updateDb, 0, dataSaveInterval);
         BlockUtil.registerRecipes();
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
             int pluginId = 7854;
@@ -55,7 +54,7 @@ public final class BucikGenerators extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        ConfigManager.updateStorage();
+        ConfigManager.updateDb();
         BlockUtil.unregisterRecipes();
         try {
             getGeneratorDurabilities().serialize();

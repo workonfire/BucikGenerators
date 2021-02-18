@@ -27,7 +27,7 @@ public abstract class BlockUtil {
      * @return A set of generator IDs.
      */
     public static Set<String> getGeneratorsIds() {
-        return ConfigManager.getGeneratorsConfig().getConfigurationSection("generators").getKeys(false);
+        return ConfigManager.getGensConf().getConfigurationSection("generators").getKeys(false);
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class BlockUtil {
     public static List<Material> getAllGeneratorTypes() {
         List<Material> materialList = new ArrayList<>();
         for (String generatorId : getGeneratorsIds()) {
-            String materialName = ConfigManager.getGeneratorsConfig().getString("generators." + generatorId + ".base.item");
+            String materialName = ConfigManager.getGensConf().getString("generators." + generatorId + ".base.item");
             materialList.add(Material.getMaterial(materialName.toUpperCase()));
         }
         return materialList;
@@ -75,11 +75,16 @@ public abstract class BlockUtil {
                 else {
                     try {
                         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-                        return container.has(new NamespacedKey(BucikGenerators.getInstance(), "unique-generator"), PersistentDataType.INTEGER);
+                        return container.has(
+                                new NamespacedKey(BucikGenerators.getInstance(), "unique-generator"),
+                                PersistentDataType.INTEGER
+                        );
                     }
                     catch (NoSuchMethodError error) {
                         if (!Util.isServerLegacy()) {
-                            NamespacedKey uniqueKey = new NamespacedKey(BucikGenerators.getInstance(), "unique-generator");
+                            NamespacedKey uniqueKey = new NamespacedKey(
+                                    BucikGenerators.getInstance(), "unique-generator"
+                            );
                             CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
                             return tagContainer.hasCustomTag(uniqueKey, ItemTagType.INTEGER);
                         }
@@ -123,7 +128,7 @@ public abstract class BlockUtil {
      * @return true, if the generator is defined
      */
     public static boolean isGeneratorDefined(String id) {
-        return ConfigManager.getGeneratorsConfig().isConfigurationSection("generators." + id);
+        return ConfigManager.getGensConf().isConfigurationSection("generators." + id);
     }
 
     /**
@@ -145,13 +150,15 @@ public abstract class BlockUtil {
                     }
                     generatorRecipe.shape("ABC", "DEF", "GHI");
                     for (char ch = 'A'; ch <= 'I'; ++ch)
-                        generatorRecipe.setIngredient(ch, Material.getMaterial(generator.getCustomRecipe().getString("slot-" + ch)));
+                        generatorRecipe.setIngredient(
+                                ch, Material.getMaterial(generator.getCustomRecipe().getString("slot-" + ch))
+                        );
                     Bukkit.addRecipe(generatorRecipe);
                 }
             }
         }
         catch (Exception exception) {
-            Util.systemMessage(Logger.WARN, ConfigManager.getLanguageVariable("contact-developer"));
+            Util.systemMessage(Logger.WARN, ConfigManager.getLangVar("contact-developer"));
             exception.printStackTrace();
         }
     }
