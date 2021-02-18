@@ -5,13 +5,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
-import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
-public class GetCommand implements CommandInterface {
+public class GetCommand implements Command {
 
     @Override
     public String permission() {

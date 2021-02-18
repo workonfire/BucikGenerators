@@ -2,7 +2,7 @@ package pl.workonfire.bucik.generators.managers.utils;
 
 import org.bukkit.command.CommandSender;
 
-public interface CommandInterface {
+public interface Command {
 
     String permission();
 

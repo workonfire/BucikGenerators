@@ -4,7 +4,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,10 +19,10 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedL
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
-public class DropPeekCommand implements CommandExecutor, CommandInterface {
+public class DropPeekCommand implements CommandExecutor, Command {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         run(sender, args);
         return true;
     }
@@ -63,41 +62,41 @@ public class DropPeekCommand implements CommandExecutor, CommandInterface {
                                     sendMessage(sender, "§c§m--------------");
                                     try {
                                         ComponentBuilder componentBuilder = new ComponentBuilder();
-                                        List<String> finalHoverMessage = new ArrayList<>();
+                                        List<String> hoverMsg = new ArrayList<>();
                                         TextComponent dropHover = new TextComponent(getLangVar("drop-item-material") + dropItem.getMaterialName());
                                         if (dropItem.getItemName() != null) {
-                                            finalHoverMessage.add(getLangVar("drop-item-name") + Util.formatColors(dropItem.getItemName()));
-                                            finalHoverMessage.add("\n");
+                                            hoverMsg.add(getLangVar("drop-item-name") + Util.formatColors(dropItem.getItemName()));
+                                            hoverMsg.add("\n");
                                         }
                                         if (dropItem.getAmount() > 1) {
-                                            finalHoverMessage.add(getLangVar("drop-item-amount") + dropItem.getAmount());
-                                            finalHoverMessage.add("\n");
+                                            hoverMsg.add(getLangVar("drop-item-amount") + dropItem.getAmount());
+                                            hoverMsg.add("\n");
                                         }
                                         if (dropItem.isAPotion()) {
-                                            finalHoverMessage.add(getLangVar("potion-type") + dropItem.getPotionEffectTypeName() + "\n");
-                                            finalHoverMessage.add(getLangVar("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x\n");
-                                            finalHoverMessage.add(getLangVar("potion-duration") + dropItem.getPotionEffectDuration() + "s");
-                                            finalHoverMessage.add("\n");
+                                            hoverMsg.add(getLangVar("potion-type") + dropItem.getPotionEffectTypeName() + "\n");
+                                            hoverMsg.add(getLangVar("potion-amplifier") + dropItem.getPotionEffectAmplifier() + "x\n");
+                                            hoverMsg.add(getLangVar("potion-duration") + dropItem.getPotionEffectDuration() + "s");
+                                            hoverMsg.add("\n");
                                         }
                                         else if (dropItem.isMoney() && VaultHandler.getEconomy() != null) {
-                                            finalHoverMessage.add(getLangVar("drop-item-money-amount") + dropItem.getMoneyAmount());
-                                            finalHoverMessage.add("\n");
+                                            hoverMsg.add(getLangVar("drop-item-money-amount") + dropItem.getMoneyAmount());
+                                            hoverMsg.add("\n");
                                         }
                                         else if (dropItem.isExp()) {
-                                            finalHoverMessage.add(getLangVar("drop-item-exp-amount") + dropItem.getExpAmount());
-                                            finalHoverMessage.add("\n");
+                                            hoverMsg.add(getLangVar("drop-item-exp-amount") + dropItem.getExpAmount());
+                                            hoverMsg.add("\n");
                                         }
                                         if (!dropItem.getEnchantments().isEmpty()) {
-                                            finalHoverMessage.add(getLangVar("drop-item-enchantments"));
-                                            finalHoverMessage.add("\n");
+                                            hoverMsg.add(getLangVar("drop-item-enchantments"));
+                                            hoverMsg.add("\n");
                                             for (String enchantment : dropItem.getEnchantments()) {
-                                                finalHoverMessage.add(enchantment);
-                                                finalHoverMessage.add("\n");
+                                                hoverMsg.add(enchantment);
+                                                hoverMsg.add("\n");
                                             }
                                         }
-                                        if (!finalHoverMessage.isEmpty() && finalHoverMessage.get(finalHoverMessage.size() - 1).equals("\n"))
-                                            finalHoverMessage.remove(finalHoverMessage.size() - 1);
-                                        for (String message : finalHoverMessage) componentBuilder.append(message);
+                                        if (!hoverMsg.isEmpty() && hoverMsg.get(hoverMsg.size() - 1).equals("\n"))
+                                            hoverMsg.remove(hoverMsg.size() - 1);
+                                        for (String message : hoverMsg) componentBuilder.append(message);
                                         dropHover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, componentBuilder.create()));
                                         player.spigot().sendMessage(dropHover);
                                     }

@@ -10,14 +10,14 @@ import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
-import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
-public class ForceDestroyCommand implements CommandInterface {
+public class ForceDestroyCommand implements Command {
 
     @Override
     public String permission() {

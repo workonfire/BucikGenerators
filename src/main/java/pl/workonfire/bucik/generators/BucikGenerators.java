@@ -48,7 +48,9 @@ public final class BucikGenerators extends JavaPlugin {
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
             int pluginId = 7854;
             new Metrics(getInstance(), pluginId);
-            Util.systemMessage(Logger.INFO, "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin &f&nconfig.yml&r in order to disable metrics.");
+            Util.systemMessage(Logger.INFO,
+                    "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin " +
+                            "&f&nconfig.yml&r in order to disable metrics.");
         }
     }
 

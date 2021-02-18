@@ -2,13 +2,13 @@ package pl.workonfire.bucik.generators.commands.generators.subcommands;
 
 import org.bukkit.command.CommandSender;
 import pl.workonfire.bucik.generators.data.DropMultiplier;
-import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
-public class DropManipulateCommand implements CommandInterface {
+public class DropManipulateCommand implements Command {
 
     @Override
     public String permission() {
@@ -26,13 +26,15 @@ public class DropManipulateCommand implements CommandInterface {
             if (args.length == 1) sender.sendMessage(getPrefixedLangVar("not-enough-arguments"));
             else {
                 if (args[1].equalsIgnoreCase("getMultiplier"))
-                    sendMessage(sender, getPrefixedLangVar("current-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x");
+                    sendMessage(sender, getPrefixedLangVar("current-drop-multiplier")
+                            + DropMultiplier.getDropMultiplier() + "x");
                 else if (args[1].equalsIgnoreCase("setMultiplier")) {
                     if (args.length == 2) sendMessage(sender, getPrefixedLangVar("not-enough-arguments"));
                     else {
                         try {
                             DropMultiplier.setDropMultiplier(Integer.parseInt(args[2].replaceAll("x", "")));
-                            sendMessage(sender, getPrefixedLangVar("set-drop-multiplier") + DropMultiplier.getDropMultiplier() + "x.");
+                            sendMessage(sender, getPrefixedLangVar("set-drop-multiplier")
+                                    + DropMultiplier.getDropMultiplier() + "x.");
                         }
                         catch (NumberFormatException exception) {
                             sendMessage(sender, getPrefixedLangVar("argument-must-be-an-int"));

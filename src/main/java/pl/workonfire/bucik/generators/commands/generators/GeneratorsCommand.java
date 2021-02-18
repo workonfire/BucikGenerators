@@ -1,6 +1,5 @@
 package pl.workonfire.bucik.generators.commands.generators;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,13 +9,13 @@ import pl.workonfire.bucik.generators.commands.generators.subcommands.ForceDestr
 import pl.workonfire.bucik.generators.commands.generators.subcommands.GetCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ReloadCommand;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-public class GeneratorsCommand implements CommandExecutor, CommandInterface {
+public class GeneratorsCommand implements CommandExecutor, Command {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         ReloadCommand reloadCommand = new ReloadCommand();
         GetCommand getCommand = new GetCommand();
         DropManipulateCommand dropCommand = new DropManipulateCommand();

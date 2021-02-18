@@ -2,13 +2,13 @@ package pl.workonfire.bucik.generators.commands.generators.subcommands;
 
 import org.bukkit.command.CommandSender;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.utils.CommandInterface;
+import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
-public class ReloadCommand implements CommandInterface {
+public class ReloadCommand implements Command {
 
     @Override
     public String permission() {
