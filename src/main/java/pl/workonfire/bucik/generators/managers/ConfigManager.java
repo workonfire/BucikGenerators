@@ -1,6 +1,5 @@
 package pl.workonfire.bucik.generators.managers;
 
-import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
@@ -15,11 +14,11 @@ import java.io.IOException;
  * For the generator durability data, please refer to {@link pl.workonfire.bucik.generators.data.GeneratorDurabilities}
  */
 public abstract class ConfigManager {
-    private static FileConfiguration config;
-    private static FileConfiguration languageConfig;
-    private static FileConfiguration generatorsConfig;
-    private static FileConfiguration dataStorage;
-    private static final File dataStorageFile = new File(getInstance().getDataFolder(), "storage.yml");
+    private static       FileConfiguration config;
+    private static       FileConfiguration languageConfig;
+    private static       FileConfiguration generatorsConfig;
+    private static       FileConfiguration dataStorage;
+    private static final File              dataStorageFile = new File(getInstance().getDataFolder(), "storage.yml");
 
     public static void initializeConfig() {
         config = getInstance().getConfig();

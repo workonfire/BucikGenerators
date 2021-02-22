@@ -149,7 +149,7 @@ public abstract class Util {
             BucikGenerators.getInstance().getCommand(name).setTabCompleter((TabCompleter) completer);
         }
         else throw new InvalidClassException(command + " or " + tabCompleter +
-                " does not implement the required interfaces.");
+                " do not implement the required interfaces.");
     }
 
     /**
