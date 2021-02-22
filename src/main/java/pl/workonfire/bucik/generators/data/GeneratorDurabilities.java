@@ -15,6 +15,7 @@ public class GeneratorDurabilities implements Serializable {
     private HashMap<GeneratorLocation, Integer> durabilities;
     private transient static final String FILE_PATH
             = BucikGenerators.getInstance().getDataFolder().getPath() + "/durabilities.ser";
+    private static final long serialVersionUID = -1543193395652903243L;
 
     public GeneratorDurabilities() {
         try {

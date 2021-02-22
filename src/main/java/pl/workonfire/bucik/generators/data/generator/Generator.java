@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.data.generator;
 
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -25,26 +26,26 @@ import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
 public class Generator implements ItemProperty {
-    private final String id;
-    private final int breakCooldown;
-    private final String permission;
-    private final Material baseItemMaterial;
-    private final String baseItemName;
-    private final List<String> baseItemLore;
-    private final Material generatorMaterial;
-    private final Set<String> generatorDropPermissions;
-    private final List<String> worldBlacklist;
-    private final String itemDropMode;
-    private final ConfigurationSection customRecipe;
-    private final List<String> enchantments;
-    private final boolean hideEnchantments;
-    private final boolean isDurabilityOn;
-    private final int durability;
-    private final boolean affectPxDurability;
-    private final int affectPxDurabilityValue;
-    private final boolean respectPickaxeFortune;
-    private final boolean whitelistOn;
-    private final List<String> whitelistedItems;
+    @Getter private final String               id;
+    @Getter private final int                  breakCooldown;
+    @Getter private final String               permission;
+    @Getter private final Material             baseItemMaterial;
+            private final String               baseItemName;
+            private final List<String>         baseItemLore;
+    @Getter private final Material             generatorMaterial;
+    @Getter private final Set<String>          generatorDropPermissions;
+    @Getter private final List<String>         worldBlacklist;
+    @Getter private final String               itemDropMode;
+    @Getter private final ConfigurationSection customRecipe;
+    @Getter private final List<String>         enchantments;
+    @Getter private final boolean              hideEnchantments;
+    @Getter private final boolean              isDurabilityOn;
+    @Getter private final int                  durability;
+    @Getter private final boolean              affectPxDurability;
+    @Getter private final int                  affectPxDurabilityValue;
+    @Getter private final boolean              respectPickaxeFortune;
+    @Getter private final boolean              whitelistOn;
+    @Getter private final List<String>         whitelistedItems;
 
     @SuppressWarnings("unchecked")
     public Generator(String id) {
@@ -131,7 +132,7 @@ public class Generator implements ItemProperty {
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(getBaseItemName());
         itemMeta.setLore(getBaseItemLore());
-        if (areEnchantmentsHidden()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (isHideEnchantments()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         NamespacedKey uniqueKey = null;
         try {
             uniqueKey = new NamespacedKey(BucikGenerators.getInstance(), "unique-generator");
@@ -156,22 +157,6 @@ public class Generator implements ItemProperty {
         return item;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public int getBreakCooldown() {
-        return breakCooldown;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public Material getBaseItemMaterial() {
-        return baseItemMaterial;
-    }
-
     public String getBaseItemName() {
         return Util.formatColors(baseItemName);
     }
@@ -180,61 +165,5 @@ public class Generator implements ItemProperty {
         List<String> formattedLore = new ArrayList<>();
         for (String loreLine : baseItemLore) formattedLore.add(Util.formatColors(loreLine));
         return formattedLore;
-    }
-
-    public Material getGeneratorMaterial() {
-        return generatorMaterial;
-    }
-
-    public Set<String> getGeneratorDropPermissions() {
-        return generatorDropPermissions;
-    }
-
-    public List<String> getWorldBlacklist() {
-        return worldBlacklist;
-    }
-
-    public String getItemDropMode() {
-        return itemDropMode;
-    }
-
-    public ConfigurationSection getCustomRecipe() {
-        return customRecipe;
-    }
-
-    public List<String> getEnchantments() {
-        return enchantments;
-    }
-
-    public boolean areEnchantmentsHidden() {
-        return hideEnchantments;
-    }
-
-    public boolean isDurabilityOn() {
-        return isDurabilityOn;
-    }
-
-    public int getDurability() {
-        return durability;
-    }
-
-    public boolean isAffectPxDurabilityOn() {
-        return affectPxDurability;
-    }
-
-    public int getAffectPxDurabilityValue() {
-        return affectPxDurabilityValue;
-    }
-
-    public boolean respectPickaxeFortune() {
-        return respectPickaxeFortune;
-    }
-
-    public boolean isWhitelistOn() {
-        return whitelistOn;
-    }
-
-    public List<String> getWhitelistItems() {
-        return whitelistedItems;
     }
 }

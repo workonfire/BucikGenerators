@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.data.generator;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -19,23 +20,23 @@ import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
 public class DropItem implements ItemProperty {
-    private final String generatorId;
-    private final String permission;
-    private final int itemId;
-    private final double dropChance;
-    private final Material material;
-    private final String materialName;
-    private final int amount;
-    private final String itemName;
-    private final List<String> itemLore;
-    private final String actionBarMessage;
-    private final List<String> enchantments;
-    private final String potionEffectTypeName;
-    private final int potionEffectDuration;
-    private final int potionEffectAmplifier;
-    private final double moneyAmount;
-    private final int expAmount;
-    private final boolean hideEnchantments;
+            private final String       generatorId;
+            private final String       permission;
+            private final int          itemId;
+            private final double       dropChance;
+    @Getter private final Material     material;
+    @Getter private final String       materialName;
+            private final int          amount;
+    @Getter private final String       itemName;
+            private final List<String> itemLore;
+    @Getter private final String       actionBarMessage;
+    @Getter private final List<String> enchantments;
+    @Getter private final String       potionEffectTypeName;
+    @Getter private final int          potionEffectDuration;
+    @Getter private final int          potionEffectAmplifier;
+    @Getter private final double       moneyAmount;
+    @Getter private final int          expAmount;
+    @Getter private final boolean      hideEnchantments;
 
     @SuppressWarnings("unchecked")
     public DropItem(String generatorId, String permission, int itemId) {
@@ -78,7 +79,7 @@ public class DropItem implements ItemProperty {
         ItemMeta itemMeta = item.getItemMeta();
         if (itemName != null) itemMeta.setDisplayName(Util.formatColors(getItemName()));
         if (itemLore != null) itemMeta.setLore(getItemLore());
-        if (areEnchantmentsHidden()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if (isHideEnchantments()) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(itemMeta);
         if (getEnchantments() != null) {
             for (String enchantment : getEnchantments()) {
@@ -144,57 +145,13 @@ public class DropItem implements ItemProperty {
         return dropChance * DropMultiplier.getDropMultiplier();
     }
 
-    public Material getMaterial() {
-        return material;
-    }
-
     public int getAmount() {
         return amount == 0 ? 1 : amount;
-    }
-
-    public String getItemName() {
-        return itemName;
     }
 
     public List<String> getItemLore() {
         List<String> formattedLore = new ArrayList<>();
         for (String loreLine : itemLore) formattedLore.add(Util.formatColors(loreLine));
         return formattedLore;
-    }
-
-    public String getActionBarMessage() {
-        return actionBarMessage;
-    }
-
-    public List<String> getEnchantments() {
-        return enchantments;
-    }
-
-    public String getPotionEffectTypeName() {
-        return potionEffectTypeName;
-    }
-
-    public int getPotionEffectDuration() {
-        return potionEffectDuration;
-    }
-
-    public int getPotionEffectAmplifier() {
-        return potionEffectAmplifier;
-    }
-
-    public double getMoneyAmount() {
-        return moneyAmount;
-    }
-
-    public String getMaterialName() {
-        return materialName;
-    }
-
-    public int getExpAmount() {
-        return expAmount;
-    }
-
-    public boolean areEnchantmentsHidden() {
-        return hideEnchantments;
     }
 }

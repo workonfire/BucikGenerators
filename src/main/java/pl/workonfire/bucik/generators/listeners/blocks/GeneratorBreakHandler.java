@@ -51,7 +51,7 @@ public class GeneratorBreakHandler {
         boolean breakable = true;
         if (baseGenerator.isWhitelistOn()) {
             breakable = false;
-            for (String materialName : baseGenerator.getWhitelistItems()) {
+            for (String materialName : baseGenerator.getWhitelistedItems()) {
                 Material material = Material.getMaterial(materialName);
                 if (player.getInventory().getItemInMainHand().getType().equals(material)) {
                     breakable = true;
@@ -78,7 +78,7 @@ public class GeneratorBreakHandler {
             }
             Sound breakSound = Util.isServerLegacy() ? Sound.ENTITY_BLAZE_HURT : Sound.ENTITY_ENDER_DRAGON_HURT;
             Util.playSound(block, breakSound);
-            if (baseGenerator.isAffectPxDurabilityOn()) {
+            if (baseGenerator.isAffectPxDurability()) {
                 ItemStack currentItem = player.getInventory().getItemInMainHand();
                 ItemMeta currentItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
                 if (BlockUtil.isItemAPickaxe(currentItem)) {
@@ -102,7 +102,7 @@ public class GeneratorBreakHandler {
                 if (player.hasPermission(Util.getPermission(permission))) {
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                         DropItem item = new DropItem(baseGenerator.getId(), permission, Integer.parseInt(dropItemId));
-                        if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.respectPickaxeFortune())) {
+                        if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.isRespectPickaxeFortune())) {
                             if (item.isPotion() && item.getPotionEffectTypeName() != null) {
                                 PotionEffect potionEffect = new PotionEffect(
                                         PotionEffectType.getByName(item.getPotionEffectTypeName()),
