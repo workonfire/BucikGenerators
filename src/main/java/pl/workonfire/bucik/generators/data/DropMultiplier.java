@@ -1,13 +1,8 @@
 package pl.workonfire.bucik.generators.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public abstract class DropMultiplier {
-    private static int dropMultiplier = 1;
-
-    public static int getDropMultiplier() {
-        return dropMultiplier;
-    }
-
-    public static void setDropMultiplier(int dropMultiplier) {
-        DropMultiplier.dropMultiplier = dropMultiplier;
-    }
+    @Getter @Setter private static int dropMultiplier = 1;
 }

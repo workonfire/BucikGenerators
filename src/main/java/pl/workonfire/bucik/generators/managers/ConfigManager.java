@@ -61,6 +61,7 @@ public abstract class ConfigManager {
             Util.systemMessage(Logger.DEBUG, "File saved.");
         } catch (IOException exception) {
             Util.systemMessage(Logger.WARN, "An error occured while trying to update the storage file.");
+            exception.printStackTrace();
         }
     }
 

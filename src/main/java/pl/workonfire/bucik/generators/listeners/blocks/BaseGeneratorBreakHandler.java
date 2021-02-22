@@ -1,5 +1,7 @@
 package pl.workonfire.bucik.generators.listeners.blocks;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -14,17 +16,12 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedL
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class BaseGeneratorBreakHandler {
 
     private final BlockBreakEvent event;
     private final Player player;
     private final Location generatorLocation;
-
-    protected BaseGeneratorBreakHandler(BlockBreakEvent event, Player player, Location generatorLocation) {
-        this.event = event;
-        this.player = player;
-        this.generatorLocation = generatorLocation;
-    }
 
     protected void run() {
         Block block = event.getBlock();

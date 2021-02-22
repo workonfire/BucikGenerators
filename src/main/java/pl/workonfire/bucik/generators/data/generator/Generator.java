@@ -26,8 +26,6 @@ import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
 public class Generator implements ItemProperty {
-            private final String               baseItemName;
-            private final List<String>         baseItemLore;
     @Getter private final String               id;
     @Getter private final int                  breakCooldown;
     @Getter private final String               permission;
@@ -46,6 +44,8 @@ public class Generator implements ItemProperty {
     @Getter private final boolean              respectPickaxeFortune;
     @Getter private final boolean              whitelistOn;
     @Getter private final List<String>         whitelistedItems;
+            private final String               baseItemName;
+            private final List<String>         baseItemLore;
 
     @SuppressWarnings("unchecked")
     public Generator(String id) {

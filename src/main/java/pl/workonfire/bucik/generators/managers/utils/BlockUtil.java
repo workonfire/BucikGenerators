@@ -103,9 +103,6 @@ public abstract class BlockUtil {
      * @return true, if the targeted block is a generator
      */
     public static boolean isBlockAGenerator(Location location, World world) {
-        int currentLocationX = location.getBlockX();
-        int currentLocationY = location.getBlockY();
-        int currentLocationZ = location.getBlockZ();
         List<String> allGenerators = getDataStorage().getStringList("generators");
         for (String generatorDetails : allGenerators) {
             String[] splittedDetails = generatorDetails.split("\\|");
@@ -113,10 +110,9 @@ public abstract class BlockUtil {
             int locationX = Integer.parseInt(splittedDetails[1]);
             int locationY = Integer.parseInt(splittedDetails[2]);
             int locationZ = Integer.parseInt(splittedDetails[3]);
-            if (currentLocationX == locationX
-                    && currentLocationY == locationY
-                    && currentLocationZ == locationZ
-                    && worldName.equals(world.getName())) return true;
+            GeneratorLocation generatorLocation = new GeneratorLocation(locationX, locationY, locationZ, worldName);
+            GeneratorLocation currentLocation = BlockUtil.convertLocation(location, world.getName());
+            if (currentLocation.equals(generatorLocation)) return true;
         }
         return false;
     }

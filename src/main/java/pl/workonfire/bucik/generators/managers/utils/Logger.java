@@ -1,9 +1,11 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
+import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
 
 import java.io.PrintStream;
 
+@AllArgsConstructor
 public enum Logger {
 
     INFO(ChatColor.WHITE, System.out),
@@ -12,11 +14,6 @@ public enum Logger {
 
     private final ChatColor color;
     private final PrintStream stream;
-
-    Logger(ChatColor color, PrintStream stream) {
-        this.color = color;
-        this.stream = stream;
-    }
 
     public PrintStream getStream() {
         return stream;

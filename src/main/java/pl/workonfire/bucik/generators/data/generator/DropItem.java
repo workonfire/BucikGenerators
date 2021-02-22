@@ -20,12 +20,6 @@ import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
 public class DropItem implements ItemProperty {
-            private final String       generatorId;
-            private final String       permission;
-            private final int          itemId;
-            private final double       dropChance;
-            private final int          amount;
-            private final List<String> itemLore;
     @Getter private final Material     material;
     @Getter private final String       materialName;
     @Getter private final String       itemName;
@@ -37,6 +31,12 @@ public class DropItem implements ItemProperty {
     @Getter private final double       moneyAmount;
     @Getter private final int          expAmount;
     @Getter private final boolean      hideEnchantments;
+            private final String       generatorId;
+            private final String       permission;
+            private final int          itemId;
+            private final double       dropChance;
+            private final int          amount;
+            private final List<String> itemLore;
 
     @SuppressWarnings("unchecked")
     public DropItem(String generatorId, String permission, int itemId) {

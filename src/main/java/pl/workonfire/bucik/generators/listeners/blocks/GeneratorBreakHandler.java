@@ -50,6 +50,7 @@ public class GeneratorBreakHandler {
         event.setCancelled(true);
         boolean breakable = true;
         if (baseGenerator.isWhitelistOn()) {
+            // checking if we can break the generator with the current tool
             breakable = false;
             for (String materialName : baseGenerator.getWhitelistedItems()) {
                 Material material = Material.getMaterial(materialName);
@@ -61,11 +62,13 @@ public class GeneratorBreakHandler {
         }
         if (player.hasPermission(baseGenerator.getPermission()) && breakable) {
             block.setType(Material.AIR);
+            // breaking the generator and applying the cooldown
             Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
                 if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
                     block.setType(baseGenerator.getGeneratorMaterial());
             }, baseGenerator.getBreakCooldown());
             if (baseGenerator.isDurabilityOn() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
+                // handling the durability system
                 int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);
                 if (currentDurability == 1) {
                     baseBlockLocation.getBlock().setType(Material.AIR);
@@ -79,6 +82,7 @@ public class GeneratorBreakHandler {
             Sound breakSound = Util.isServerLegacy() ? Sound.ENTITY_BLAZE_HURT : Sound.ENTITY_ENDER_DRAGON_HURT;
             Util.playSound(block, breakSound);
             if (baseGenerator.isAffectPxDurability()) {
+                // subtracting durability from the pickaxe, if enabled
                 ItemStack currentItem = player.getInventory().getItemInMainHand();
                 ItemMeta currentItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
                 if (BlockUtil.isItemAPickaxe(currentItem)) {
@@ -102,7 +106,9 @@ public class GeneratorBreakHandler {
                 if (player.hasPermission(Util.getPermission(permission))) {
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                         DropItem item = new DropItem(baseGenerator.getId(), permission, Integer.parseInt(dropItemId));
+                        // dropping the items, if the user has permission and the item got selected etc.
                         if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.isRespectPickaxeFortune())) {
+                            // checking for each item type (potion, money, exp etc.)
                             if (item.isPotion() && item.getPotionEffectTypeName() != null) {
                                 PotionEffect potionEffect = new PotionEffect(
                                         PotionEffectType.getByName(item.getPotionEffectTypeName()),
@@ -118,9 +124,8 @@ public class GeneratorBreakHandler {
                             else if (item.isExp() && item.getExpAmount() != 0)
                                 player.giveExp(item.getExpAmount());
                             else {
-                                if (baseGenerator.getItemDropMode() != null
-                                        && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory")) {
-                                    if (player.getInventory().firstEmpty() == -1)
+                                if (baseGenerator.getItemDropMode() != null && baseGenerator.getItemDropMode().equalsIgnoreCase("inventory")) {
+                                    if (player.getInventory().firstEmpty() == -1) // whether the inventory is full
                                         block.getWorld().dropItemNaturally(baseBlockLocation, item.getItemStack());
                                     else player.getInventory().addItem(item.getItemStack());
                                 }

@@ -1,13 +1,17 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
+import lombok.SneakyThrows;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.drop.DropPeekCommand;
 import pl.workonfire.bucik.generators.commands.generators.GeneratorsCommand;
@@ -16,6 +20,7 @@ import pl.workonfire.bucik.generators.listeners.commands.DropTabCompleter;
 import pl.workonfire.bucik.generators.listeners.commands.MainTabCompleter;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 
+import java.io.InvalidClassException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -106,11 +111,18 @@ public abstract class Util {
      * Registers every event handler.
      * @since 1.0.1
      */
+    @SneakyThrows
     public static void registerEvents() {
-        getServer().getPluginManager().registerEvents(new BlockBreakListener(), BucikGenerators.getInstance());
-        getServer().getPluginManager().registerEvents(new BlockPlaceListener(), BucikGenerators.getInstance());
-        getServer().getPluginManager().registerEvents(new PistonExtendListener(), BucikGenerators.getInstance());
-        getServer().getPluginManager().registerEvents(new EntityExplodeListener(), BucikGenerators.getInstance());
+        Class<?>[] events = {
+                BlockBreakListener.class,
+                BlockPlaceListener.class,
+                PistonExtendListener.class,
+                EntityExplodeListener.class
+        };
+        for (Class<?> clazz : events) {
+            Listener eventObject = (Listener) clazz.getConstructor().newInstance();
+            getServer().getPluginManager().registerEvents(eventObject, BucikGenerators.getInstance());
+        }
     }
 
     /**
@@ -118,12 +130,26 @@ public abstract class Util {
      * @since 1.0.5
      */
     public static void registerCommands() {
-        String generatorsCommand = "generators";
-        String dropCommand = "drop";
-        BucikGenerators.getInstance().getCommand(generatorsCommand).setExecutor(new GeneratorsCommand());
-        BucikGenerators.getInstance().getCommand(generatorsCommand).setTabCompleter(new MainTabCompleter());
-        BucikGenerators.getInstance().getCommand(dropCommand).setExecutor(new DropPeekCommand());
-        BucikGenerators.getInstance().getCommand(dropCommand).setTabCompleter(new DropTabCompleter());
+        registerCommand("generators", GeneratorsCommand.class, MainTabCompleter.class);
+        registerCommand("drop", DropPeekCommand.class, DropTabCompleter.class);
+    }
+
+    /**
+     * Registers one command.
+     * @param name Command name
+     * @param command Command class
+     * @param tabCompleter Tab completer class (required, can return only an empty list)
+     */
+    @SneakyThrows
+    private static void registerCommand(String name, Class<?> command, Class<?> tabCompleter) {
+        Object commandExecutor = command.getConstructor().newInstance();
+        Object completer = tabCompleter.getConstructor().newInstance();
+        if (commandExecutor instanceof CommandExecutor && completer instanceof TabCompleter) {
+            BucikGenerators.getInstance().getCommand(name).setExecutor((CommandExecutor) commandExecutor);
+            BucikGenerators.getInstance().getCommand(name).setTabCompleter((TabCompleter) completer);
+        }
+        else throw new InvalidClassException(command + " or " + tabCompleter +
+                " does not implement the required interfaces.");
     }
 
     /**

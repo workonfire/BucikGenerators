@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.data;
 
+import lombok.Cleanup;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import pl.workonfire.bucik.generators.BucikGenerators;
@@ -27,10 +28,9 @@ public class GeneratorDurabilities implements Serializable {
     }
 
     public void serialize() throws IOException {
-        BukkitObjectOutputStream objectStream = new BukkitObjectOutputStream(new FileOutputStream(FILE_PATH));
+        @Cleanup BukkitObjectOutputStream objectStream = new BukkitObjectOutputStream(new FileOutputStream(FILE_PATH));
         objectStream.writeObject(getInstance());
         objectStream.flush();
-        objectStream.close();
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +41,7 @@ public class GeneratorDurabilities implements Serializable {
             durabilities = new HashMap<>();
             return;
         }
-        BukkitObjectInputStream objectStream = new BukkitObjectInputStream(new FileInputStream(FILE_PATH));
+        @Cleanup BukkitObjectInputStream objectStream = new BukkitObjectInputStream(new FileInputStream(FILE_PATH));
         GeneratorDurabilities receivedObject = (GeneratorDurabilities) objectStream.readObject();
         Field durabilitiesField = receivedObject.getClass().getDeclaredField("durabilities");
         durabilitiesField.setAccessible(true);
