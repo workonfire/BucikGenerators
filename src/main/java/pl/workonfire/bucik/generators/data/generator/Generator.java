@@ -26,12 +26,12 @@ import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
 public class Generator implements ItemProperty {
+            private final String               baseItemName;
+            private final List<String>         baseItemLore;
     @Getter private final String               id;
     @Getter private final int                  breakCooldown;
     @Getter private final String               permission;
     @Getter private final Material             baseItemMaterial;
-            private final String               baseItemName;
-            private final List<String>         baseItemLore;
     @Getter private final Material             generatorMaterial;
     @Getter private final Set<String>          generatorDropPermissions;
     @Getter private final List<String>         worldBlacklist;

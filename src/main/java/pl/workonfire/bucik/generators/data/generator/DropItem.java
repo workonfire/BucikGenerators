@@ -24,11 +24,11 @@ public class DropItem implements ItemProperty {
             private final String       permission;
             private final int          itemId;
             private final double       dropChance;
+            private final int          amount;
+            private final List<String> itemLore;
     @Getter private final Material     material;
     @Getter private final String       materialName;
-            private final int          amount;
     @Getter private final String       itemName;
-            private final List<String> itemLore;
     @Getter private final String       actionBarMessage;
     @Getter private final List<String> enchantments;
     @Getter private final String       potionEffectTypeName;
