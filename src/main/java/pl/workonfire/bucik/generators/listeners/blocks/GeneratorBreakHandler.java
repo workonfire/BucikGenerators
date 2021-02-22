@@ -21,7 +21,7 @@ import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
@@ -73,7 +73,7 @@ public class GeneratorBreakHandler {
                 if (currentDurability == 1) {
                     baseBlockLocation.getBlock().setType(Material.AIR);
                     baseGenerator.unregister(baseBlockLocation, baseBlockLocation.getWorld());
-                    sendMessage(player, getPrefixedLangVar("generator-has-worn-out"));
+                    sendMessage(player, getPrefixLangVar("generator-has-worn-out"));
                     Util.playSound(block, Sound.ENTITY_WITHER_HURT);
                     Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
                 }
@@ -82,10 +82,10 @@ public class GeneratorBreakHandler {
             Sound breakSound = Util.isServerLegacy() ? Sound.ENTITY_BLAZE_HURT : Sound.ENTITY_ENDER_DRAGON_HURT;
             Util.playSound(block, breakSound);
             if (baseGenerator.isAffectPxDurability()) {
-                // subtracting durability from the pickaxe, if enabled
+                // subtracting durability from the item, if enabled
                 ItemStack currentItem = player.getInventory().getItemInMainHand();
                 ItemMeta currentItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
-                if (BlockUtil.isItemAPickaxe(currentItem)) {
+                if (BlockUtil.isItemDamageable(currentItem)) {
                     int currentDamage = ((Damageable) currentItemMeta).getDamage();
                     if (currentDamage >= currentItem.getType().getMaxDurability()) {
                         player.getInventory().setItemInMainHand(null);
@@ -140,6 +140,6 @@ public class GeneratorBreakHandler {
                 }
             }
         }
-        else sendMessage(player, getPrefixedLangVar("no-permission"));
+        else sendMessage(player, getPrefixLangVar("no-permission"));
     }
 }

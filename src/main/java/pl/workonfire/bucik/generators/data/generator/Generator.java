@@ -127,6 +127,7 @@ public class Generator implements ItemProperty {
      * @since 1.0.0
      * @return ItemStack object
      */
+    @SuppressWarnings("deprecation") // two deprecated methods are required for backwards compatibility
     public ItemStack getItemStack(int amount) {
         ItemStack item = new ItemStack(getBaseItemMaterial());
         ItemMeta itemMeta = item.getItemMeta();

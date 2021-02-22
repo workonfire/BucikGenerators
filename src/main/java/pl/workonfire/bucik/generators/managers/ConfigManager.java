@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.managers;
 
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
@@ -10,6 +11,9 @@ import static pl.workonfire.bucik.generators.BucikGenerators.getInstance;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * For the generator durability data, please refer to {@link pl.workonfire.bucik.generators.data.GeneratorDurabilities}
+ */
 public abstract class ConfigManager {
     private static FileConfiguration config;
     private static FileConfiguration languageConfig;
@@ -17,10 +21,6 @@ public abstract class ConfigManager {
     private static FileConfiguration dataStorage;
     private static final File dataStorageFile = new File(getInstance().getDataFolder(), "storage.yml");
 
-    /**
-     * Initializes the configuration files.
-     * @since 1.0.0
-     */
     public static void initializeConfig() {
         config = getInstance().getConfig();
         String languageFileName = config.getString("options.locale") + ".yml";
@@ -90,7 +90,7 @@ public abstract class ConfigManager {
      * @param variable Unparsed language variable, e.g. "no-permission"
      * @return Language string with prefix.
      */
-    public static String getPrefixedLangVar(String variable) {
+    public static String getPrefixLangVar(String variable) {
         return getPrefix() + " " + getLangVar(variable);
     }
 

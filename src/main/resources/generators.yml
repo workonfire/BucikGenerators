@@ -12,7 +12,7 @@ generators:
     durability:
       enabled: true
       value: 30
-    affect-pickaxe-durability:
+    affect-pickaxe-durability: # works on shovels and axes as well
       enabled: true
       value: 25
     # Redefining or removing the crafting recipe requires a full server restart.

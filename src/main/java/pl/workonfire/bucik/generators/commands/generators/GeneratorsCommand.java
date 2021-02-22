@@ -29,7 +29,7 @@ public class GeneratorsCommand implements CommandExecutor, Command {
                 dropCommand.run(sender, args);
             else if (args[0].equalsIgnoreCase(forceDestroyCommand.name()))
                 forceDestroyCommand.run(sender, args);
-            else Util.sendMessage(sender, ConfigManager.getPrefixedLangVar("subcommand-does-not-exist"));
+            else Util.sendMessage(sender, ConfigManager.getPrefixLangVar("subcommand-does-not-exist"));
         }
         else run(sender, args);
         return true;

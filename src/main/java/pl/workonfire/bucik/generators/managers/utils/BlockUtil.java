@@ -13,6 +13,7 @@ import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -65,6 +66,7 @@ public abstract class BlockUtil {
      * @param item Item object
      * @return true, if the item specified is a generator
      */
+    @SuppressWarnings("deprecation")
     public static boolean isItemAGenerator(ItemStack item) {
         Material generatorBlock = item.getType();
         if (getAllGeneratorTypes().contains(generatorBlock)) {
@@ -131,6 +133,7 @@ public abstract class BlockUtil {
      * Registers custom crafting recipes, if there are any.
      * @since 1.0.0
      */
+    @SuppressWarnings("deprecation")
     public static void registerRecipes() {
         try {
             for (String generatorId : BlockUtil.getGeneratorsIds()) {
@@ -179,19 +182,30 @@ public abstract class BlockUtil {
     }
 
     /**
-     * Checks if the held item is a pickaxe.
+     * Checks if the held item is damageable.
      * @since 1.1.6
      * @param item Held item object
      * @return true, if it is
      */
-    public static boolean isItemAPickaxe(ItemStack item) {
-        if (!Util.isServerLegacy())
-            return item.getType() == Material.DIAMOND_PICKAXE
-                || item.getType() == Material.GOLDEN_PICKAXE
-                || item.getType() == Material.IRON_PICKAXE
-                || item.getType() == Material.STONE_PICKAXE
-                || item.getType() == Material.WOODEN_PICKAXE;
-        else return false;
+    public static boolean isItemDamageable(ItemStack item) {
+        Material[] allowedItems = {
+                Material.DIAMOND_PICKAXE,
+                Material.GOLDEN_PICKAXE,
+                Material.IRON_PICKAXE,
+                Material.STONE_PICKAXE,
+                Material.WOODEN_PICKAXE,
+                Material.DIAMOND_AXE,
+                Material.GOLDEN_AXE,
+                Material.IRON_AXE,
+                Material.STONE_AXE,
+                Material.WOODEN_AXE,
+                Material.DIAMOND_SHOVEL,
+                Material.GOLDEN_SHOVEL,
+                Material.IRON_SHOVEL,
+                Material.STONE_SHOVEL,
+                Material.WOODEN_SHOVEL
+        };
+        return !Util.isServerLegacy() && Arrays.asList(allowedItems).contains(item.getType());
     }
 
     /**
@@ -205,7 +219,7 @@ public abstract class BlockUtil {
     }
 
     /**
-     * Converts the regular Location object to {@see GeneratorLocation}
+     * Converts the regular Location object to {@link GeneratorLocation}
      * @since 1.2.7
      * @param location Location object
      * @param worldName world name

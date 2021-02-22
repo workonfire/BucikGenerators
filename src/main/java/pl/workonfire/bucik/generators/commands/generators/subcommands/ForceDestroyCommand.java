@@ -13,7 +13,7 @@ import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
@@ -51,9 +51,9 @@ public class ForceDestroyCommand implements Command {
                     targetBlock.getLocation().add(0, 1, 0).getBlock().setType(Material.AIR);
                     Util.playSound(player, Sound.ENTITY_WITHER_HURT);
                     Util.showParticle(player, targetBlock, Particle.SMOKE_LARGE, 7);
-                    sendMessage(sender, getPrefixedLangVar("base-generator-destroyed"));
+                    sendMessage(sender, getPrefixLangVar("base-generator-destroyed"));
                 }
-                else sendMessage(sender, getPrefixedLangVar("force-destroy-block-is-not-a-generator"));
+                else sendMessage(sender, getPrefixLangVar("force-destroy-block-is-not-a-generator"));
             }
         }
     }

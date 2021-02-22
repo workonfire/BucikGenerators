@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 import static org.bukkit.Bukkit.getServer;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLangVar;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 
 @SuppressWarnings("ConstantConditions")
 public abstract class Util {
@@ -85,9 +85,9 @@ public abstract class Util {
                 player.sendTitle(t, null, 20, 60, 20);
                 player.getWorld().strikeLightning(player.getLocation());
             }
-            sendMessage(commandSender, getPrefixedLangVar("config-load-error"));
+            sendMessage(commandSender, getPrefixLangVar("config-load-error"));
             if (ConfigManager.getConfig().getBoolean("options.debug") && player.hasPermission("bucik.generators.debug")) {
-                sendMessage(commandSender, getPrefixedLangVar("config-load-error-debug-header"));
+                sendMessage(commandSender, getPrefixLangVar("config-load-error-debug-header"));
                 StringWriter stringWriter = new StringWriter();
                 exception.printStackTrace(new PrintWriter(stringWriter));
                 Util.systemMessage(Logger.WARN, getLangVar("contact-developer"));
@@ -98,7 +98,7 @@ public abstract class Util {
                         .replaceAll("\u0009", "    ")
                         .replaceAll("\r", "\n") + "...")
                 ;
-                sendMessage(commandSender, getPrefixedLangVar("debug-more-info-in-console"));
+                sendMessage(commandSender, getPrefixLangVar("debug-more-info-in-console"));
             }
         }
         else {
@@ -236,7 +236,7 @@ public abstract class Util {
      */
     public static boolean isAuthorized(CommandSender commandSender, String permissionNode) {
         if (!commandSender.hasPermission(permissionNode)) {
-            sendMessage(commandSender, getPrefixedLangVar("no-permission"));
+            sendMessage(commandSender, getPrefixLangVar("no-permission"));
             return false;
         }
         return true;
@@ -250,7 +250,7 @@ public abstract class Util {
      */
     public static boolean isPlayer(CommandSender commandSender) {
         if (!(commandSender instanceof Player)) {
-            sendMessage(commandSender, getPrefixedLangVar("cannot-open-from-console"));
+            sendMessage(commandSender, getPrefixLangVar("cannot-open-from-console"));
             return false;
         }
         return true;

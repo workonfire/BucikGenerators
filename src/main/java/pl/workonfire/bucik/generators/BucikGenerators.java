@@ -34,14 +34,14 @@ import java.io.IOException;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.2.8
+ * @version 1.2.9
  * @since   2020-06-13
  */
 
 
 public final class BucikGenerators extends JavaPlugin {
-    private static BucikGenerators instance;
-    private static String pluginVersion;
+    private static BucikGenerators       instance;
+    private static String                pluginVersion;
     private static GeneratorDurabilities generatorDurabilities;
 
     @Override
@@ -69,6 +69,10 @@ public final class BucikGenerators extends JavaPlugin {
                     "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin " +
                             "&f&nconfig.yml&r in order to disable metrics.");
         }
+        if (Util.isServerLegacy()) Util.systemMessage(Logger.WARN,
+                "Although this plugin works on some versions older than 1.13, the support for legacy versions" +
+                        " is very limited.\nDon't expect everything to work fine. For example, not all of the item types" +
+                        " are going to be recognized. Don't report this kind of bugs.");
     }
 
     @Override
@@ -78,7 +82,7 @@ public final class BucikGenerators extends JavaPlugin {
         try {
             getGeneratorDurabilities().serialize();
         } catch (IOException exception) {
-            Util.systemMessage(Logger.WARN, "Something went wrong during the serialization process.");
+            Util.systemMessage(Logger.DEBUG, "Something went wrong during the serialization process.");
             exception.printStackTrace();
         }
     }

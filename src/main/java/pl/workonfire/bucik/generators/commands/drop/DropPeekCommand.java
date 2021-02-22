@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLangVar;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
@@ -52,7 +52,7 @@ public class DropPeekCommand implements CommandExecutor, Command {
                         targetBlock = player.getTargetBlock(null, 5);
                     }
                     if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
-                        sendMessage(sender, getPrefixedLangVar("items-drop-list"));
+                        sendMessage(sender, getPrefixLangVar("items-drop-list"));
                         Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(targetBlock.getType()).getId());
                         for (String permission : generator.getGeneratorDropPermissions()) {
                             if (player.hasPermission(Util.getPermission(permission))) {
@@ -123,12 +123,12 @@ public class DropPeekCommand implements CommandExecutor, Command {
                                 sendMessage(sender, "§c§m--------------");
                             }
                             else {
-                                sendMessage(sender, getPrefixedLangVar("no-drop"));
+                                sendMessage(sender, getPrefixLangVar("no-drop"));
                                 return;
                             }
                         }
                     }
-                    else sendMessage(sender, getPrefixedLangVar("block-is-not-a-generator"));
+                    else sendMessage(sender, getPrefixLangVar("block-is-not-a-generator"));
                 }
                 catch (Exception exception) {
                     Util.handleErrors(sender, exception);

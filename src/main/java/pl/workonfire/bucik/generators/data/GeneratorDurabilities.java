@@ -22,7 +22,7 @@ public class GeneratorDurabilities implements Serializable {
         try {
             deserialize();
         } catch (IOException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException exception) {
-            Util.systemMessage(Logger.WARN, "Something went wrong during the deserialization process.");
+            Util.systemMessage(Logger.DEBUG, "Something went wrong during the deserialization process.");
             exception.printStackTrace();
         }
     }

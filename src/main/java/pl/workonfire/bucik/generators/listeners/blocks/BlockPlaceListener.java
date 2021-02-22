@@ -13,7 +13,7 @@ import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 @SuppressWarnings("ConstantConditions")
@@ -30,7 +30,7 @@ public class BlockPlaceListener implements Listener {
                 for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
-                        sendMessage(player, getPrefixedLangVar("cannot-place-in-this-world"));
+                        sendMessage(player, getPrefixLangVar("cannot-place-in-this-world"));
                         Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
                         Util.playSound(player, placeSound);
                         return;
@@ -44,12 +44,12 @@ public class BlockPlaceListener implements Listener {
                         Sound placeSound = Util.isServerLegacy() ? Sound.ITEM_FIRECHARGE_USE : Sound.BLOCK_BEACON_ACTIVATE;
                         Util.playSound(block, placeSound);
                         Util.showParticle(player, block, Particle.END_ROD, 25);
-                        sendMessage(player, getPrefixedLangVar("generator-placed") + generator.getId());
+                        sendMessage(player, getPrefixLangVar("generator-placed") + generator.getId());
                         Location generatorLocation = block.getLocation().add(0, 1, 0);
                         if (generatorLocation.getBlock().getType() == Material.BEDROCK
                                 || BlockUtil.isBlockAGenerator(generatorLocation, generatorLocation.getWorld())) {
                             event.setCancelled(true);
-                            sendMessage(player, getPrefixedLangVar("no-permission"));
+                            sendMessage(player, getPrefixLangVar("no-permission"));
                             return;
                         }
                         generator.register(block.getLocation(), block.getWorld());
@@ -63,7 +63,7 @@ public class BlockPlaceListener implements Listener {
                 }
                 else {
                     event.setCancelled(true);
-                    sendMessage(player, getPrefixedLangVar("no-permission"));
+                    sendMessage(player, getPrefixLangVar("no-permission"));
                 }
             }
         }

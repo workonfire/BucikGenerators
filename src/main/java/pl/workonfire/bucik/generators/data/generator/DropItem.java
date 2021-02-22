@@ -74,6 +74,7 @@ public class DropItem implements ItemProperty {
      * @since 1.0.0
      * @return ItemStack object
      */
+    @SuppressWarnings("deprecation") // one deprecated method is required for backwards compatibility
     public ItemStack getItemStack() {
         ItemStack item = new ItemStack(getMaterial());
         ItemMeta itemMeta = item.getItemMeta();
@@ -135,7 +136,7 @@ public class DropItem implements ItemProperty {
     public boolean gotSelected(ItemStack item, boolean respectPickaxeFortune) {
         double localDropMultiplier = 1;
         if (respectPickaxeFortune
-                && BlockUtil.isItemAPickaxe(item)
+                && BlockUtil.isItemDamageable(item)
                 && item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
             localDropMultiplier = item.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
         return Math.round(new Random().nextDouble() * 10000.0) / 100.0 <= getDropChance() * localDropMultiplier;

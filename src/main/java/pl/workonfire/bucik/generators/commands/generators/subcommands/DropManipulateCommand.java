@@ -5,7 +5,7 @@ import pl.workonfire.bucik.generators.data.DropMultiplier;
 import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixedLangVar;
+import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
 public class DropManipulateCommand implements Command {
@@ -23,25 +23,25 @@ public class DropManipulateCommand implements Command {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (Util.isAuthorized(sender, permission())) {
-            if (args.length == 1) sender.sendMessage(getPrefixedLangVar("not-enough-arguments"));
+            if (args.length == 1) sender.sendMessage(getPrefixLangVar("not-enough-arguments"));
             else {
                 if (args[1].equalsIgnoreCase("getMultiplier"))
-                    sendMessage(sender, getPrefixedLangVar("current-drop-multiplier")
+                    sendMessage(sender, getPrefixLangVar("current-drop-multiplier")
                             + DropMultiplier.getDropMultiplier() + "x");
                 else if (args[1].equalsIgnoreCase("setMultiplier")) {
-                    if (args.length == 2) sendMessage(sender, getPrefixedLangVar("not-enough-arguments"));
+                    if (args.length == 2) sendMessage(sender, getPrefixLangVar("not-enough-arguments"));
                     else {
                         try {
                             DropMultiplier.setDropMultiplier(Integer.parseInt(args[2].replaceAll("x", "")));
-                            sendMessage(sender, getPrefixedLangVar("set-drop-multiplier")
+                            sendMessage(sender, getPrefixLangVar("set-drop-multiplier")
                                     + DropMultiplier.getDropMultiplier() + "x.");
                         }
                         catch (NumberFormatException exception) {
-                            sendMessage(sender, getPrefixedLangVar("argument-must-be-an-int"));
+                            sendMessage(sender, getPrefixLangVar("argument-must-be-an-int"));
                         }
                     }
                 }
-                else sendMessage(sender, getPrefixedLangVar("subcommand-does-not-exist"));
+                else sendMessage(sender, getPrefixLangVar("subcommand-does-not-exist"));
             }
         }
     }
