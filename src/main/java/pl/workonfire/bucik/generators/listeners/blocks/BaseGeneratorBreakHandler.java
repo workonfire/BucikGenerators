@@ -20,8 +20,8 @@ import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 public class BaseGeneratorBreakHandler {
 
     private final BlockBreakEvent event;
-    private final Player player;
-    private final Location generatorLocation;
+    private final Player          player;
+    private final Location        generatorLocation;
 
     protected void run() {
         Block block = event.getBlock();

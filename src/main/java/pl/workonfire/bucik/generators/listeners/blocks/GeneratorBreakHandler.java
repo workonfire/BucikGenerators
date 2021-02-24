@@ -27,10 +27,10 @@ import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 @SuppressWarnings("ConstantConditions")
 public class GeneratorBreakHandler {
 
-    private final BlockBreakEvent event;
-    private final Player player;
-    private final Generator baseGenerator;
-    private final Location baseBlockLocation;
+    private final BlockBreakEvent   event;
+    private final Player            player;
+    private final Generator         baseGenerator;
+    private final Location          baseBlockLocation;
     private final GeneratorLocation fullBlockLocation;
 
     protected GeneratorBreakHandler(BlockBreakEvent event,
@@ -42,7 +42,8 @@ public class GeneratorBreakHandler {
         this.baseGenerator = baseGenerator;
         this.baseBlockLocation = baseBlockLocation;
         this.fullBlockLocation = BlockUtil.convertLocation(
-                this.baseBlockLocation, this.baseBlockLocation.getWorld().getName());
+                this.baseBlockLocation, this.baseBlockLocation.getWorld().getName()
+        );
     }
 
     protected void run() {
