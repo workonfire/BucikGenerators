@@ -34,7 +34,7 @@ import java.io.IOException;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.2.9
+ * @version 1.3.0
  * @since   2020-06-13
  */
 

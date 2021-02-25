@@ -21,6 +21,11 @@ import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
@@ -46,9 +51,21 @@ public class GeneratorBreakHandler {
         );
     }
 
+    private void showActionBar(String text) {
+        if (text != null)
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Util.formatColors(text)));
+    }
+
+    private void generate(Block block, Material material) {
+        Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
+            if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
+                block.setType(material);
+        }, baseGenerator.getBreakCooldown());
+    }
+
     protected void run() {
         Block block = event.getBlock();
-        event.setCancelled(true);
+        event.setCancelled(!baseGenerator.getItemDropMode().equalsIgnoreCase("vanilla"));
         boolean breakable = true;
         if (baseGenerator.isWhitelistOn()) {
             // checking if we can break the generator with the current tool
@@ -62,12 +79,9 @@ public class GeneratorBreakHandler {
             }
         }
         if (player.hasPermission(baseGenerator.getPermission()) && breakable) {
-            block.setType(Material.AIR);
+            if (!baseGenerator.getItemDropMode().equalsIgnoreCase("vanilla")) block.setType(Material.AIR);
             // breaking the generator and applying the cooldown
-            Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
-                if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
-                    block.setType(baseGenerator.getGeneratorMaterial());
-            }, baseGenerator.getBreakCooldown());
+            generate(block, baseGenerator.getGeneratorMaterial());
             if (baseGenerator.isDurabilityOn() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
                 // handling the durability system
                 int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);
@@ -105,9 +119,37 @@ public class GeneratorBreakHandler {
             }
             for (String permission : baseGenerator.getGeneratorDropPermissions()) {
                 if (player.hasPermission(Util.getPermission(permission))) {
+                    double total = 0;
+                    double chance = 0;
+                    List<Double> chances = null;
+                    List<DropItem> items = null;
+                    if (baseGenerator.getItemDropMode().equalsIgnoreCase("vanilla")) {
+                        chance = new Random().nextDouble();
+                        chances = new ArrayList<>();
+                        items = new ArrayList<>();
+                    }
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                         DropItem item = new DropItem(baseGenerator.getId(), permission, Integer.parseInt(dropItemId));
                         // dropping the items, if the user has permission and the item got selected etc.
+                        if (baseGenerator.getItemDropMode().equalsIgnoreCase("vanilla")) {
+                            // vanilla mode implemented by Filipeeh
+                            total += item.getDropChance();
+                            chances.add(total);
+                            items.add(item);
+                            chance *= total;
+                            Iterator<Double> chancesIterator = chances.iterator();
+                            DropItem selected = null;
+                            for (DropItem dropItem : items) {
+                                if (chance <= chancesIterator.next()) {
+                                    selected = dropItem;
+                                    break;
+                                }
+                            }
+                            final DropItem selectedFinal = selected;
+                            generate(block, selectedFinal.getMaterial());
+                            showActionBar(selectedFinal.getActionBarMessage());
+                            return;
+                        }
                         if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.isRespectPickaxeFortune())) {
                             // checking for each item type (potion, money, exp etc.)
                             if (item.isPotion() && item.getPotionEffectTypeName() != null) {
@@ -133,9 +175,7 @@ public class GeneratorBreakHandler {
                                 else
                                     block.getWorld().dropItemNaturally(baseBlockLocation, item.getItemStack());
                             }
-                            if (item.getActionBarMessage() != null)
-                                player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                                        TextComponent.fromLegacyText(Util.formatColors(item.getActionBarMessage())));
+                            showActionBar(item.getActionBarMessage());
                         }
                     }
                 }
