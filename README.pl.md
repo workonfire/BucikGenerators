@@ -3,7 +3,7 @@
 ![GitHub Workflow Status](https://github.com/workonfire/BucikGenerators/workflows/Java%20CI%20with%20Maven/badge.svg)
 ![Spiget](https://img.shields.io/spiget/downloads/80180)
 ![Wzium](https://img.shields.io/badge/wzium-true-ff69b4)
-![JavaDoc](https://img.shields.io/badge/JavaDoc-here!-orange?logo=java&link=https://workonfi.re/bucik/generators/apidocs)
+[![JavaDoc Badge](https://img.shields.io/badge/JavaDoc-here!-orange?logo=java)](https://workonfi.re/bucik/generators/apidocs)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
 [English version here](README.md)
