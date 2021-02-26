@@ -1,9 +1,9 @@
 package pl.workonfire.bucik.generators.data.generator;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.ConfigProperty;
-
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getGensConf;
 
 public interface ItemProperty {
 
@@ -12,22 +12,28 @@ public interface ItemProperty {
         String propName = getPropName(property);
         switch (type) {
             case INTEGER:
-                return getGensConf().getInt(propName);
+                return getConfiguration().getInt(propName);
             case STRING:
-                return getGensConf().getString(propName);
+                return getConfiguration().getString(propName);
             case BOOLEAN:
-                return getGensConf().getBoolean(propName);
+                return getConfiguration().getBoolean(propName);
             case MATERIAL:
-                return Material.getMaterial(getGensConf().getString(propName).toUpperCase());
+                return Material.getMaterial(getConfiguration().getString(propName).toUpperCase());
             case STRING_LIST:
-                return getGensConf().getStringList(propName);
+                return getConfiguration().getStringList(propName);
             case CONFIG_SECTION:
-                return getGensConf().getConfigurationSection(propName);
+                return getConfiguration().getConfigurationSection(propName);
+            case CONFIG_SECTION_NO_KEYS:
+                return getConfiguration().getConfigurationSection(propName).getKeys(false);
             case DOUBLE:
-                return getGensConf().getDouble(propName);
+                return getConfiguration().getDouble(propName);
             default:
                 return null;
         }
+    }
+
+    default FileConfiguration getConfiguration() {
+        return ConfigManager.getGensConf();
     }
 
     String getPropName(String property);

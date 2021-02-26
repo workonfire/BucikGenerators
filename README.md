@@ -97,7 +97,7 @@ generators:
         - "&6cobblestone."
     generator:
       item: STONE
-      item-drop-mode: inventory # available modes: inventory, ground
+      item-drop-mode: inventory # available modes: inventory, ground, vanilla
       drop:
         # EXTREMELY IMPORTANT:
         # REPLACE "." with "-" IN PERMISSIONS.

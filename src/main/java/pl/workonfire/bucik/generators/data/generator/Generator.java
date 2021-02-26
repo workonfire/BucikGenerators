@@ -1,6 +1,8 @@
 package pl.workonfire.bucik.generators.data.generator;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -25,27 +27,28 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Generator implements ItemProperty {
-    @Getter private final String               id;
-    @Getter private final int                  breakCooldown;
-    @Getter private final String               permission;
-    @Getter private final Material             baseItemMaterial;
-    @Getter private final Material             generatorMaterial;
-    @Getter private final Set<String>          generatorDropPermissions;
-    @Getter private final List<String>         worldBlacklist;
-    @Getter private final String               itemDropMode;
-    @Getter private final ConfigurationSection customRecipe;
-    @Getter private final List<String>         enchantments;
-    @Getter private final boolean              hideEnchantments;
-    @Getter private final boolean              isDurabilityOn;
-    @Getter private final int                  durability;
-    @Getter private final boolean              affectPxDurability;
-    @Getter private final int                  affectPxDurabilityValue;
-    @Getter private final boolean              respectPickaxeFortune;
-    @Getter private final boolean              whitelistOn;
-    @Getter private final List<String>         whitelistedItems;
-            private final String               baseItemName;
-            private final List<String>         baseItemLore;
+    @Getter String               id;
+    @Getter int                  breakCooldown;
+    @Getter String               permission;
+    @Getter Material             baseItemMaterial;
+    @Getter Material             generatorMaterial;
+    @Getter Set<String>          generatorDropPermissions;
+    @Getter List<String>         worldBlacklist;
+    @Getter String               itemDropMode;
+    @Getter ConfigurationSection customRecipe;
+    @Getter List<String>         enchantments;
+    @Getter boolean              hideEnchantments;
+    @Getter boolean              isDurabilityOn;
+    @Getter int                  durability;
+    @Getter boolean              affectPxDurability;
+    @Getter int                  affectPxDurabilityValue;
+    @Getter boolean              respectPickaxeFortune;
+    @Getter boolean              whitelistOn;
+    @Getter List<String>         whitelistedItems;
+            String               baseItemName;
+            List<String>         baseItemLore;
 
     @SuppressWarnings("unchecked")
     public Generator(String id) {
@@ -56,8 +59,7 @@ public class Generator implements ItemProperty {
         baseItemName = (String) getProperty("base.name", STRING);
         baseItemLore = (List<String>) getProperty("base.lore", STRING_LIST);
         generatorMaterial = (Material) getProperty("generator.item", MATERIAL);
-        generatorDropPermissions = ((ConfigurationSection) getProperty("generator.drop", CONFIG_SECTION))
-                .getKeys(false);
+        generatorDropPermissions = (Set<String>) getProperty("generator.drop", CONFIG_SECTION_NO_KEYS);
         worldBlacklist = (List<String>) getProperty("world-blacklist", STRING_LIST);
         itemDropMode = (String) getProperty("generator.item-drop-mode", STRING);
         customRecipe = (ConfigurationSection) getProperty("custom-crafting-recipe", CONFIG_SECTION);

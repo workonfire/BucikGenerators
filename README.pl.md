@@ -60,7 +60,7 @@
 ```yaml
 generators:
   normal:
-    break-cooldown: 1 # W tickach. 20 ticków = 1 sekunds
+    break-cooldown: 1 # W tickach. 20 ticków = 1 sekund
     permission: bucik.generators.normal
     respect-pickaxe-fortune: true
     durability:
@@ -97,7 +97,7 @@ generators:
         - "&6cobblestone."
     generator:
       item: STONE
-      item-drop-mode: inventory # dostępne tryby: inventory, ground
+      item-drop-mode: inventory # dostępne tryby: inventory, ground, vanilla
       drop:
         # BARDZO WAŻNE:
         # ZAMIEŃ "." NA "-" W NAZWACH PERMISJI.

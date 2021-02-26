@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.managers;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
@@ -13,7 +14,8 @@ import java.io.IOException;
 /**
  * For the generator durability data, please refer to {@link pl.workonfire.bucik.generators.data.GeneratorDurabilities}
  */
-public abstract class ConfigManager {
+@UtilityClass
+public final class ConfigManager {
     private static       FileConfiguration config;
     private static       FileConfiguration languageConfig;
     private static       FileConfiguration generatorsConfig;

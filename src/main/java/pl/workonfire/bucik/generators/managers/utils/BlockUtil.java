@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -19,8 +20,9 @@ import java.util.Set;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getDataStorage;
 
+@UtilityClass
 @SuppressWarnings("ConstantConditions")
-public abstract class BlockUtil {
+public final class BlockUtil {
 
     /**
      * Gets a list of all generators IDs.

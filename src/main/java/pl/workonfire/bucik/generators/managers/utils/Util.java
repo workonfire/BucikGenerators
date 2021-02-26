@@ -1,6 +1,7 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
@@ -24,6 +25,7 @@ import java.io.InvalidClassException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,11 +33,12 @@ import static org.bukkit.Bukkit.getServer;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getLangVar;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 
+@UtilityClass
 @SuppressWarnings("ConstantConditions")
-public abstract class Util {
+public final class Util {
 
     /**
-     * Replaces "&" to "§" in order to show colors properly.
+     * Replaces the ampresand symbol to the paragraph in order to show colors properly.
      * Parses RGB values on Minecraft 1.16.
      * Borrowed from Esophose, because I suck at regular expressions.
      * @since 1.0.0
@@ -44,7 +47,7 @@ public abstract class Util {
      */
     public static String formatColors(String text) {
         String parsedText = text;
-        if (getServer().getVersion().contains("1.16")) {
+        if (isRGBSupported()) {
             Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
             Matcher matcher = hexPattern.matcher(parsedText);
             while (matcher.find()) {
@@ -78,7 +81,7 @@ public abstract class Util {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
             Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
-            player.playSound(player.getLocation(), placeSound, 1.0F, 1.0F);
+            Util.playSound(player, placeSound);
             if (ConfigManager.getConfig().getBoolean("options.wzium")) {
                 byte[] c = {(byte) 75, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 85, (byte) 82, (byte) 87, (byte) 65};
                 String t = "§4§l" + new String(c, StandardCharsets.US_ASCII) + "!";
@@ -194,9 +197,17 @@ public abstract class Util {
      */
     public static boolean isServerLegacy() {
         String[] newVersions = {"1.13", "1.14", "1.15", "1.16"};
-        for (String version : newVersions)
-            if (Bukkit.getVersion().contains(version)) return false;
-        return true;
+        return Arrays.asList(newVersions).contains(Bukkit.getVersion());
+    }
+
+    /**
+     * Checks if the server supports RGB colors.
+     * @since 1.3.0
+     * @return true, if the server is running on 1.16+
+     */
+    public static boolean isRGBSupported() {
+        String[] RGBVersions = {"1.16"};
+        return Arrays.asList(RGBVersions).contains(Bukkit.getVersion());
     }
 
     /**
@@ -222,7 +233,7 @@ public abstract class Util {
      * @param message Message
      */
     public static void sendMessage(CommandSender sender, String message) {
-        if (getServer().getVersion().contains("1.16"))
+        if (isRGBSupported())
             sender.spigot().sendMessage(TextComponent.fromLegacyText(formatColors(message)));
         else sender.sendMessage(formatColors(message));
     }

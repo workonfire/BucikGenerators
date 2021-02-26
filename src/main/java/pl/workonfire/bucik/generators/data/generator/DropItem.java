@@ -1,6 +1,8 @@
 package pl.workonfire.bucik.generators.data.generator;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -19,24 +21,25 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DropItem implements ItemProperty {
-    @Getter private final Material     material;
-    @Getter private final String       materialName;
-    @Getter private final String       itemName;
-    @Getter private final String       actionBarMessage;
-    @Getter private final List<String> enchantments;
-    @Getter private final String       potionEffectTypeName;
-    @Getter private final int          potionEffectDuration;
-    @Getter private final int          potionEffectAmplifier;
-    @Getter private final double       moneyAmount;
-    @Getter private final int          expAmount;
-    @Getter private final boolean      hideEnchantments;
-            private final String       generatorId;
-            private final String       permission;
-            private final int          itemId;
-            private final double       dropChance;
-            private final int          amount;
-            private final List<String> itemLore;
+    @Getter Material     material;
+    @Getter String       materialName;
+    @Getter String       itemName;
+    @Getter String       actionBarMessage;
+    @Getter List<String> enchantments;
+    @Getter String       potionEffectTypeName;
+    @Getter int          potionEffectDuration;
+    @Getter int          potionEffectAmplifier;
+    @Getter double       moneyAmount;
+    @Getter int          expAmount;
+    @Getter boolean      hideEnchantments;
+            String       generatorId;
+            String       permission;
+            int          itemId;
+            double       dropChance;
+            int          amount;
+            List<String> itemLore;
 
     @SuppressWarnings("unchecked")
     public DropItem(String generatorId, String permission, int itemId) {
