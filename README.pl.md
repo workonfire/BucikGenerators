@@ -1,8 +1,9 @@
 # BucikGenerators
 
 ![GitHub Workflow Status](https://github.com/workonfire/BucikGenerators/workflows/Java%20CI%20with%20Maven/badge.svg)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/567c8bfa9c6b432f8b872fd59b6e7d90)](https://www.codacy.com/manual/workonfire/BucikGenerators?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=workonfire/BucikGenerators&amp;utm_campaign=Badge_Grade)
-![Wzium](https://img.shields.io/badge/wzium-true-green)
+![Spiget](https://img.shields.io/spiget/downloads/80180)
+![Wzium](https://img.shields.io/badge/wzium-true-ff69b4)
+![JavaDoc](https://img.shields.io/badge/JavaDoc-here!-orange?logo=java&link=https://workonfi.re/bucik/generators/apidocs)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
 [English version here](README.md)
@@ -60,7 +61,7 @@
 ```yaml
 generators:
   normal:
-    break-cooldown: 1 # W tickach. 20 ticków = 1 sekund
+    break-cooldown: 1 # W tickach. 20 ticków = 1 sekunda
     permission: bucik.generators.normal
     respect-pickaxe-fortune: true
     durability:
