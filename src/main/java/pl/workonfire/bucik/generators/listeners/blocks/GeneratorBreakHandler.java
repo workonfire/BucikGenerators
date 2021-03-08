@@ -21,11 +21,6 @@ import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
@@ -119,37 +114,9 @@ public class GeneratorBreakHandler {
             }
             for (String permission : baseGenerator.getGeneratorDropPermissions()) {
                 if (player.hasPermission(Util.getPermission(permission))) {
-                    double total = 0;
-                    double chance = 0;
-                    List<Double> chances = null;
-                    List<DropItem> items = null;
-                    if (baseGenerator.getItemDropMode().equalsIgnoreCase("vanilla")) {
-                        chance = new Random().nextDouble();
-                        chances = new ArrayList<>();
-                        items = new ArrayList<>();
-                    }
                     for (String dropItemId : baseGenerator.getDropItemsIds(permission)) {
                         DropItem item = new DropItem(baseGenerator.getId(), permission, Integer.parseInt(dropItemId));
                         // dropping the items, if the user has permission and the item got selected etc.
-                        if (baseGenerator.getItemDropMode().equalsIgnoreCase("vanilla")) {
-                            // vanilla mode implemented by Filipeeh
-                            total += item.getDropChance();
-                            chances.add(total);
-                            items.add(item);
-                            chance *= total;
-                            Iterator<Double> chancesIterator = chances.iterator();
-                            DropItem selected = null;
-                            for (DropItem dropItem : items) {
-                                if (chance <= chancesIterator.next()) {
-                                    selected = dropItem;
-                                    break;
-                                }
-                            }
-                            final DropItem selectedFinal = selected;
-                            generate(block, selectedFinal.getMaterial());
-                            showActionBar(selectedFinal.getActionBarMessage());
-                            return;
-                        }
                         if (item.gotSelected(player.getInventory().getItemInMainHand(), baseGenerator.isRespectPickaxeFortune())) {
                             // checking for each item type (potion, money, exp etc.)
                             if (item.isPotion() && item.getPotionEffectTypeName() != null) {
