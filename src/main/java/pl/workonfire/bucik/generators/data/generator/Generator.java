@@ -16,11 +16,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.utils.ConfigProperty.*;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getGensConf;
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,9 +95,9 @@ public class Generator implements ItemProperty {
      * @param world World object
      */
     public void register(Location location, World world) {
-        List<String> currentLocations = getDataStorage().getStringList("generators");
+        List<String> currentLocations = ConfigManager.getDataStorage().getStringList("generators");
         currentLocations.add(formatData(location, world));
-        getDataStorage().set("generators", currentLocations);
+        ConfigManager.getDataStorage().set("generators", currentLocations);
     }
 
     /**
@@ -108,9 +107,9 @@ public class Generator implements ItemProperty {
      * @param world World object
      */
     public void unregister(Location location, World world) {
-        List<String> currentLocations = getDataStorage().getStringList("generators");
+        List<String> currentLocations = ConfigManager.getDataStorage().getStringList("generators");
         currentLocations.remove(formatData(location, world));
-        getDataStorage().set("generators", currentLocations);
+        ConfigManager.getDataStorage().set("generators", currentLocations);
     }
 
     /**
@@ -120,7 +119,7 @@ public class Generator implements ItemProperty {
      * @return A set of item IDs.
      */
     public Set<String> getDropItemsIds(String permission) {
-        return getGensConf().getConfigurationSection(
+        return ConfigManager.getGeneratorsConfig().getConfigurationSection(
                 String.format("generators.%s.generator.drop.%s", getId(), permission)).getKeys(false);
     }
 

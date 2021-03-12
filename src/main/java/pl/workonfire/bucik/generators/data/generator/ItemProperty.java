@@ -33,7 +33,7 @@ public interface ItemProperty {
     }
 
     default FileConfiguration getConfiguration() {
-        return ConfigManager.getGensConf();
+        return ConfigManager.getGeneratorsConfig();
     }
 
     String getPropName(String property);

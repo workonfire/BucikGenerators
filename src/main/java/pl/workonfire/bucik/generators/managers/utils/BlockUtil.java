@@ -18,8 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static pl.workonfire.bucik.generators.managers.ConfigManager.getDataStorage;
-
 @UtilityClass
 @SuppressWarnings("ConstantConditions")
 public final class BlockUtil {
@@ -30,7 +28,7 @@ public final class BlockUtil {
      * @return A set of generator IDs.
      */
     public static Set<String> getGeneratorsIds() {
-        return ConfigManager.getGensConf().getConfigurationSection("generators").getKeys(false);
+        return ConfigManager.getGeneratorsConfig().getConfigurationSection("generators").getKeys(false);
     }
 
     /**
@@ -55,7 +53,7 @@ public final class BlockUtil {
     public static List<Material> getAllGeneratorTypes() {
         List<Material> materialList = new ArrayList<>();
         for (String generatorId : getGeneratorsIds()) {
-            String materialName = ConfigManager.getGensConf().getString("generators." + generatorId + ".base.item");
+            String materialName = ConfigManager.getGeneratorsConfig().getString("generators." + generatorId + ".base.item");
             materialList.add(Material.getMaterial(materialName.toUpperCase()));
         }
         return materialList;
@@ -107,7 +105,7 @@ public final class BlockUtil {
      * @return true, if the targeted block is a generator
      */
     public static boolean isBlockAGenerator(Location location, World world) {
-        List<String> allGenerators = getDataStorage().getStringList("generators");
+        List<String> allGenerators = ConfigManager.getDataStorage().getStringList("generators");
         for (String generatorDetails : allGenerators) {
             String[] splittedDetails = generatorDetails.split("\\|");
             String worldName = splittedDetails[0];
@@ -128,7 +126,7 @@ public final class BlockUtil {
      * @return true, if the generator is defined
      */
     public static boolean isGeneratorDefined(String id) {
-        return ConfigManager.getGensConf().isConfigurationSection("generators." + id);
+        return ConfigManager.getGeneratorsConfig().isConfigurationSection("generators." + id);
     }
 
     /**

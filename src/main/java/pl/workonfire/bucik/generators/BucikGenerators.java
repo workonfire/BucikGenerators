@@ -17,6 +17,7 @@
 
 package pl.workonfire.bucik.generators;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
@@ -40,9 +41,9 @@ import java.io.IOException;
 
 
 public final class BucikGenerators extends JavaPlugin {
-    private static BucikGenerators       instance;
-    private static String                pluginVersion;
-    private static GeneratorDurabilities generatorDurabilities;
+    @Getter private static BucikGenerators       instance;
+    @Getter private static String                pluginVersion;
+    @Getter private static GeneratorDurabilities generatorDurabilities;
 
     @Override
     public void onEnable() {
@@ -85,17 +86,5 @@ public final class BucikGenerators extends JavaPlugin {
             Util.systemMessage(Logger.DEBUG, "Something went wrong during the serialization process.");
             exception.printStackTrace();
         }
-    }
-
-    public static BucikGenerators getInstance() {
-        return instance;
-    }
-
-    public static String getPluginVersion() {
-        return pluginVersion;
-    }
-
-    public static GeneratorDurabilities getGeneratorDurabilities() {
-        return generatorDurabilities;
     }
 }

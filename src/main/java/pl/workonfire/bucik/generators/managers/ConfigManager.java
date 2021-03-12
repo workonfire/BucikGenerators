@@ -1,12 +1,12 @@
 package pl.workonfire.bucik.generators.managers;
 
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
-
-import static pl.workonfire.bucik.generators.BucikGenerators.getInstance;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,25 +16,28 @@ import java.io.IOException;
  */
 @UtilityClass
 public final class ConfigManager {
-    private static       FileConfiguration config;
-    private static       FileConfiguration languageConfig;
-    private static       FileConfiguration generatorsConfig;
-    private static       FileConfiguration dataStorage;
-    private static final File              dataStorageFile = new File(getInstance().getDataFolder(), "storage.yml");
+    @Getter private static       FileConfiguration config;
+    @Getter private static       FileConfiguration languageConfig;
+    @Getter private static       FileConfiguration generatorsConfig;
+    @Getter private static       FileConfiguration dataStorage;
+            private static final File              dataStorageFile = new File(
+                    BucikGenerators.getInstance().getDataFolder(), "storage.yml"
+            );
 
     public static void initializeConfig() {
-        config = getInstance().getConfig();
+        config = BucikGenerators.getInstance().getConfig();
         String languageFileName = config.getString("options.locale") + ".yml";
-        File languageConfigFile = new File(getInstance().getDataFolder() + "/locales", languageFileName);
-        File generatorsConfigFile = new File(getInstance().getDataFolder(), "generators.yml");
+        File languageConfigFile = new File(BucikGenerators.getInstance().getDataFolder() + "/locales", languageFileName);
+        File generatorsConfigFile = new File(BucikGenerators.getInstance().getDataFolder(), "generators.yml");
         if (!languageConfigFile.exists()) {
             languageConfigFile.getParentFile().mkdirs();
             String[] locales = {"pl", "en", "es", "it", "hu", "fr"};
-            for (String locale : locales) getInstance().saveResource("locales/" + locale + ".yml", false);
+            for (String locale : locales)
+                BucikGenerators.getInstance().saveResource("locales/" + locale + ".yml", false);
         }
         if (!generatorsConfigFile.exists()) {
             generatorsConfigFile.getParentFile().mkdirs();
-            getInstance().saveResource("generators.yml", false);
+            BucikGenerators.getInstance().saveResource("generators.yml", false);
         }
         languageConfig = YamlConfiguration.loadConfiguration(languageConfigFile);
         generatorsConfig = YamlConfiguration.loadConfiguration(generatorsConfigFile);
@@ -47,7 +50,7 @@ public final class ConfigManager {
     public static void initializeDb() {
         if (!dataStorageFile.exists()) {
             dataStorageFile.getParentFile().mkdirs();
-            getInstance().saveResource("storage.yml", false);
+            BucikGenerators.getInstance().saveResource("storage.yml", false);
         }
         dataStorage = YamlConfiguration.loadConfiguration(dataStorageFile);
     }
@@ -71,7 +74,7 @@ public final class ConfigManager {
      * @since 1.0.0
      */
     public static void reloadAll() {
-        getInstance().reloadConfig();
+        BucikGenerators.getInstance().reloadConfig();
         initializeConfig();
     }
 
@@ -102,21 +105,5 @@ public final class ConfigManager {
      */
     public static String getPrefix() {
         return getLangVar("plugin-prefix");
-    }
-
-    public static FileConfiguration getConfig() {
-        return config;
-    }
-
-    public static FileConfiguration getLanguageConfig() {
-        return languageConfig;
-    }
-
-    public static FileConfiguration getGensConf() {
-        return generatorsConfig;
-    }
-
-    public static FileConfiguration getDataStorage() {
-        return dataStorage;
     }
 }
