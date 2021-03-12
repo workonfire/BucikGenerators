@@ -37,9 +37,9 @@ public class GeneratorBreakHandler {
                                     Player player,
                                     Generator baseGenerator,
                                     Location baseBlockLocation) {
-        this.event = event;
-        this.player = player;
-        this.baseGenerator = baseGenerator;
+        this.event             = event;
+        this.player            = player;
+        this.baseGenerator     = baseGenerator;
         this.baseBlockLocation = baseBlockLocation;
         this.fullBlockLocation = BlockUtil.convertLocation(
                 this.baseBlockLocation, this.baseBlockLocation.getWorld().getName()

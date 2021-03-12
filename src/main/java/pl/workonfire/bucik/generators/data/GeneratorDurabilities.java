@@ -1,30 +1,29 @@
 package pl.workonfire.bucik.generators.data;
 
+import lombok.AccessLevel;
 import lombok.Cleanup;
+import lombok.SneakyThrows;
+import lombok.experimental.FieldDefaults;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import pl.workonfire.bucik.generators.BucikGenerators;
-import pl.workonfire.bucik.generators.managers.utils.Logger;
-import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratorDurabilities implements Serializable {
-    private transient static GeneratorDurabilities instance;
-    private HashMap<GeneratorLocation, Integer> durabilities;
-    private transient static final String FILE_PATH
-            = BucikGenerators.getInstance().getDataFolder().getPath() + "/durabilities.ser";
-    private static final long serialVersionUID = -1543193395652903243L;
+    transient static GeneratorDurabilities               instance;
+                     HashMap<GeneratorLocation, Integer> durabilities;
 
+    transient static final File   dataFolder       = BucikGenerators.getInstance().getDataFolder();
+    transient static final String FILE_PATH        = dataFolder.getPath() + "/durabilities.ser";
+              static final long   serialVersionUID = -1543193395652903243L;
+
+    @SneakyThrows
     public GeneratorDurabilities() {
-        try {
-            deserialize();
-        } catch (IOException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException exception) {
-            Util.systemMessage(Logger.DEBUG, "Something went wrong during the deserialization process.");
-            exception.printStackTrace();
-        }
+        deserialize();
     }
 
     public void serialize() throws IOException {
@@ -35,7 +34,7 @@ public class GeneratorDurabilities implements Serializable {
 
     @SuppressWarnings("unchecked")
     public void deserialize() throws IOException, ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-        File durabilitiesFile = new File(BucikGenerators.getInstance().getDataFolder(), "durabilities.ser");
+        File durabilitiesFile = new File(dataFolder, "durabilities.ser");
         if (!durabilitiesFile.exists()) {
             durabilitiesFile.getParentFile().mkdirs();
             durabilities = new HashMap<>();

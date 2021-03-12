@@ -18,6 +18,7 @@
 package pl.workonfire.bucik.generators;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
@@ -53,16 +54,20 @@ public final class BucikGenerators extends JavaPlugin {
         ConfigManager.initializeConfig();
         ConfigManager.initializeDb();
         generatorDurabilities = GeneratorDurabilities.getInstance();
+
         Util.registerEvents();
         Util.registerCommands();
         VaultHandler.setupEconomy();
+
         Util.systemMessage(Logger.INFO, "&fBucikGenerators &6" + getPluginVersion() + " &fby Buty935. Discord: &9workonfire#8262");
         Util.systemMessage(Logger.DEBUG, "Debug mode enabled. IF YOU ENCOUNTER ANY BUGS, PLEASE REPORT THEM.");
         Util.systemMessage(Logger.DEBUG, "Economy setup: " + VaultHandler.getEconomy());
+
         int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         if (dataSaveInterval != 0)
             Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), ConfigManager::updateDb, 0, dataSaveInterval);
         BlockUtil.registerRecipes();
+
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
             int pluginId = 7854;
             new Metrics(getInstance(), pluginId);
@@ -70,6 +75,7 @@ public final class BucikGenerators extends JavaPlugin {
                     "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin " +
                             "&f&nconfig.yml&r in order to disable metrics.");
         }
+
         if (Util.isServerLegacy()) Util.systemMessage(Logger.WARN,
                 "Although this plugin works on some versions older than 1.13, the support for legacy versions" +
                         " is very limited.\nDon't expect everything to work fine. For example, not all of the item types" +
@@ -77,14 +83,10 @@ public final class BucikGenerators extends JavaPlugin {
     }
 
     @Override
+    @SneakyThrows
     public void onDisable() {
         ConfigManager.updateDb();
         BlockUtil.unregisterRecipes();
-        try {
-            getGeneratorDurabilities().serialize();
-        } catch (IOException exception) {
-            Util.systemMessage(Logger.DEBUG, "Something went wrong during the serialization process.");
-            exception.printStackTrace();
-        }
+        getGeneratorDurabilities().serialize();
     }
 }
