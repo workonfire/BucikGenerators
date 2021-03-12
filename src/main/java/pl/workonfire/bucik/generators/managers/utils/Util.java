@@ -21,11 +21,11 @@ import pl.workonfire.bucik.generators.listeners.commands.DropTabCompleter;
 import pl.workonfire.bucik.generators.listeners.commands.MainTabCompleter;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 
-import java.io.InvalidClassException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -116,14 +116,14 @@ public final class Util {
      */
     @SneakyThrows
     public static void registerEvents() {
-        Class<?>[] events = {
+        List<Class<? extends Listener>> events = Arrays.asList(
                 BlockBreakListener.class,
                 BlockPlaceListener.class,
                 PistonExtendListener.class,
                 EntityExplodeListener.class
-        };
-        for (Class<?> clazz : events) {
-            Listener eventObject = (Listener) clazz.getConstructor().newInstance();
+        );
+        for (Class<? extends Listener> clazz : events) {
+            Listener eventObject = clazz.getConstructor().newInstance();
             getServer().getPluginManager().registerEvents(eventObject, BucikGenerators.getInstance());
         }
     }
@@ -144,15 +144,13 @@ public final class Util {
      * @param tabCompleter Tab completer class (required, can return only an empty list)
      */
     @SneakyThrows
-    private static void registerCommand(String name, Class<?> command, Class<?> tabCompleter) {
-        Object commandExecutor = command.getConstructor().newInstance();
-        Object completer = tabCompleter.getConstructor().newInstance();
-        if (commandExecutor instanceof CommandExecutor && completer instanceof TabCompleter) {
-            BucikGenerators.getInstance().getCommand(name).setExecutor((CommandExecutor) commandExecutor);
-            BucikGenerators.getInstance().getCommand(name).setTabCompleter((TabCompleter) completer);
-        }
-        else throw new InvalidClassException(command + " or " + tabCompleter +
-                " do not implement the required interfaces.");
+    private static void registerCommand(String name,
+                                        Class<? extends CommandExecutor> command,
+                                        Class<? extends TabCompleter> tabCompleter) {
+        CommandExecutor commandExecutor = command.getConstructor().newInstance();
+        TabCompleter completer = tabCompleter.getConstructor().newInstance();
+        BucikGenerators.getInstance().getCommand(name).setExecutor(commandExecutor);
+        BucikGenerators.getInstance().getCommand(name).setTabCompleter(completer);
     }
 
     /**
