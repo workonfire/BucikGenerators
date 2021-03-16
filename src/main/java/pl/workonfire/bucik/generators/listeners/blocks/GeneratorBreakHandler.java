@@ -54,7 +54,7 @@ public class GeneratorBreakHandler {
     private void generate(Block block, Material material) {
         Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
             if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
-                block.setType(material, true);
+                block.setType(material);
         }, baseGenerator.getBreakCooldown());
     }
 
