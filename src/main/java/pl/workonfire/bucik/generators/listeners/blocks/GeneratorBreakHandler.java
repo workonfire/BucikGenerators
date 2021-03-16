@@ -54,7 +54,7 @@ public class GeneratorBreakHandler {
     private void generate(Block block, Material material) {
         Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
             if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
-                block.setType(material);
+                block.setType(material, true);
         }, baseGenerator.getBreakCooldown());
     }
 
@@ -74,7 +74,7 @@ public class GeneratorBreakHandler {
             }
         }
         if (player.hasPermission(baseGenerator.getPermission()) && breakable) {
-            if (!baseGenerator.getItemDropMode().equalsIgnoreCase("vanilla")) block.setType(Material.AIR);
+            block.setType(Material.AIR);
             // breaking the generator and applying the cooldown
             generate(block, baseGenerator.getGeneratorMaterial());
             if (baseGenerator.isDurabilityOn() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
