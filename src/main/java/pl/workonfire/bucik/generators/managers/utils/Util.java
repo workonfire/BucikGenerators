@@ -176,7 +176,7 @@ public final class Util {
     }
 
     /**
-     * Shows a particle, if particle in the configuration file are enabled.
+     * Shows a particle, if particles in the configuration file are enabled.
      * @since 1.1.4
      * @param player Player object
      * @param block Block object

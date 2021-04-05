@@ -29,8 +29,6 @@ import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
-import java.io.IOException;
-
 /**
  * A customizable plugin for setting up block generators.
  * Made with ♥

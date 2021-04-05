@@ -10,7 +10,7 @@
 
 ## Features
 - Fully customizable block generators
-- Custom permissions for almost everything
+- Custom permissions for many things
 - Custom cooldown times
 - Custom **crafting recipes**
 - **Generator durability** system
@@ -27,125 +27,31 @@
 - Database auto-save system
 - A whitelist of items that can be used to destroy the generator
 
-## Permissions
-- `bucik.generators.reload`
-- `bucik.generators.get`
-- `bucik.generators.drop.see`
-- `bucik.generators.drop.manipulate`
-- `bucik.generators.forcedestroy`
-- `bucik.generators.debug`
-  
-## Commands
-- `/generators reload`
-- `/generators drop <getMultiplier|setMultiplier> [value]`
-- `/generators get <generatorID> [amount] [player]`
-- `/generators forceDestroy`
-- `/drop`
+## Usage
+An example of the **configuration files**, **permissions** and **commands** are listed in the [Wiki section](https://github.com/workonfire/BucikGenerators/wiki).
   
 ## Screenshots
-![Screenshot 1](https://i.imgur.com/XPQAbUr.png)
-
+#### Generator block
+![Screenshot 1](https://i.imgur.com/lw8Iygy.png)
+#### Generator crafting
 ![Screenshot 2](https://i.imgur.com/QNcWJ8c.png)
-
+#### The `/drop` command
 ![Screenshot 3](https://i.imgur.com/nI1UY74.png)
-
+#### Hoverable drop details
 ![Screenshot 4](https://i.imgur.com/kMYCdYR.png)
-
+#### Drop multiplier modification
 ![Screenshot 5](https://i.imgur.com/jdAO19o.png)
-
+#### Action bar appearance
 ![Screenshot 6](https://i.imgur.com/SCI4KyO.png)
-
+#### Generator durability system
 ![Screenshot 7](https://i.imgur.com/13ChMpe.png)
 
-## Example generators config (`generators.yml`)
-```yaml
-generators:
-  normal:
-    break-cooldown: 1 # In ticks. 20 ticks = 1 second
-    permission: bucik.generators.normal
-    respect-pickaxe-fortune: true
-    durability:
-      enabled: true
-      value: 30
-    affect-pickaxe-durability:
-      enabled: true
-      value: 25
-    custom-crafting-recipe:
-      slot-A: AIR
-      slot-B: COBBLESTONE
-      slot-C: AIR
-      slot-D: STONE
-      slot-E: AIR
-      slot-F: AIR
-      slot-G: GOLD_INGOT
-      slot-H: AIR
-      slot-I: AIR
-    world-blacklist:
-      - world_the_end
-      - world_nether
-    enchantments:
-      - "unbreaking:5"
-    hide-enchantments: true
-    whitelist:
-      enabled: false
-      items:
-        - DIAMOND_PICKAXE
-    base:
-      item: END_STONE
-      name: "&7&l&oGenerator"
-      lore:
-        - "&6It simply generates infinite"
-        - "&6cobblestone."
-    generator:
-      item: STONE
-      item-drop-mode: inventory # available modes: inventory, ground, vanilla
-      drop:
-        # EXTREMELY IMPORTANT:
-        # REPLACE "." with "-" IN PERMISSIONS.
-        # Permissions:
-        bucik-generators-stone-vip:
-          1:
-            chance: 100 # %
-            item: COBBLESTONE
-            enchantments:
-              - "silk_touch:1"
-            action-bar-message: "&f&l+ &f&l[&7&lCobblestone&f&l]"
-            hide-enchantments: true
-          2:
-            chance: 7 # %
-            item: DIAMOND
-            amount: 1
-            name: "&bA not really rare diamond."
-            lore:
-              - "&5:D"
-            action-bar-message: "&f&l+ &f&l[&b&lDiamond&f&l]"
-          3:
-            chance: 0.45 # %
-            item: EMERALD
-            amount: 1
-            name: "&6This should remain empty."
-            lore:
-              - "&5This should remain empty as well."
-            action-bar-message: "&f&l+ &f&l[&b&lEmerald&f&l]"
-        bucik-generators-stone-svip:
-          1:
-            chance: 5 # %
-            item: POTION
-            potion:
-              effect: FAST_DIGGING
-              amplifier: 2
-              duration: 30 # In seconds.
-            action-bar-message: "&f&l+ &f&l[&5&lHaste II&f&l]"
-          3:
-            chance: 10 # %
-            item: MONEY
-            money-amount: 500
-            action-bar-message: "&f&l+ &f&l[&2&l$&a&l500&f&l]"
-          4:
-            chance: 5 # %
-            item: EXP
-            exp-amount: 50
-```
-You can customize more options in `config.yml`.
 
-This is one of my first plugins, so feel free to create a pull request if you think something can be done better.
+## Acknowledgments
+Thanks to [@k073l](https://github.com/k073l) and [@oliwier975PL](https://github.com/oliwier975PL) for testing.
+
+## License
+This project is licensed under the [GNU GPL-3.0 License](LICENSE).
+
+## Project status
+I've run out of energy, so currently this project is not actively maintained. Although if I come up with an idea or someone reports me a critical bug, I'll release an update. :smile: 

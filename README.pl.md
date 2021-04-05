@@ -6,7 +6,7 @@
 [![JavaDoc Badge](https://img.shields.io/badge/JavaDoc-here!-orange?logo=java)](https://workonfi.re/bucik/generators/apidocs)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
-[English version here](README.md)
+[Polish version here](README.pl.md)
 
 ## Funkcje
 - W pełni dostosowywalne generatory bloków
@@ -27,125 +27,31 @@
 - System automatycznego zapisywania bazy danych
 - Biała lista przedmiotów, którymi można zniszczyć generator
 
-## Uprawnienia
-- `bucik.generators.reload`
-- `bucik.generators.get`
-- `bucik.generators.drop.see`
-- `bucik.generators.drop.manipulate`
-- `bucik.generators.forcedestroy`
-- `bucik.generators.debug`
-  
-## Komendy
-- `/generators reload`
-- `/generators drop <getMultiplier|setMultiplier> [wartość]`
-- `/generators get <generatorID> [ilość] [gracz]`
-- `/generators forceDestroy`
-- `/drop`
-  
+## Użycie
+Przykłady **plików konfiguracyjnych**, **uprawnień** i **komend** są wypisane w odpowiedniej sekcji na [Wiki](https://github.com/workonfire/BucikGenerators/wiki).
+
 ## Zrzuty ekranu
-![Screenshot 1](https://i.imgur.com/XPQAbUr.png)
-
+#### Blok generatora
+![Screenshot 1](https://i.imgur.com/lw8Iygy.png)
+#### Crafting
 ![Screenshot 2](https://i.imgur.com/QNcWJ8c.png)
-
+#### Komenda `/drop`
 ![Screenshot 3](https://i.imgur.com/nI1UY74.png)
-
+#### Możliwe do najechania myszką informacje o dropie
 ![Screenshot 4](https://i.imgur.com/kMYCdYR.png)
-
+#### Modyfikacja mnożnika dropu
 ![Screenshot 5](https://i.imgur.com/jdAO19o.png)
-
+#### Wygląda paska akcji
 ![Screenshot 6](https://i.imgur.com/SCI4KyO.png)
-
+#### System wytrzymałości generatorów
 ![Screenshot 7](https://i.imgur.com/13ChMpe.png)
 
-## Przykładowa konfiguracja (`generators.yml`)
-```yaml
-generators:
-  normal:
-    break-cooldown: 1 # W tickach. 20 ticków = 1 sekunda
-    permission: bucik.generators.normal
-    respect-pickaxe-fortune: true
-    durability:
-      enabled: true
-      value: 30
-    affect-pickaxe-durability:
-      enabled: true
-      value: 25
-    custom-crafting-recipe:
-      slot-A: AIR
-      slot-B: COBBLESTONE
-      slot-C: AIR
-      slot-D: STONE
-      slot-E: AIR
-      slot-F: AIR
-      slot-G: GOLD_INGOT
-      slot-H: AIR
-      slot-I: AIR
-    world-blacklist:
-      - world_the_end
-      - world_nether
-    enchantments:
-      - "unbreaking:5"
-    hide-enchantments: true
-    whitelist:
-      enabled: false
-      items:
-        - DIAMOND_PICKAXE
-    base:
-      item: END_STONE
-      name: "&7&l&oGenerator"
-      lore:
-        - "&6It simply generates infinite"
-        - "&6cobblestone."
-    generator:
-      item: STONE
-      item-drop-mode: inventory # dostępne tryby: inventory, ground, vanilla
-      drop:
-        # BARDZO WAŻNE:
-        # ZAMIEŃ "." NA "-" W NAZWACH PERMISJI.
-        # Uprawnienia:
-        bucik-generators-stone-vip:
-          1:
-            chance: 100 # %
-            item: COBBLESTONE
-            enchantments:
-              - "silk_touch:1"
-            action-bar-message: "&f&l+ &f&l[&7&lCobblestone&f&l]"
-          2:
-            chance: 7 # %
-            item: DIAMOND
-            amount: 1
-            name: "&bA not really rare diamond."
-            lore:
-              - "&5:D"
-            action-bar-message: "&f&l+ &f&l[&b&lDiamond&f&l]"
-            hide-enchantments: true
-          3:
-            chance: 0.45 # %
-            item: EMERALD
-            amount: 1
-            name: "&6This should remain empty."
-            lore:
-              - "&5This should remain empty as well."
-            action-bar-message: "&f&l+ &f&l[&b&lEmerald&f&l]"
-        bucik-generators-stone-svip:
-          1:
-            chance: 5 # %
-            item: POTION
-            potion:
-              effect: FAST_DIGGING
-              amplifier: 2
-              duration: 30 # W sekundach.
-            action-bar-message: "&f&l+ &f&l[&5&lHaste II&f&l]"
-          3:
-            chance: 10 # %
-            item: MONEY
-            money-amount: 500
-            action-bar-message: "&f&l+ &f&l[&2&l$&a&l500&f&l]"
-          4:
-            chance: 5 # %
-            item: EXP
-            exp-amount: 50
-```
-Możesz dostosować więcej opcji w pliku `config.yml`.
 
-Jest to jeden z moich pierwszych pluginów, więc możesz utworzyć pull request'a, jeśli uważasz, że coś można zrobić lepiej.
+## Uznania
+Specjalne podziękowania dla [@k073l](https://github.com/k073l) i [@oliwier975PL](https://github.com/oliwier975PL) za testowanie.
+
+## Licencja
+Ten projekt jest na licencji [GNU GPL-3.0](LICENSE).
+
+## Status projektu
+Skończyły mi się siły i chęci, więc obecnie nie są prowadzone prace nad tym projektem. Chociaż jeśli wpadnę na pomysł lub ktoś zgłosi mi krytyczny błąd, wydam aktualizację. :smile: 

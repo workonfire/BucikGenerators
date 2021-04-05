@@ -26,14 +26,10 @@ public class MainTabCompleter implements TabCompleter {
                 if (sender.hasPermission("bucik.generators.get"))             commands.add("get");
                 if (sender.hasPermission("bucik.generators.drop.manipulate")) commands.add("drop");
                 if (sender.hasPermission("bucik.generators.forcedestroy"))    commands.add("forceDestroy");
-                return StringUtil.copyPartialMatches(
-                        args[0], commands, new ArrayList<>()
-                );
+                return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             case 2:
                 if (authorize(args, 0, "get", "bucik.generators.get", sender))
-                    return StringUtil.copyPartialMatches(
-                            args[1], BlockUtil.getGeneratorsIds(), new ArrayList<>()
-                    );
+                    return StringUtil.copyPartialMatches(args[1], BlockUtil.getGeneratorsIds(), new ArrayList<>());
                 else if (authorize(args, 0, "drop", "bucik.generators.drop.manipulate", sender))
                     return StringUtil.copyPartialMatches(
                             args[1], Arrays.asList("getMultiplier", "setMultiplier"), new ArrayList<>()
@@ -48,9 +44,7 @@ public class MainTabCompleter implements TabCompleter {
                 if (authorize(args, 0, "get", "bucik.generators.get", sender)) {
                     List<String> playerNames = new ArrayList<>();
                     for (Player player : Bukkit.getOnlinePlayers()) playerNames.add(player.getName());
-                    return StringUtil.copyPartialMatches(
-                            args[3], playerNames, new ArrayList<>()
-                    );
+                    return StringUtil.copyPartialMatches(args[3], playerNames, new ArrayList<>());
                 }
             default:
                 return new ArrayList<>();

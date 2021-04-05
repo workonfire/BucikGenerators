@@ -163,7 +163,7 @@ public final class BlockUtil {
     }
 
     /**
-     * Unegisters custom crafting recipes, if there are any.
+     * Unregisters custom crafting recipes, if there are any.
      * @since 1.0.0
      */
     public static void unregisterRecipes() {
