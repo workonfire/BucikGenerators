@@ -3,19 +3,22 @@ package pl.workonfire.bucik.generators.managers.utils;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
+import org.bukkit.*;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.drop.DropPeekCommand;
 import pl.workonfire.bucik.generators.commands.generators.GeneratorsCommand;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
+import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.listeners.blocks.*;
 import pl.workonfire.bucik.generators.listeners.commands.DropTabCompleter;
 import pl.workonfire.bucik.generators.listeners.commands.MainTabCompleter;
@@ -42,10 +45,10 @@ public final class Util {
      * Parses RGB values on Minecraft 1.16.
      * Borrowed from Esophose, because I suck at regular expressions.
      * @since 1.0.0
-     * @param text String to format
-     * @return Formatted string
+     * @param text string to format
+     * @return formatted string
      */
-    public static String formatColors(String text) {
+    public static @NotNull String formatColors(String text) {
         String parsedText = text;
         if (isRGBSupported()) {
             Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
@@ -64,18 +67,19 @@ public final class Util {
     /**
      * Replaces "-" to "." in a permission node.
      * @since 1.0.0
-     * @param unparsedPermission Unparsed permission with minuses
-     * @return Parsed permission with dots
+     * @param unparsedPermission unparsed permission with minuses
+     * @return parsed permission with dots
      */
-    public static String getPermission(String unparsedPermission) {
+    public static @NotNull String getPermission(String unparsedPermission) {
         return unparsedPermission.replaceAll("-", ".");
     }
 
     /**
      * Listens for errors and prints the details.
+     * Used in various commands for pretty-printing the Java Stack Trace.
      * @since 1.0.0
-     * @param commandSender Command sender object
-     * @param exception Exception object
+     * @param commandSender command sender object
+     * @param exception exception object
      */
     public static void handleErrors(CommandSender commandSender, Exception exception) {
         if (commandSender instanceof Player) {
@@ -139,9 +143,10 @@ public final class Util {
 
     /**
      * Registers one command.
-     * @param name Command name
-     * @param command Command class
-     * @param tabCompleter Tab completer class (required, can return only an empty list)
+     * @since 1.2.9
+     * @param name command name
+     * @param command a class that extends {@link CommandExecutor}
+     * @param tabCompleter a class that extends {@link TabCompleter} (required, can return only an empty list)
      */
     @SneakyThrows
     private static void registerCommand(String name,
@@ -156,8 +161,8 @@ public final class Util {
     /**
      * Plays a sound, if sounds in the configuration file are enabled.
      * @since 1.1.4
-     * @param player Player object
-     * @param sound Sound type
+     * @param player {@link Player} object
+     * @param sound {@link Sound} type
      */
     public static void playSound(Player player, Sound sound) {
         if (ConfigManager.getConfig().getBoolean("options.play-sounds"))
@@ -167,8 +172,8 @@ public final class Util {
     /**
      * Plays a sound, if sounds in the configuration file are enabled.
      * @since 1.1.4
-     * @param block Block object
-     * @param sound Sound type
+     * @param block {@link Block} object
+     * @param sound {@link Sound} type
      */
     public static void playSound(Block block, Sound sound) {
         if (ConfigManager.getConfig().getBoolean("options.play-sounds"))
@@ -178,10 +183,10 @@ public final class Util {
     /**
      * Shows a particle, if particles in the configuration file are enabled.
      * @since 1.1.4
-     * @param player Player object
-     * @param block Block object
-     * @param particle Particle type
-     * @param count Particle count
+     * @param player {@link Player} object
+     * @param block {@link Block} object
+     * @param particle {@link Particle} type
+     * @param count particle count
      */
     public static void showParticle(Player player, Block block, Particle particle, int count) {
         if (ConfigManager.getConfig().getBoolean("options.show-particles"))
@@ -211,8 +216,8 @@ public final class Util {
     /**
      * Shows a system message.
      * @since 1.1.3
-     * @param level Message level, for example WARN
-     * @param message Message string
+     * @param level message level, for example {@link Logger#WARN}
+     * @param message message string
      */
     public static void systemMessage(Logger level, String message) {
         message = isServerLegacy() ? ChatColor.stripColor(message) : formatColors(message);
@@ -227,8 +232,8 @@ public final class Util {
     /**
      * Shows a message to the player.
      * @since 1.1.5
-     * @param sender Command executor
-     * @param message Message
+     * @param sender command executor ({@link CommandSender})
+     * @param message message
      */
     public static void sendMessage(CommandSender sender, String message) {
         if (isRGBSupported())
@@ -239,8 +244,8 @@ public final class Util {
     /**
      * Acts as a shortcut for requiring permissions.
      * @since 1.1.8
-     * @param commandSender Command executor
-     * @param permissionNode Permission name
+     * @param commandSender command executor ({@link CommandSender})
+     * @param permissionNode permission name
      * @return true, if the command sender has the specified permission
      */
     public static boolean isAuthorized(CommandSender commandSender, String permissionNode) {
@@ -254,7 +259,7 @@ public final class Util {
     /**
      * Acts as a shortcut for requiring non-console command sender.
      * @since 1.1.8
-     * @param commandSender Command executor
+     * @param commandSender command executor ({@link CommandSender})
      * @return true, if the command sender is a player
      */
     public static boolean isPlayer(CommandSender commandSender) {
@@ -263,5 +268,100 @@ public final class Util {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Registers custom crafting recipes, if there are any.
+     * @since 1.0.0
+     */
+    @SuppressWarnings("deprecation")
+    public static void registerRecipes() {
+        try {
+            for (String generatorId : Generator.getIds()) {
+                Generator generator = new Generator(generatorId);
+                if (generator.getCustomRecipe() != null) {
+                    ShapedRecipe generatorRecipe;
+                    try {
+                        NamespacedKey recipeKey = new NamespacedKey(BucikGenerators.getInstance(), generator.getId());
+                        generatorRecipe = new ShapedRecipe(recipeKey, generator.getItemStack(1));
+                    }
+                    catch (NoSuchMethodError | NoClassDefFoundError error) {
+                        generatorRecipe = new ShapedRecipe(generator.getItemStack(1));
+                    }
+                    generatorRecipe.shape("ABC", "DEF", "GHI");
+                    for (char ch = 'A'; ch <= 'I'; ++ch)
+                        generatorRecipe.setIngredient(
+                                ch, Material.getMaterial(generator.getCustomRecipe().getString("slot-" + ch))
+                        );
+                    Bukkit.addRecipe(generatorRecipe);
+                }
+            }
+        }
+        catch (Exception exception) {
+            Util.systemMessage(Logger.WARN, ConfigManager.getLangVar("contact-developer"));
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Unregisters custom crafting recipes, if there are any.
+     * @since 1.0.0
+     */
+    public static void unregisterRecipes() {
+        try {
+            for (String generatorId : Generator.getIds()) {
+                Generator generator = new Generator(generatorId);
+                if (generator.getCustomRecipe() != null) {
+                    NamespacedKey recipeKey = new NamespacedKey(BucikGenerators.getInstance(), generator.getId());
+                    Bukkit.removeRecipe(recipeKey);
+                }
+            }
+        }
+        catch (NoSuchMethodError | NoClassDefFoundError error) {
+            BucikGenerators.getInstance().getServer().clearRecipes();
+        }
+    }
+
+    /**
+     * Checks if the item is damageable.
+     * @since 1.1.6
+     * @param item {@link ItemStack} object
+     * @return true, if it is
+     */
+    public static boolean isDamageable(ItemStack item) {
+        Material[] allowedItems = {
+                Material.DIAMOND_PICKAXE,
+                Material.GOLDEN_PICKAXE,
+                Material.IRON_PICKAXE,
+                Material.STONE_PICKAXE,
+                Material.WOODEN_PICKAXE,
+                Material.DIAMOND_AXE,
+                Material.GOLDEN_AXE,
+                Material.IRON_AXE,
+                Material.STONE_AXE,
+                Material.WOODEN_AXE,
+                Material.DIAMOND_SHOVEL,
+                Material.GOLDEN_SHOVEL,
+                Material.IRON_SHOVEL,
+                Material.STONE_SHOVEL,
+                Material.WOODEN_SHOVEL
+        };
+        return !Util.isServerLegacy() && Arrays.asList(allowedItems).contains(item.getType());
+    }
+
+    /**
+     * Converts the regular Location object to {@link GeneratorLocation}
+     * @since 1.2.7
+     * @param location {@link Location} object
+     * @param worldName world name
+     * @return {@link GeneratorLocation} object
+     */
+    public static GeneratorLocation convertLocation(Location location, String worldName) {
+        return new GeneratorLocation(
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ(),
+                worldName
+        );
     }
 }

@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.generator.Generator;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -14,6 +15,16 @@ import java.util.HashMap;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratorDurabilities implements Serializable {
+    /**
+     * A serializable, singleton class, that contains all data related to generator durabilities.
+     *
+     * <p>
+     *     After instantiated, it reads all data from <b>durabilities.ser</b> and assigns it to {@link #durabilities}.
+     *     Then, the data can be read and modified by {@link #getValue(GeneratorLocation)},
+     *     {@link #update(GeneratorLocation, int)} and {@link #unregister(GeneratorLocation)} accordingly.
+     * </p>
+     *
+     */
     transient static GeneratorDurabilities               instance;
                      HashMap<GeneratorLocation, Integer> durabilities;
 
@@ -26,13 +37,24 @@ public class GeneratorDurabilities implements Serializable {
         deserialize();
     }
 
+    /**
+     * Saves all data from non-transient fields such as {@link #durabilities} to <b>durabilities.ser</b>.
+     * @throws IOException when something fails during the serialization process
+     */
     public void serialize() throws IOException {
         @Cleanup BukkitObjectOutputStream objectStream = new BukkitObjectOutputStream(new FileOutputStream(FILE_PATH));
         objectStream.writeObject(getInstance());
         objectStream.flush();
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Tries to read all data from <b>durabilities.ser</b> and assign them to {@link #durabilities}.
+     * @throws IOException when something fails during the deserialization process (file-related)
+     * @throws ClassNotFoundException when the <b>durabilities.ser</b> file is corrupted
+     * @throws NoSuchFieldException when an incompatible version of {@link GeneratorDurabilities} object is being read
+     * @throws IllegalAccessException when the {@link #durabilities} field is somehow inaccessible
+     */
+    @SuppressWarnings({"unchecked", "ResultOfMethodCallIgnored"})
     public void deserialize() throws IOException, ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
         File durabilitiesFile = new File(dataFolder, "durabilities.ser");
         if (!durabilitiesFile.exists()) {
@@ -48,10 +70,21 @@ public class GeneratorDurabilities implements Serializable {
         durabilities = (HashMap<GeneratorLocation, Integer>) receivedField;
     }
 
+    /**
+     * Called in {@link pl.workonfire.bucik.generators.listeners.blocks.BaseGeneratorBreakHandler}, when the destroyed
+     * generator {@link Generator#isDurabilityOn()} field is true
+     * @param location {@link GeneratorLocation} object
+     */
     public void unregister(GeneratorLocation location) {
         durabilities.remove(location);
     }
 
+    /**
+     * Called in {@link pl.workonfire.bucik.generators.listeners.blocks.BlockPlaceListener} and
+     * {@link pl.workonfire.bucik.generators.listeners.blocks.GeneratorBreakHandler} when a generator is being placed
+     * and a generated block is being destroyed
+     * @param location {@link GeneratorLocation} object
+     */
     public void update(GeneratorLocation location, int value) {
         durabilities.put(location, value);
     }

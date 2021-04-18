@@ -23,7 +23,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.Metrics;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
@@ -64,7 +63,7 @@ public final class BucikGenerators extends JavaPlugin {
         int dataSaveInterval = ConfigManager.getConfig().getInt("options.auto-save-interval");
         if (dataSaveInterval != 0)
             Bukkit.getScheduler().scheduleSyncRepeatingTask(getInstance(), ConfigManager::updateDb, 0, dataSaveInterval);
-        BlockUtil.registerRecipes();
+        Util.registerRecipes();
 
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
             int pluginId = 7854;
@@ -84,7 +83,7 @@ public final class BucikGenerators extends JavaPlugin {
     @SneakyThrows
     public void onDisable() {
         ConfigManager.updateDb();
-        BlockUtil.unregisterRecipes();
+        Util.unregisterRecipes();
         getGeneratorDurabilities().serialize();
     }
 }

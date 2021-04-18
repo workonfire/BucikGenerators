@@ -12,9 +12,20 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * A base class for all kinds of configuration files operations.
+ *
+ * <p>
+ *     <li>{@link #config} represents <b>config.yml</b></li>
+ *     <li>{@link #languageConfig} represents <b>language/*.yml</b> files</li>
+ *     <li>{@link #generatorsConfig} represents <b>generators.yml</b></li>
+ *     <li>{@link #dataStorage} represents <b>storage.yml</b></li>
+ * </p>
+ * <br>
+ *
  * For the generator durability data, please refer to {@link pl.workonfire.bucik.generators.data.GeneratorDurabilities}
  */
 @UtilityClass
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public final class ConfigManager {
     @Getter private static       FileConfiguration config;
     @Getter private static       FileConfiguration languageConfig;
@@ -24,6 +35,11 @@ public final class ConfigManager {
                     BucikGenerators.getInstance().getDataFolder(), "storage.yml"
             );
 
+    /**
+     * Initializes all configuration files and assings the {@link FileConfiguration} objects to all attributes.
+     * This method is <b>not</b> invoked only once - it's called every time, when using
+     * {@link pl.workonfire.bucik.generators.commands.generators.subcommands.ReloadCommand}.
+     */
     public static void initializeConfig() {
         config = BucikGenerators.getInstance().getConfig();
         String languageFileName = config.getString("options.locale") + ".yml";
@@ -44,7 +60,7 @@ public final class ConfigManager {
     }
 
     /**
-     * Initializes the database.
+     * Initializes the database (storage.yml).
      * @since 1.0.1
      */
     public static void initializeDb() {
@@ -56,7 +72,7 @@ public final class ConfigManager {
     }
 
     /**
-     * Saves the database.yml file.
+     * Saves the storage.yml file.
      * @since 1.0.0
      */
     public static void updateDb() {
@@ -81,8 +97,8 @@ public final class ConfigManager {
     /**
      * Gets a language variable value from the config.
      * @since 1.0.0
-     * @param variable Unparsed language variable, e.g. "no-permission"
-     * @return Language string
+     * @param variable unparsed language variable, e.g. "no-permission"
+     * @return language string
      */
     public static String getLangVar(String variable) {
         return Util.formatColors(getLanguageConfig().getString("language." + variable));
@@ -91,8 +107,8 @@ public final class ConfigManager {
     /**
      * Gets a language variable value from the config including a prefix.
      * @since 1.0.0
-     * @param variable Unparsed language variable, e.g. "no-permission"
-     * @return Language string with prefix.
+     * @param variable unparsed language variable, e.g. "no-permission"
+     * @return language string with prefix.
      */
     public static String getPrefixLangVar(String variable) {
         return getPrefix() + " " + getLangVar(variable);
@@ -101,7 +117,7 @@ public final class ConfigManager {
     /**
      * Gets a global plugin prefix.
      * @since 1.0.0
-     * @return Plugin prefix
+     * @return plugin prefix
      */
     public static String getPrefix() {
         return getLangVar("plugin-prefix");

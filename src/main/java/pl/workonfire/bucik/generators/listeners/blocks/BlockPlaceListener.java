@@ -10,7 +10,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
@@ -25,8 +24,8 @@ public class BlockPlaceListener implements Listener {
         try {
             Block block = event.getBlock();
 
-            if (BlockUtil.isItemAGenerator(event.getItemInHand())) {
-                Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
+            if (Generator.isGenerator(event.getItemInHand())) {
+                Generator generator = Generator.fromMaterial(block.getType());
                 for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
@@ -38,7 +37,7 @@ public class BlockPlaceListener implements Listener {
                 }
                 if (player.hasPermission(generator.getPermission())) {
                     Location supposedBaseGeneratorLocation = block.getLocation().subtract(0, 1, 0);
-                    if (BlockUtil.isBlockAGenerator(supposedBaseGeneratorLocation, supposedBaseGeneratorLocation.getWorld()))
+                    if (Generator.isGenerator(supposedBaseGeneratorLocation, supposedBaseGeneratorLocation.getWorld()))
                         event.setCancelled(true);
                     else {
                         Sound placeSound = Util.isServerLegacy() ? Sound.ITEM_FIRECHARGE_USE : Sound.BLOCK_BEACON_ACTIVATE;
@@ -47,7 +46,7 @@ public class BlockPlaceListener implements Listener {
                         sendMessage(player, getPrefixLangVar("generator-placed") + generator.getId());
                         Location generatorLocation = block.getLocation().add(0, 1, 0);
                         if (generatorLocation.getBlock().getType() == Material.BEDROCK
-                                || BlockUtil.isBlockAGenerator(generatorLocation, generatorLocation.getWorld())) {
+                                || Generator.isGenerator(generatorLocation, generatorLocation.getWorld())) {
                             event.setCancelled(true);
                             sendMessage(player, getPrefixLangVar("no-permission"));
                             return;
@@ -56,7 +55,7 @@ public class BlockPlaceListener implements Listener {
                         generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
                         if (generator.isDurabilityOn() && generator.getDurability() != 0) {
                             GeneratorLocation fullLocation =
-                                    BlockUtil.convertLocation(block.getLocation(), block.getWorld().getName());
+                                    Util.convertLocation(block.getLocation(), block.getWorld().getName());
                             GeneratorDurabilities.getInstance().update(fullLocation, generator.getDurability());
                         }
                     }

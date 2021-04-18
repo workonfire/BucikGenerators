@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
+import pl.workonfire.bucik.generators.managers.utils.Util;
 
 @SuppressWarnings("ConstantConditions")
 public class EntityExplodeListener implements Listener {
@@ -18,14 +18,14 @@ public class EntityExplodeListener implements Listener {
         if (!event.blockList().isEmpty()) {
             for (Block block : event.blockList()) {
                 Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
-                Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(baseBlockLocation.getBlock().getType());
-                if (BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld())) {
-                    Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(block.getType()).getId());
+                Generator baseGenerator = Generator.fromMaterial(baseBlockLocation.getBlock().getType());
+                if (Generator.isGenerator(block.getLocation(), block.getWorld())) {
+                    Generator generator = new Generator(Generator.fromMaterial(block.getType()).getId());
                     generator.unregister(block.getLocation(), block.getWorld());
-                    GeneratorLocation fullLocation = BlockUtil.convertLocation(block.getLocation(), block.getWorld().getName());
+                    GeneratorLocation fullLocation = Util.convertLocation(block.getLocation(), block.getWorld().getName());
                     BucikGenerators.getGeneratorDurabilities().unregister(fullLocation);
                 }
-                else if (baseGenerator != null && BlockUtil.isBlockAGenerator(baseBlockLocation, baseBlockLocation.getWorld())
+                else if (baseGenerator != null && Generator.isGenerator(baseBlockLocation, baseBlockLocation.getWorld())
                         && !baseGenerator.isDurabilityOn())
                     baseGenerator.unregister(baseBlockLocation, block.getWorld());
             }

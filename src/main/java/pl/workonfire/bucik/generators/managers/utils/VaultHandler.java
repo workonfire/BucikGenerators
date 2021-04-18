@@ -1,12 +1,13 @@
 package pl.workonfire.bucik.generators.managers.utils;
 
-import lombok.experimental.UtilityClass;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import static org.bukkit.Bukkit.getServer;
 
-@UtilityClass
+/**
+ * A bridge between Vault and this plugin.
+ */
 public final class VaultHandler {
     private static Economy economy = null;
 

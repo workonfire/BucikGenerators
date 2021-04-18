@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
@@ -29,7 +28,7 @@ public class GetCommand implements Command {
             if (args.length == 1) sendMessage(sender, getPrefixLangVar("no-generator-name-specified"));
             else {
                 String generatorName = args[1];
-                if (BlockUtil.isGeneratorDefined(generatorName)) {
+                if (Generator.isDefined(generatorName)) {
                     Generator generator = new Generator(generatorName);
                     if (args.length >= 3) {
                         try {

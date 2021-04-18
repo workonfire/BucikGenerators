@@ -17,7 +17,6 @@ import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
@@ -41,7 +40,7 @@ public class GeneratorBreakHandler {
         this.player            = player;
         this.baseGenerator     = baseGenerator;
         this.baseBlockLocation = baseBlockLocation;
-        this.fullBlockLocation = BlockUtil.convertLocation(
+        this.fullBlockLocation = Util.convertLocation(
                 this.baseBlockLocation, this.baseBlockLocation.getWorld().getName()
         );
     }
@@ -77,7 +76,7 @@ public class GeneratorBreakHandler {
             block.setType(Material.AIR);
             // breaking the generator and applying the cooldown
             generate(block, baseGenerator.getGeneratorMaterial());
-            if (baseGenerator.isDurabilityOn() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
+            if (baseGenerator.isDurabilityOn() && Generator.hasDurabilityLeft(fullBlockLocation)) {
                 // handling the durability system
                 int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);
                 if (currentDurability == 1) {
@@ -95,7 +94,7 @@ public class GeneratorBreakHandler {
                 // subtracting durability from the item, if enabled
                 ItemStack currentItem = player.getInventory().getItemInMainHand();
                 ItemMeta currentItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
-                if (BlockUtil.isItemDamageable(currentItem)) {
+                if (Util.isDamageable(currentItem)) {
                     int currentDamage = ((Damageable) currentItemMeta).getDamage();
                     if (currentDamage >= currentItem.getType().getMaxDurability()) {
                         player.getInventory().setItemInMainHand(null);

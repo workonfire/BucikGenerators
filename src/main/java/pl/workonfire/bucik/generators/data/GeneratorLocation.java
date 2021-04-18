@@ -7,6 +7,10 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 
+/**
+ * A serializable class that acts as an alternative to {@link org.bukkit.Location}.
+ * Unlinke the mentioned class, this class contains only three coordinates: {@link #X}, {@link #Y} and {@link #Z}
+ */
 @EqualsAndHashCode
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)

@@ -13,9 +13,12 @@ import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
@@ -27,7 +30,26 @@ import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class Generator implements ItemProperty {
+public class Generator implements Item {
+    /**
+     * This class represents the generator block.
+     *
+     * <p>
+     *     The generator has a base block specified by the {@link #baseItemMaterial} attribute and the generated
+     *     block on top, specified by the {@link #generatorMaterial} attribute.
+     * </p>
+     *
+     * <p>
+     *     Each generator has its own ID defined in the configuration file. The server administrator can set a custom
+     *     {@link #permission} to specify, which users can break the generator.
+     * </p>
+     *
+     * <p>
+     *     The generator can contain a {@link #durability} value. If it's enabled ({@link #isDurabilityOn}), the
+     *     generator will have a certain amount of uses until it breaks itself. The player will also not be able to
+     *     destroy the generator base, unless it has been fully used.
+     * </p>
+     */
     @Getter String               id;
     @Getter int                  breakCooldown;
     @Getter String               permission;
@@ -74,7 +96,7 @@ public class Generator implements ItemProperty {
     }
 
     @Override
-    public String getPropName(String property) {
+    public String getPropertyName(String property) {
         return String.format("generators.%s.%s", this.id, property);
     }
 
@@ -89,10 +111,16 @@ public class Generator implements ItemProperty {
     }
 
     /**
-     * Saves the current generator data to a file.
+     * Saves the current generator data to a file. This method is invoked every time, whenever a player
+     * places a generator.
+     * <p>
+     *      The saved data format is the following:
+     *      worldName|X|Y|Z|{@link #isDurabilityOn}
+     * </p
+     *
      * @since 1.0.0
-     * @param location Current location (X, Y, Z coordinates)
-     * @param world World object
+     * @param location current location (X, Y, Z coordinates)
+     * @param world {@link World} object
      */
     public void register(Location location, World world) {
         List<String> currentLocations = ConfigManager.getDataStorage().getStringList("generators");
@@ -102,9 +130,11 @@ public class Generator implements ItemProperty {
 
     /**
      * Removes the current generator data from a file.
+     * This method is invoked every time, whenever a player destroys a generator base.
+     *
      * @since 1.0.0
-     * @param location Current location (X, Y, Z coordinates)
-     * @param world World object
+     * @param location current location (X, Y, Z coordinates)
+     * @param world {@link World} object
      */
     public void unregister(Location location, World world) {
         List<String> currentLocations = ConfigManager.getDataStorage().getStringList("generators");
@@ -113,9 +143,9 @@ public class Generator implements ItemProperty {
     }
 
     /**
-     * Gets all possible items that can be dropped for a user permission.
+     * Gets all possible items that can be dropped for an user permission.
      * @since 1.0.0
-     * @param permission Permission node
+     * @param permission permission node
      * @return A set of item IDs.
      */
     public Set<String> getDropItemsIds(String permission) {
@@ -126,7 +156,7 @@ public class Generator implements ItemProperty {
     /**
      * Creates an ItemStack from a generator block.
      * @since 1.0.0
-     * @return ItemStack object
+     * @return {@link ItemStack} object
      */
     @SuppressWarnings("deprecation") // two deprecated methods are required for backwards compatibility
     public ItemStack getItemStack(int amount) {
@@ -168,4 +198,123 @@ public class Generator implements ItemProperty {
         for (String loreLine : baseItemLore) formattedLore.add(Util.formatColors(loreLine));
         return formattedLore;
     }
+
+    /**
+     * Checks if generator with a specified ID exists in the configuratuion file (generators.yml).
+     * @since 1.0.0
+     * @param id Generator ID
+     * @return true, if the generator is defined
+     */
+    public static boolean isDefined(String id) {
+        return ConfigManager.getGeneratorsConfig().isConfigurationSection("generators." + id);
+    }
+
+    /**
+     * Checks if block at a certain location is a generator saved in the database (storage.yml).
+     * @since 1.0.0
+     * @param location {@link Location} object (X, Y, Z coordinates)
+     * @param world {@link World} object
+     * @return true, if the targeted block is a generator
+     */
+    public static boolean isGenerator(Location location, World world) {
+        List<String> allGenerators = ConfigManager.getDataStorage().getStringList("generators");
+        for (String generatorDetails : allGenerators) {
+            String[] splittedDetails = generatorDetails.split("\\|");
+            String worldName = splittedDetails[0];
+            int locationX = Integer.parseInt(splittedDetails[1]);
+            int locationY = Integer.parseInt(splittedDetails[2]);
+            int locationZ = Integer.parseInt(splittedDetails[3]);
+            GeneratorLocation generatorLocation = new GeneratorLocation(locationX, locationY, locationZ, worldName);
+            GeneratorLocation currentLocation = Util.convertLocation(location, world.getName());
+            if (currentLocation.equals(generatorLocation)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the block held in a player's hand is a generator.
+     * @since 1.0.0
+     * @param item {@link ItemStack} object
+     * @return true, if the held item is a generator
+     */
+    @SuppressWarnings("deprecation")
+    public static boolean isGenerator(ItemStack item) {
+        Material generatorBlock = item.getType();
+        if (getAllTypes().contains(generatorBlock)) {
+            Generator generator = fromMaterial(item.getType());
+            if (Generator.isDefined(generator.getId())) {
+                ItemStack generatorItem = generator.getItemStack(1);
+                if (item.isSimilar(generatorItem)) return true;
+                else {
+                    try {
+                        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+                        return container.has(
+                                new NamespacedKey(BucikGenerators.getInstance(), "unique-generator"),
+                                PersistentDataType.INTEGER
+                        );
+                    }
+                    catch (NoSuchMethodError error) {
+                        if (!Util.isServerLegacy()) {
+                            NamespacedKey uniqueKey = new NamespacedKey(
+                                    BucikGenerators.getInstance(), "unique-generator"
+                            );
+                            CustomItemTagContainer tagContainer = item.getItemMeta().getCustomTagContainer();
+                            return tagContainer.hasCustomTag(uniqueKey, ItemTagType.INTEGER);
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Gets a list of all defined generator material types in the configuration file (generators.yml).
+     * @since 1.0.0
+     * @return A set of materials.
+     */
+    public static List<Material> getAllTypes() {
+        List<Material> materialList = new ArrayList<>();
+        for (String generatorId : getIds()) {
+            String materialName = ConfigManager.getGeneratorsConfig().getString("generators." + generatorId + ".base.item");
+            materialList.add(Material.getMaterial(materialName.toUpperCase()));
+        }
+        return materialList;
+    }
+
+    /**
+     * Tries to create a {@link Generator} object from a specified {@link Material}.
+     * It opens the configuration file (storage.yml) and looks for the closest match in the material definition.
+     *
+     * @since 1.0.0
+     * @param item Material object
+     * @return Generator object
+     */
+    public static Generator fromMaterial(Material item) {
+        for (String generatorId : getIds()) {
+            Generator generator = new Generator(generatorId);
+            if (generator.getBaseItemMaterial() == item) return generator;
+        }
+        return null;
+    }
+
+    /**
+     * Gets a list of all generators IDs defined in the configuration file (storage.yml).
+     * @since 1.0.0
+     * @return A set of generator IDs.
+     */
+    public static Set<String> getIds() {
+        return ConfigManager.getGeneratorsConfig().getConfigurationSection("generators").getKeys(false);
+    }
+
+    /**
+     * Checks if the generator at the specified location has some durability left.
+     * @since 1.2.7
+     * @param location {@link Location} object (X, Y, Z and world)
+     * @return true, if the generator durability differs from 0
+     */
+    public static boolean hasDurabilityLeft(GeneratorLocation location) {
+        return BucikGenerators.getGeneratorDurabilities().getValue(location) != 0;
+    }
+
 }

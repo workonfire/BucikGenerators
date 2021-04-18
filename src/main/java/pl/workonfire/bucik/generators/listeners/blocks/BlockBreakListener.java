@@ -8,7 +8,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 public class BlockBreakListener implements Listener {
@@ -20,12 +19,12 @@ public class BlockBreakListener implements Listener {
             Block block = event.getBlock();
             Location supposedGeneratorLocation = block.getLocation().add(0, 1, 0);
             Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
-            Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(baseBlockLocation.getBlock().getType());
+            Generator baseGenerator = Generator.fromMaterial(baseBlockLocation.getBlock().getType());
 
-            if (BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld()))
+            if (Generator.isGenerator(block.getLocation(), block.getWorld()))
                 new BaseGeneratorBreakHandler(event, player, supposedGeneratorLocation).run();
-            else if (baseGenerator != null && BlockUtil.isGeneratorDefined(baseGenerator.getId())
-                    && BlockUtil.isBlockAGenerator(baseBlockLocation, block.getWorld()))
+            else if (baseGenerator != null && Generator.isDefined(baseGenerator.getId())
+                    && Generator.isGenerator(baseBlockLocation, block.getWorld()))
                 new GeneratorBreakHandler(event, player, baseGenerator, baseBlockLocation).run();
         }
         catch (Exception exception) {

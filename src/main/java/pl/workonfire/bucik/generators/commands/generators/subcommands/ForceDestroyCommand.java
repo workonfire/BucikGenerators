@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
@@ -41,11 +40,11 @@ public class ForceDestroyCommand implements Command {
                 catch (NoSuchMethodError error) {
                     targetBlock = player.getTargetBlock(null, 5);
                 }
-                if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
-                    Generator generator = BlockUtil.getGeneratorFromMaterial(targetBlock.getType());
+                if (targetBlock != null && Generator.isGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
+                    Generator generator = Generator.fromMaterial(targetBlock.getType());
                     generator.unregister(targetBlock.getLocation(), targetBlock.getWorld());
                     GeneratorLocation generatorLocation =
-                            BlockUtil.convertLocation(targetBlock.getLocation(), targetBlock.getWorld().getName());
+                            Util.convertLocation(targetBlock.getLocation(), targetBlock.getWorld().getName());
                     GeneratorDurabilities.getInstance().unregister(generatorLocation);
                     targetBlock.setType(Material.AIR);
                     targetBlock.getLocation().add(0, 1, 0).getBlock().setType(Material.AIR);

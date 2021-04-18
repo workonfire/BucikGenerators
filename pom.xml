@@ -39,6 +39,14 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>org.jetbrains</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.MF</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -50,6 +58,8 @@
                 <configuration>
                     <show>private</show>
                     <nohelp>true</nohelp>
+                    <doclint>none</doclint>
+                    <source>8</source>
                 </configuration>
             </plugin>
         </plugins>
@@ -94,6 +104,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>20.1.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

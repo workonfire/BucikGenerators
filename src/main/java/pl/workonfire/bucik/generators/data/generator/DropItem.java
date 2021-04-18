@@ -11,8 +11,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.workonfire.bucik.generators.data.DropMultiplier;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
+import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
 
 import static pl.workonfire.bucik.generators.managers.utils.ConfigProperty.*;
 
@@ -22,7 +22,37 @@ import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class DropItem implements ItemProperty {
+public class DropItem implements Item {
+    /**
+     * This class represents the item being dropped from the generator ({@link Generator}).
+     *
+     * <p>
+     *     The item can adopt the following types:
+     *     <li>A regular item, for example
+     *     {@link org.bukkit.Material#COBBLESTONE} or {@link org.bukkit.Material#COAL}</li>
+     *
+     *     <li>A specific potion, for example {@link org.bukkit.potion.PotionEffectType#FAST_DIGGING},
+     *     in which you can specify the {@link #potionEffectTypeName},
+     *     {@link #potionEffectAmplifier} and {@link #potionEffectDuration}.</li>
+     *
+     *     <li>Money (requires Vault and a hook to
+     *     {@link VaultHandler}).
+     *     The user can specify the {@link #moneyAmount}.</li>
+     * </p>
+     *
+     * <p>
+     *     The item itself (beside the type) can have the following attributes:
+     *     <li>{@link #materialName}
+     *     (all item names must comply to the Spigot API naming system referred in the link below)</li>
+     *     <li>{@link #dropChance} - drop chance in %</li>
+     *     <li>{@link #actionBarMessage} - the displayed action bar message, after the player drops the item</li>
+     *     <li>{@link #permission} - if the player has this permission, they're allowed to drop this item from
+     *     the generator</li>
+     *     ...and a couple of other attributes, listed below in the class field list.
+     * </p>
+     *
+     * @see <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html"></a>
+     */
     @Getter Material     material;
     @Getter String       materialName;
     @Getter String       itemName;
@@ -63,7 +93,7 @@ public class DropItem implements ItemProperty {
     }
 
     @Override
-    public String getPropName(String property) {
+    public String getPropertyName(String property) {
         return String.format("generators.%s.generator.drop.%s.%d.%s",
                 this.generatorId,
                 this.permission,
@@ -75,7 +105,7 @@ public class DropItem implements ItemProperty {
     /**
      * Creates an ItemStack from a dropped item.
      * @since 1.0.0
-     * @return ItemStack object
+     * @return {@link ItemStack} object
      */
     @SuppressWarnings("deprecation") // one deprecated method is required for backwards compatibility
     public ItemStack getItemStack() {
@@ -101,7 +131,7 @@ public class DropItem implements ItemProperty {
     }
 
     /**
-     * Checks if the item is a potion.
+     * Checks if the item is a potion based on the {@link #material}.
      * @since 1.0.8
      * @return true, if it is
      */
@@ -111,7 +141,7 @@ public class DropItem implements ItemProperty {
     }
 
     /**
-     * Checks if the item is experience.
+     * Checks if the item is experience based on the {@link #materialName}.
      * @since 1.1.7
      * @return true, if it is
      */
@@ -121,7 +151,7 @@ public class DropItem implements ItemProperty {
     }
 
     /**
-     * Checks if the item is cash.
+     * Checks if the item is cash based on the {@link #materialName}.
      * @since 1.1.1
      * @return true, if it is
      */
@@ -130,21 +160,29 @@ public class DropItem implements ItemProperty {
     }
 
     /**
-     * Checks if the item was randomly selected.
+     * Checks if the item was randomly selected based on the {@link #dropChance}.
+     * The method respects the {@link Enchantment#LOOT_BONUS_BLOCKS} enchantment and multiplies the final
+     * percentage calculation by itself.
+     *
      * @since 1.0.0
-     * @param item Mining tool
-     * @param respectPickaxeFortune Whether to respect the pickaxe fortune or not
+     * @param item mining tool
+     * @param respectPickaxeFortune whether to respect the pickaxe fortune or not
      * @return true, if it was
      */
     public boolean gotSelected(ItemStack item, boolean respectPickaxeFortune) {
         double localDropMultiplier = 1;
         if (respectPickaxeFortune
-                && BlockUtil.isItemDamageable(item)
+                && Util.isDamageable(item)
                 && item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
             localDropMultiplier = item.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
         return Math.round(new Random().nextDouble() * 10000.0) / 100.0 <= getDropChance() * localDropMultiplier;
     }
 
+    /**
+     * Multiplies the drop chance by the {@link DropMultiplier#getDropMultiplier()} value and returns it.
+     * @since 1.0.0
+     * @return drop chance
+     */
     public double getDropChance() {
         return dropChance * DropMultiplier.getDropMultiplier();
     }

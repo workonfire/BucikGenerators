@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.*;
@@ -22,7 +23,10 @@ import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 public class DropPeekCommand implements CommandExecutor, Command {
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,
+                             org.bukkit.command.@NotNull Command command,
+                             @NotNull String label,
+                             String[] args) {
         run(sender, args);
         return true;
     }
@@ -51,9 +55,9 @@ public class DropPeekCommand implements CommandExecutor, Command {
                         Util.systemMessage(Logger.DEBUG, error.getClass().getSimpleName() + ": Using the non-exact target block method.");
                         targetBlock = player.getTargetBlock(null, 5);
                     }
-                    if (targetBlock != null && BlockUtil.isBlockAGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
+                    if (targetBlock != null && Generator.isGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                         sendMessage(sender, getPrefixLangVar("items-drop-list"));
-                        Generator generator = new Generator(BlockUtil.getGeneratorFromMaterial(targetBlock.getType()).getId());
+                        Generator generator = new Generator(Generator.fromMaterial(targetBlock.getType()).getId());
                         for (String permission : generator.getGeneratorDropPermissions()) {
                             if (player.hasPermission(Util.getPermission(permission))) {
                                 sendMessage(sender, getLangVar("items-for-permission") + Util.getPermission(permission) + "§f:");

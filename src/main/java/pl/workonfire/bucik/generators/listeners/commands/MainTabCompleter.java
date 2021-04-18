@@ -6,7 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
+import org.jetbrains.annotations.NotNull;
+import pl.workonfire.bucik.generators.data.generator.Generator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,10 @@ public class MainTabCompleter implements TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender,
+                                      @NotNull Command command,
+                                      @NotNull String alias,
+                                      String[] args) {
         switch (args.length) {
             case 1:
                 List<String> commands = new ArrayList<>();
@@ -29,7 +33,7 @@ public class MainTabCompleter implements TabCompleter {
                 return StringUtil.copyPartialMatches(args[0], commands, new ArrayList<>());
             case 2:
                 if (authorize(args, 0, "get", "bucik.generators.get", sender))
-                    return StringUtil.copyPartialMatches(args[1], BlockUtil.getGeneratorsIds(), new ArrayList<>());
+                    return StringUtil.copyPartialMatches(args[1], Generator.getIds(), new ArrayList<>());
                 else if (authorize(args, 0, "drop", "bucik.generators.drop.manipulate", sender))
                     return StringUtil.copyPartialMatches(
                             args[1], Arrays.asList("getMultiplier", "setMultiplier"), new ArrayList<>()

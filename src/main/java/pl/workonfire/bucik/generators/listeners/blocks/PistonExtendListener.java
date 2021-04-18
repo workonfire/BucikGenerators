@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
@@ -17,13 +16,13 @@ public class PistonExtendListener implements Listener {
         if (!event.getBlocks().isEmpty()) {
             for (Block block : event.getBlocks()) {
                 Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
-                Generator baseGenerator = BlockUtil.getGeneratorFromMaterial(baseBlockLocation.getBlock().getType());
-                if (BlockUtil.isBlockAGenerator(block.getLocation(), block.getWorld())) {
+                Generator baseGenerator = Generator.fromMaterial(baseBlockLocation.getBlock().getType());
+                if (Generator.isGenerator(block.getLocation(), block.getWorld())) {
                     Util.systemMessage(Logger.DEBUG,
                             event.getEventName() + ": This block is a generator. Cancelling the event.");
                     event.setCancelled(true);
                 }
-                else if (baseGenerator != null && BlockUtil.isBlockAGenerator(baseBlockLocation, baseBlockLocation.getWorld())) {
+                else if (baseGenerator != null && Generator.isGenerator(baseBlockLocation, baseBlockLocation.getWorld())) {
                     Util.systemMessage(Logger.DEBUG,
                             event.getEventName() + ": The block underneath this block is a generator. Cancelling the event.");
                     event.setCancelled(true);

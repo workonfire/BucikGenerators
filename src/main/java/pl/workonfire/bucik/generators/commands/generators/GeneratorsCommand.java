@@ -3,6 +3,7 @@ package pl.workonfire.bucik.generators.commands.generators;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.DropManipulateCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ForceDestroyCommand;
@@ -15,7 +16,10 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
 public class GeneratorsCommand implements CommandExecutor, Command {
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,
+                             org.bukkit.command.@NotNull Command command,
+                             @NotNull String label,
+                             String[] args) {
         ReloadCommand reloadCommand = new ReloadCommand();
         GetCommand getCommand = new GetCommand();
         DropManipulateCommand dropCommand = new DropManipulateCommand();

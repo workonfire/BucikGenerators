@@ -9,7 +9,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.BlockUtil;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
@@ -25,10 +24,10 @@ public class BaseGeneratorBreakHandler {
 
     protected void run() {
         Block block = event.getBlock();
-        GeneratorLocation fullBlockLocation = BlockUtil.convertLocation(block.getLocation(), block.getWorld().getName());
-        Generator generator = BlockUtil.getGeneratorFromMaterial(block.getType());
+        GeneratorLocation fullBlockLocation = Util.convertLocation(block.getLocation(), block.getWorld().getName());
+        Generator generator = Generator.fromMaterial(block.getType());
         if (player.hasPermission(generator.getPermission())) {
-            if (generator.isDurabilityOn() && BlockUtil.hasDurabilityLeft(fullBlockLocation)) {
+            if (generator.isDurabilityOn() && Generator.hasDurabilityLeft(fullBlockLocation)) {
                 int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);
                 if (currentDurability > 0) {
                     Util.playSound(player, Sound.ENTITY_BLAZE_HURT);
