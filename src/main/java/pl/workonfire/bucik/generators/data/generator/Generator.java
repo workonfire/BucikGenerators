@@ -116,7 +116,7 @@ public class Generator implements Item {
      * <p>
      *      The saved data format is the following:
      *      worldName|X|Y|Z|{@link #isDurabilityOn}
-     * </p
+     * </p>
      *
      * @since 1.0.0
      * @param location current location (X, Y, Z coordinates)
