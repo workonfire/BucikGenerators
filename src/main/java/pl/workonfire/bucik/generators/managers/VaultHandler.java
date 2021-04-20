@@ -1,7 +1,8 @@
-package pl.workonfire.bucik.generators.managers.utils;
+package pl.workonfire.bucik.generators.managers;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.Nullable;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -18,7 +19,7 @@ public final class VaultHandler {
         economy = serviceProvider.getProvider();
     }
 
-    public static Economy getEconomy() {
+    public static @Nullable Economy getEconomy() {
         return economy;
     }
 }

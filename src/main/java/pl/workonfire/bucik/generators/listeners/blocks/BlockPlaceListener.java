@@ -15,7 +15,6 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
-@SuppressWarnings("ConstantConditions")
 public class BlockPlaceListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -25,7 +24,7 @@ public class BlockPlaceListener implements Listener {
             Block block = event.getBlock();
 
             if (Generator.isGenerator(event.getItemInHand())) {
-                Generator generator = Generator.fromMaterial(block.getType());
+                Generator generator = Generator.from(block.getType());
                 for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
@@ -54,8 +53,9 @@ public class BlockPlaceListener implements Listener {
                         generator.register(block.getLocation(), block.getWorld());
                         generatorLocation.getBlock().setType(generator.getGeneratorMaterial());
                         if (generator.isDurabilityOn() && generator.getDurability() != 0) {
-                            GeneratorLocation fullLocation =
-                                    Util.convertLocation(block.getLocation(), block.getWorld().getName());
+                            GeneratorLocation fullLocation = GeneratorLocation.from(
+                                    block.getLocation(), block.getWorld().getName()
+                            );
                             GeneratorDurabilities.getInstance().update(fullLocation, generator.getDurability());
                         }
                     }

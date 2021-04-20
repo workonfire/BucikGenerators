@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.VaultHandler;
 import pl.workonfire.bucik.generators.managers.utils.*;
 
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getLangVar;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
-@SuppressWarnings("ConstantConditions")
 public class DropPeekCommand implements CommandExecutor, Command {
 
     @Override
@@ -57,7 +57,7 @@ public class DropPeekCommand implements CommandExecutor, Command {
                     }
                     if (targetBlock != null && Generator.isGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                         sendMessage(sender, getPrefixLangVar("items-drop-list"));
-                        Generator generator = new Generator(Generator.fromMaterial(targetBlock.getType()).getId());
+                        Generator generator = Generator.from(targetBlock.getType());
                         for (String permission : generator.getGeneratorDropPermissions()) {
                             if (player.hasPermission(Util.getPermission(permission))) {
                                 sendMessage(sender, getLangVar("items-for-permission") + Util.getPermission(permission) + "§f:");

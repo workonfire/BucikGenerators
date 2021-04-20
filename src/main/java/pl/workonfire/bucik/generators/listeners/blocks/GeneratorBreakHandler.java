@@ -18,7 +18,7 @@ import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.Util;
-import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
+import pl.workonfire.bucik.generators.managers.VaultHandler;
 
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
@@ -40,7 +40,7 @@ public class GeneratorBreakHandler {
         this.player            = player;
         this.baseGenerator     = baseGenerator;
         this.baseBlockLocation = baseBlockLocation;
-        this.fullBlockLocation = Util.convertLocation(
+        this.fullBlockLocation = GeneratorLocation.from(
                 this.baseBlockLocation, this.baseBlockLocation.getWorld().getName()
         );
     }

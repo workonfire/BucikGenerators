@@ -16,7 +16,7 @@ public class PistonExtendListener implements Listener {
         if (!event.getBlocks().isEmpty()) {
             for (Block block : event.getBlocks()) {
                 Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
-                Generator baseGenerator = Generator.fromMaterial(baseBlockLocation.getBlock().getType());
+                Generator baseGenerator = Generator.from(baseBlockLocation.getBlock().getType());
                 if (Generator.isGenerator(block.getLocation(), block.getWorld())) {
                     Util.systemMessage(Logger.DEBUG,
                             event.getEventName() + ": This block is a generator. Cancelling the event.");

@@ -4,6 +4,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.DropManipulateCommand;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.ForceDestroyCommand;
@@ -40,7 +41,7 @@ public class GeneratorsCommand implements CommandExecutor, Command {
     }
 
     @Override
-    public String permission() {
+    public @Nullable String permission() {
         return null;
     }
 

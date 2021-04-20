@@ -15,7 +15,6 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
-@SuppressWarnings("ConstantConditions")
 public class ForceDestroyCommand implements Command {
 
     @Override
@@ -41,10 +40,11 @@ public class ForceDestroyCommand implements Command {
                     targetBlock = player.getTargetBlock(null, 5);
                 }
                 if (targetBlock != null && Generator.isGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
-                    Generator generator = Generator.fromMaterial(targetBlock.getType());
+                    Generator generator = Generator.from(targetBlock.getType());
                     generator.unregister(targetBlock.getLocation(), targetBlock.getWorld());
-                    GeneratorLocation generatorLocation =
-                            Util.convertLocation(targetBlock.getLocation(), targetBlock.getWorld().getName());
+                    GeneratorLocation generatorLocation = GeneratorLocation.from(
+                            targetBlock.getLocation(), targetBlock.getWorld().getName()
+                    );
                     GeneratorDurabilities.getInstance().unregister(generatorLocation);
                     targetBlock.setType(Material.AIR);
                     targetBlock.getLocation().add(0, 1, 0).getBlock().setType(Material.AIR);

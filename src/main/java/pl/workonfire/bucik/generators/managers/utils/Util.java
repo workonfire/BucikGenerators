@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.drop.DropPeekCommand;
 import pl.workonfire.bucik.generators.commands.generators.GeneratorsCommand;
-import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.listeners.blocks.*;
 import pl.workonfire.bucik.generators.listeners.commands.DropTabCompleter;
@@ -221,10 +220,8 @@ public final class Util {
      */
     public static void systemMessage(Logger level, String message) {
         message = isServerLegacy() ? ChatColor.stripColor(message) : formatColors(message);
-        String pluginPrefix =
-                isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
-        String messagePrefix =
-                pluginPrefix + "[" + (isServerLegacy() ? "" : level.getColor()) + level.name() + ChatColor.RESET + "] ";
+        String pluginPrefix = isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
+        String messagePrefix = pluginPrefix + "[" + (isServerLegacy() ? "" : level.getColor()) + level.name() + ChatColor.RESET + "] ";
         if (!ConfigManager.getConfig().getBoolean("options.debug") && level == Logger.DEBUG) return;
         level.getStream().println(messagePrefix + message);
     }
@@ -347,21 +344,5 @@ public final class Util {
                 Material.WOODEN_SHOVEL
         };
         return !Util.isServerLegacy() && Arrays.asList(allowedItems).contains(item.getType());
-    }
-
-    /**
-     * Converts the regular Location object to {@link GeneratorLocation}
-     * @since 1.2.7
-     * @param location {@link Location} object
-     * @param worldName world name
-     * @return {@link GeneratorLocation} object
-     */
-    public static GeneratorLocation convertLocation(Location location, String worldName) {
-        return new GeneratorLocation(
-                location.getBlockX(),
-                location.getBlockY(),
-                location.getBlockZ(),
-                worldName
-        );
     }
 }

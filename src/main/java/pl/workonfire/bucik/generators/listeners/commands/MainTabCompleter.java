@@ -14,7 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainTabCompleter implements TabCompleter {
-    private boolean authorize(String[] args, int arg, String command, String permission, CommandSender sender) {
+    private boolean authorize(String[] args,
+                              int arg,
+                              String command,
+                              String permission,
+                              CommandSender sender) {
         return args[arg].equalsIgnoreCase(command) && sender.hasPermission(permission);
     }
 

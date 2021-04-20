@@ -19,7 +19,7 @@ public class BlockBreakListener implements Listener {
             Block block = event.getBlock();
             Location supposedGeneratorLocation = block.getLocation().add(0, 1, 0);
             Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
-            Generator baseGenerator = Generator.fromMaterial(baseBlockLocation.getBlock().getType());
+            Generator baseGenerator = Generator.from(baseBlockLocation.getBlock().getType());
 
             if (Generator.isGenerator(block.getLocation(), block.getWorld()))
                 new BaseGeneratorBreakHandler(event, player, supposedGeneratorLocation).run();

@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
@@ -150,7 +151,8 @@ public class Generator implements Item {
      */
     public Set<String> getDropItemsIds(String permission) {
         return ConfigManager.getGeneratorsConfig().getConfigurationSection(
-                String.format("generators.%s.generator.drop.%s", getId(), permission)).getKeys(false);
+                String.format("generators.%s.generator.drop.%s", getId(), permission)
+        ).getKeys(false);
     }
 
     /**
@@ -225,7 +227,7 @@ public class Generator implements Item {
             int locationY = Integer.parseInt(splittedDetails[2]);
             int locationZ = Integer.parseInt(splittedDetails[3]);
             GeneratorLocation generatorLocation = new GeneratorLocation(locationX, locationY, locationZ, worldName);
-            GeneratorLocation currentLocation = Util.convertLocation(location, world.getName());
+            GeneratorLocation currentLocation = GeneratorLocation.from(location, world.getName());
             if (currentLocation.equals(generatorLocation)) return true;
         }
         return false;
@@ -241,7 +243,7 @@ public class Generator implements Item {
     public static boolean isGenerator(ItemStack item) {
         Material generatorBlock = item.getType();
         if (getAllTypes().contains(generatorBlock)) {
-            Generator generator = fromMaterial(item.getType());
+            Generator generator = from(item.getType());
             if (Generator.isDefined(generator.getId())) {
                 ItemStack generatorItem = generator.getItemStack(1);
                 if (item.isSimilar(generatorItem)) return true;
@@ -290,7 +292,7 @@ public class Generator implements Item {
      * @param item Material object
      * @return Generator object
      */
-    public static Generator fromMaterial(Material item) {
+    public static @NotNull Generator from(Material item) {
         for (String generatorId : getIds()) {
             Generator generator = new Generator(generatorId);
             if (generator.getBaseItemMaterial() == item) return generator;

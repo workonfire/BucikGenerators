@@ -26,7 +26,7 @@ import pl.workonfire.bucik.generators.data.Metrics;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
-import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
+import pl.workonfire.bucik.generators.managers.VaultHandler;
 
 /**
  * A customizable plugin for setting up block generators.

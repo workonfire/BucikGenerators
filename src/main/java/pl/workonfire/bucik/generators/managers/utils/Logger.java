@@ -2,6 +2,7 @@ package pl.workonfire.bucik.generators.managers.utils;
 
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.PrintStream;
 
@@ -19,7 +20,7 @@ public enum Logger {
         return stream;
     }
 
-    public ChatColor getColor() {
+    public @Nullable ChatColor getColor() {
         return !Util.isServerLegacy() ? color : null;
     }
 }

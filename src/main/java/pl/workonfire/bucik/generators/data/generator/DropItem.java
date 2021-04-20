@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.workonfire.bucik.generators.data.DropMultiplier;
 import pl.workonfire.bucik.generators.managers.utils.Util;
-import pl.workonfire.bucik.generators.managers.utils.VaultHandler;
+import pl.workonfire.bucik.generators.managers.VaultHandler;
 
 import static pl.workonfire.bucik.generators.managers.utils.ConfigProperty.*;
 

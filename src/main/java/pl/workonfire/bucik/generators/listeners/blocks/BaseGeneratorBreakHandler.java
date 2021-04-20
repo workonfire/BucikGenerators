@@ -14,7 +14,6 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
 import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLangVar;
 import static pl.workonfire.bucik.generators.managers.utils.Util.sendMessage;
 
-@SuppressWarnings("ConstantConditions")
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class BaseGeneratorBreakHandler {
 
@@ -24,8 +23,8 @@ public class BaseGeneratorBreakHandler {
 
     protected void run() {
         Block block = event.getBlock();
-        GeneratorLocation fullBlockLocation = Util.convertLocation(block.getLocation(), block.getWorld().getName());
-        Generator generator = Generator.fromMaterial(block.getType());
+        GeneratorLocation fullBlockLocation = GeneratorLocation.from(block.getLocation(), block.getWorld().getName());
+        Generator generator = Generator.from(block.getType());
         if (player.hasPermission(generator.getPermission())) {
             if (generator.isDurabilityOn() && Generator.hasDurabilityLeft(fullBlockLocation)) {
                 int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);

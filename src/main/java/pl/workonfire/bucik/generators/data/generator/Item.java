@@ -2,6 +2,7 @@ package pl.workonfire.bucik.generators.data.generator;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.ConfigProperty;
@@ -42,7 +43,7 @@ public interface Item {
      * @return an {@link Object}, that <b>should be casted</b> to a proper type
      */
     @SuppressWarnings("ConstantConditions")
-    default Object getProperty(String property, ConfigProperty type) {
+    default @NotNull Object getProperty(String property, ConfigProperty type) {
         String propName = getPropertyName(property);
         switch (type) {
             case INTEGER:

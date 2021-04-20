@@ -8,9 +8,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
-import pl.workonfire.bucik.generators.managers.utils.Util;
 
-@SuppressWarnings("ConstantConditions")
 public class EntityExplodeListener implements Listener {
 
     @EventHandler
@@ -18,11 +16,11 @@ public class EntityExplodeListener implements Listener {
         if (!event.blockList().isEmpty()) {
             for (Block block : event.blockList()) {
                 Location baseBlockLocation = block.getLocation().subtract(0, 1, 0);
-                Generator baseGenerator = Generator.fromMaterial(baseBlockLocation.getBlock().getType());
+                Generator baseGenerator = Generator.from(baseBlockLocation.getBlock().getType());
                 if (Generator.isGenerator(block.getLocation(), block.getWorld())) {
-                    Generator generator = new Generator(Generator.fromMaterial(block.getType()).getId());
+                    Generator generator = Generator.from(block.getType());
                     generator.unregister(block.getLocation(), block.getWorld());
-                    GeneratorLocation fullLocation = Util.convertLocation(block.getLocation(), block.getWorld().getName());
+                    GeneratorLocation fullLocation = GeneratorLocation.from(block.getLocation(), block.getWorld().getName());
                     BucikGenerators.getGeneratorDurabilities().unregister(fullLocation);
                 }
                 else if (baseGenerator != null && Generator.isGenerator(baseBlockLocation, baseBlockLocation.getWorld())
