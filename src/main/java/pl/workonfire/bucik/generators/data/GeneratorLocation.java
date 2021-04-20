@@ -15,11 +15,11 @@ import java.io.Serializable;
  */
 @EqualsAndHashCode
 @AllArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratorLocation implements Serializable {
-    static long   serialVersionUID = 5266122845329240681L;
-           int    X, Y, Z;
-           String worldName;
+    static final long   serialVersionUID = 5266122845329240681L;
+           final int    X, Y, Z;
+           final String worldName;
 
     /**
      * Converts the regular Location object to {@link GeneratorLocation}

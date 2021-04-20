@@ -74,26 +74,26 @@ public class Generator implements Item {
 
     @SuppressWarnings("unchecked")
     public Generator(String id) {
-        this.id = id;
-        breakCooldown = (int) getProperty("break-cooldown", INTEGER);
-        permission = (String) getProperty("permission", STRING);
-        baseItemMaterial = (Material) getProperty("base.item", MATERIAL);
-        baseItemName = (String) getProperty("base.name", STRING);
-        baseItemLore = (List<String>) getProperty("base.lore", STRING_LIST);
-        generatorMaterial = (Material) getProperty("generator.item", MATERIAL);
-        generatorDropPermissions = (Set<String>) getProperty("generator.drop", CONFIG_SECTION_NO_KEYS);
-        worldBlacklist = (List<String>) getProperty("world-blacklist", STRING_LIST);
-        itemDropMode = (String) getProperty("generator.item-drop-mode", STRING);
-        customRecipe = (ConfigurationSection) getProperty("custom-crafting-recipe", CONFIG_SECTION);
-        enchantments = (List<String>) getProperty("enchantments", STRING_LIST);
-        hideEnchantments = (boolean) getProperty("hide-enchantments", BOOLEAN);
-        isDurabilityOn = (boolean) getProperty("durability.enabled", BOOLEAN);
-        durability = (int) getProperty("durability.value", INTEGER);
-        affectPxDurability = (boolean) getProperty("affect-pickaxe-durability.enabled", BOOLEAN);
-        affectPxDurabilityValue = (int) getProperty("affect-pickaxe-durability.value", INTEGER);
-        respectPickaxeFortune = (boolean) getProperty("respect-pickaxe-fortune", BOOLEAN);
-        whitelistOn = (boolean) getProperty("whitelist.enabled", BOOLEAN);
-        whitelistedItems = (List<String>) getProperty("whitelist.items", STRING_LIST);
+        this.id                  = id;
+        breakCooldown            = (int)                  getProperty("break-cooldown", INTEGER);
+        permission               = (String)               getProperty("permission", STRING);
+        baseItemMaterial         = (Material)             getProperty("base.item", MATERIAL);
+        baseItemName             = (String)               getProperty("base.name", STRING);
+        baseItemLore             = (List<String>)         getProperty("base.lore", STRING_LIST);
+        generatorMaterial        = (Material)             getProperty("generator.item", MATERIAL);
+        generatorDropPermissions = (Set<String>)          getProperty("generator.drop", CONFIG_SECTION_NO_KEYS);
+        worldBlacklist           = (List<String>)         getProperty("world-blacklist", STRING_LIST);
+        itemDropMode             = (String)               getProperty("generator.item-drop-mode", STRING);
+        customRecipe             = (ConfigurationSection) getProperty("custom-crafting-recipe", CONFIG_SECTION);
+        enchantments             = (List<String>)         getProperty("enchantments", STRING_LIST);
+        hideEnchantments         = (boolean)              getProperty("hide-enchantments", BOOLEAN);
+        isDurabilityOn           = (boolean)              getProperty("durability.enabled", BOOLEAN);
+        durability               = (int)                  getProperty("durability.value", INTEGER);
+        affectPxDurability       = (boolean)              getProperty("affect-pickaxe-durability.enabled", BOOLEAN);
+        affectPxDurabilityValue  = (int)                  getProperty("affect-pickaxe-durability.value", INTEGER);
+        respectPickaxeFortune    = (boolean)              getProperty("respect-pickaxe-fortune", BOOLEAN);
+        whitelistOn              = (boolean)              getProperty("whitelist.enabled", BOOLEAN);
+        whitelistedItems         = (List<String>)         getProperty("whitelist.items", STRING_LIST);
     }
 
     @Override

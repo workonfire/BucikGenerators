@@ -73,23 +73,23 @@ public class DropItem implements Item {
 
     @SuppressWarnings("unchecked")
     public DropItem(String generatorId, String permission, int itemId) {
-        this.generatorId = generatorId;
-        this.permission = permission;
-        this.itemId = itemId;
-        dropChance = (double) getProperty("chance", DOUBLE);
-        material = (Material) getProperty("item", MATERIAL);
-        materialName = ((String) getProperty("item", STRING)).toUpperCase();
-        amount = (int) getProperty("amount", INTEGER);
-        itemName = (String) getProperty("name", STRING);
-        itemLore = (List<String>) getProperty("lore", STRING_LIST);
-        actionBarMessage = (String) getProperty("action-bar-message", STRING);
-        enchantments = (List<String>) getProperty("enchantments", STRING_LIST);
-        potionEffectTypeName = (String) getProperty("potion.effect", STRING);
-        potionEffectDuration = (int) getProperty("potion.duration", INTEGER);
-        potionEffectAmplifier = (int) getProperty("potion.amplifier", INTEGER);
-        moneyAmount = (double) getProperty("money-amount", DOUBLE);
-        expAmount = (int) getProperty("exp-amount", INTEGER);
-        hideEnchantments = (boolean) getProperty("hide-enchantments", BOOLEAN);
+        this.generatorId      = generatorId;
+        this.permission       = permission;
+        this.itemId           = itemId;
+        dropChance            = (double)       getProperty("chance", DOUBLE);
+        material              = (Material)     getProperty("item", MATERIAL);
+        materialName          = ((String)      getProperty("item", STRING)).toUpperCase();
+        amount                = (int)          getProperty("amount", INTEGER);
+        itemName              = (String)       getProperty("name", STRING);
+        itemLore              = (List<String>) getProperty("lore", STRING_LIST);
+        actionBarMessage      = (String)       getProperty("action-bar-message", STRING);
+        enchantments          = (List<String>) getProperty("enchantments", STRING_LIST);
+        potionEffectTypeName  = (String)       getProperty("potion.effect", STRING);
+        potionEffectDuration  = (int)          getProperty("potion.duration", INTEGER);
+        potionEffectAmplifier = (int)          getProperty("potion.amplifier", INTEGER);
+        moneyAmount           = (double)       getProperty("money-amount", DOUBLE);
+        expAmount             = (int)          getProperty("exp-amount", INTEGER);
+        hideEnchantments      = (boolean)      getProperty("hide-enchantments", BOOLEAN);
     }
 
     @Override
