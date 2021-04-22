@@ -33,7 +33,7 @@ public class GeneratorDurabilities implements Serializable {
               static final long   serialVersionUID = -1543193395652903243L;
 
     @SneakyThrows
-    public GeneratorDurabilities() {
+    private GeneratorDurabilities() {
         deserialize();
     }
 

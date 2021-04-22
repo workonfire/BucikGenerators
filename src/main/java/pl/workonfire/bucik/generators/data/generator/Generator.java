@@ -98,7 +98,7 @@ public class Generator implements Item {
 
     @Override
     public String getPropertyName(String property) {
-        return String.format("generators.%s.%s", this.id, property);
+        return String.format("generators.%s.%s", getId(), property);
     }
 
     private String formatData(Location location, World world) {

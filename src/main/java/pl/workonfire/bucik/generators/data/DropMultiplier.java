@@ -2,7 +2,6 @@ package pl.workonfire.bucik.generators.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.UtilityClass;
 import pl.workonfire.bucik.generators.commands.generators.subcommands.DropManipulateCommand;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 
@@ -13,7 +12,6 @@ import pl.workonfire.bucik.generators.data.generator.DropItem;
  *     multiplied by {@link #dropMultiplier}.
  * </p>
  */
-@UtilityClass
 public final class DropMultiplier {
     @Getter @Setter private static int dropMultiplier = 1;
 }

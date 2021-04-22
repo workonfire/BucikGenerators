@@ -21,10 +21,12 @@ public class GeneratorsCommand implements CommandExecutor, Command {
                              org.bukkit.command.@NotNull Command command,
                              @NotNull String label,
                              String[] args) {
-        ReloadCommand reloadCommand = new ReloadCommand();
-        GetCommand getCommand = new GetCommand();
-        DropManipulateCommand dropCommand = new DropManipulateCommand();
-        ForceDestroyCommand forceDestroyCommand = new ForceDestroyCommand();
+
+        Command reloadCommand       = new ReloadCommand();
+        Command getCommand          = new GetCommand();
+        Command dropCommand         = new DropManipulateCommand();
+        Command forceDestroyCommand = new ForceDestroyCommand();
+
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase(reloadCommand.name()))
                 reloadCommand.run(sender, args);
