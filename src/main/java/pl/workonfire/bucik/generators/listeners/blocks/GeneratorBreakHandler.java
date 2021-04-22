@@ -54,7 +54,7 @@ public class GeneratorBreakHandler {
         Bukkit.getScheduler().runTaskLater(BucikGenerators.getInstance(), () -> {
             if (baseBlockLocation.getBlock().getType() != Material.AIR && block.getType() == Material.AIR)
                 block.setType(material);
-        }, baseGenerator.getBreakCooldown());
+        }, baseGenerator.getBreakCooldown(player));
     }
 
     protected void run() {
@@ -104,7 +104,7 @@ public class GeneratorBreakHandler {
                         int dropDivider = 1;
                         if (currentItem.containsEnchantment(Enchantment.DURABILITY))
                             dropDivider = currentItem.getEnchantmentLevel(Enchantment.DURABILITY);
-                        currentDamage += baseGenerator.getAffectPxDurabilityValue() / dropDivider;
+                        currentDamage += baseGenerator.getAffectPxDurabilityValue(player) / dropDivider;
                         ((Damageable) currentItemMeta).setDamage(currentDamage);
                         currentItem.setItemMeta(currentItemMeta);
                         player.getInventory().setItemInMainHand(currentItem);

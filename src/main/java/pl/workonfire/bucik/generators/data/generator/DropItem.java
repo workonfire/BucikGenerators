@@ -14,7 +14,7 @@ import pl.workonfire.bucik.generators.data.DropMultiplier;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.VaultHandler;
 
-import static pl.workonfire.bucik.generators.managers.utils.ConfigProperty.*;
+import static pl.workonfire.bucik.generators.managers.utils.ConfigPropertyType.*;
 
 import java.util.ArrayList;
 import java.util.List;

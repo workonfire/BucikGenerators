@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.utils.ConfigProperty;
+import pl.workonfire.bucik.generators.managers.utils.ConfigPropertyType;
 
 
 /**
@@ -39,11 +39,11 @@ public interface Item {
      * Retrieves a value from a configuration file based on the specified YAML path.
      *
      * @param property a property name from the configuration file defined in {@link #getConfiguration()}
-     * @param type {@link ConfigProperty} type, required for proper type recognision
+     * @param type {@link ConfigPropertyType} type, required for proper type recognision
      * @return an {@link Object}, that <b>should be casted</b> to a proper type
      */
     @SuppressWarnings("ConstantConditions")
-    default @NotNull Object getProperty(String property, ConfigProperty type) {
+    default @NotNull Object getProperty(String property, ConfigPropertyType type) {
         String propName = getPropertyName(property);
         switch (type) {
             case INTEGER:

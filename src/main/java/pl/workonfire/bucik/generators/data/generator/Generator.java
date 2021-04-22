@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,9 +22,10 @@ import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
+import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
-import static pl.workonfire.bucik.generators.managers.utils.ConfigProperty.*;
+import static pl.workonfire.bucik.generators.managers.utils.ConfigPropertyType.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class Generator implements Item {
      * </p>
      */
     @Getter String               id;
-    @Getter int                  breakCooldown;
+    @Getter String               breakCooldownPermission;
     @Getter String               permission;
     @Getter Material             baseItemMaterial;
     @Getter Material             generatorMaterial;
@@ -65,17 +67,20 @@ public class Generator implements Item {
     @Getter boolean              isDurabilityOn;
     @Getter int                  durability;
     @Getter boolean              affectPxDurability;
-    @Getter int                  affectPxDurabilityValue;
+    @Getter String               affectPxDurabilityPerm;
     @Getter boolean              respectPickaxeFortune;
     @Getter boolean              whitelistOn;
     @Getter List<String>         whitelistedItems;
             String               baseItemName;
             List<String>         baseItemLore;
+            int                  breakCooldown;
+            int                  affectPxDurabilityValue;
 
     @SuppressWarnings("unchecked")
     public Generator(String id) {
         this.id                  = id;
         breakCooldown            = (int)                  getProperty("break-cooldown", INTEGER);
+        breakCooldownPermission  = (String)               getProperty("break-cooldown-permission", STRING);
         permission               = (String)               getProperty("permission", STRING);
         baseItemMaterial         = (Material)             getProperty("base.item", MATERIAL);
         baseItemName             = (String)               getProperty("base.name", STRING);
@@ -91,6 +96,7 @@ public class Generator implements Item {
         durability               = (int)                  getProperty("durability.value", INTEGER);
         affectPxDurability       = (boolean)              getProperty("affect-pickaxe-durability.enabled", BOOLEAN);
         affectPxDurabilityValue  = (int)                  getProperty("affect-pickaxe-durability.value", INTEGER);
+        affectPxDurabilityPerm   = (String)               getProperty("affect-pickaxe-durability.permission", STRING);
         respectPickaxeFortune    = (boolean)              getProperty("respect-pickaxe-fortune", BOOLEAN);
         whitelistOn              = (boolean)              getProperty("whitelist.enabled", BOOLEAN);
         whitelistedItems         = (List<String>)         getProperty("whitelist.items", STRING_LIST);
@@ -199,6 +205,58 @@ public class Generator implements Item {
         List<String> formattedLore = new ArrayList<>();
         for (String loreLine : baseItemLore) formattedLore.add(Util.formatColors(loreLine));
         return formattedLore;
+    }
+
+    /**
+     * Checks if the "break-cooldown-permission" value is enabled.
+     * If it is, converts the permission node to an integer value, checks if the player has the permission and then
+     * adjusts the personal break cooldown value, based on the permission.
+     *
+     * @since 1.3.0
+     * @param player {@link Player} object
+     * @return cooldown value in ticks
+     */
+    public int getBreakCooldown(Player player) {
+        String permission = getBreakCooldownPermission();
+        int breakCooldown = parseCustomNumericPermission(permission);
+        if (player.hasPermission(permission)) return breakCooldown;
+        return this.breakCooldown;
+    }
+
+    /**
+     * Checks if the "affect-pickaxe-durability.permission" value is set.
+     * If it is, converts the permission node to an integer value, checks if the player has the permission and then
+     * adjusts the personal mining tool durability value, based on the permission.
+     *
+     * @since 1.3.0
+     * @param player {@link Player} object
+     * @return cooldown value in ticks
+     */
+    public int getAffectPxDurabilityValue(Player player) {
+        String permission = getAffectPxDurabilityPerm();
+        int durabilityValue = parseCustomNumericPermission(permission);
+        if (player.hasPermission(permission)) return durabilityValue;
+        return this.affectPxDurabilityValue;
+    }
+
+    /**
+     * Used for parsing the number from permissions like "some.permission.150".
+     * @since 1.3.0
+     * @param permission as {@link String}
+     * @return parsed value
+     */
+    private int parseCustomNumericPermission(String permission) {
+        int value = 0;
+        if (permission != null) {
+            String[] splittedPermission = permission.split("\\.");
+            try {
+                value = Integer.parseInt(splittedPermission[splittedPermission.length - 1]);
+            }
+            catch (NumberFormatException exception) {
+                Util.systemMessage(Logger.WARN, "The permission '" + permission + "' is not valid.");
+            }
+        }
+        return value;
     }
 
     /**

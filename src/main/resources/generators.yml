@@ -7,6 +7,8 @@
 generators:
   normal:
     break-cooldown: 1 # In ticks. 20 ticks = 1 second
+    break-cooldown-permission: "bucik.generators.normal.cooldown.60" # The last number represents the cooldown value in ticks.
+    # You can remove it, it's optional.
     permission: bucik.generators.normal
     respect-pickaxe-fortune: true
     durability:
@@ -14,7 +16,8 @@ generators:
       value: 30
     affect-pickaxe-durability: # works on shovels and axes as well
       enabled: true
-      value: 25
+      value: 25 # the default value if the user doesn't have the following permission
+      permission: "bucik.generators.normal.pickaxe-durability.150" # optional, you can remove it as well
     # Redefining or removing the crafting recipe requires a full server restart.
     custom-crafting-recipe:
       slot-A: AIR
