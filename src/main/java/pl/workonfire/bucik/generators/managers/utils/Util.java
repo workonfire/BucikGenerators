@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.commands.drop.DropPeekCommand;
@@ -344,5 +345,36 @@ public final class Util {
                 Material.WOODEN_SHOVEL
         };
         return !Util.isServerLegacy() && Arrays.asList(allowedItems).contains(item.getType());
+    }
+
+    /**
+     * Loops through the player permission list and searches for a permissionBase match.
+     * If it finds a match, returns a integer of the last permission character.
+     *
+     * <p>
+     *     For example:
+     *     If a player has the permission "bucik.generators.something.6", it will return 6.
+     * </p>
+     *
+     * @param player {@link Player} object
+     * @param permissionBase the permission base (prefix)
+     * @param defaultValue the initial value. Returned if the player doesn't have any matching permissions
+     * @return the final value
+     */
+    public static int getPermissionSuffixAsInt(Player player, String permissionBase, int defaultValue) {
+        permissionBase += ".";
+        for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+            if (permission.getPermission().startsWith(permissionBase)) {
+                String[] splittedPermission = permission.getPermission().split("\\.");
+                String lastCharacter = splittedPermission[splittedPermission.length - 1];
+                try {
+                    defaultValue = lastCharacter.equals("*") ? 0 : Integer.parseInt(lastCharacter);
+                }
+                catch (NumberFormatException exception) {
+                    Util.systemMessage(Logger.WARN, "The permission '" + permission + "' is not valid.");
+                }
+            }
+        }
+        return defaultValue;
     }
 }

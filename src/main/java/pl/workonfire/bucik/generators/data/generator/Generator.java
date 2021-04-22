@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
-import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import static pl.workonfire.bucik.generators.managers.utils.ConfigPropertyType.*;
@@ -217,10 +216,7 @@ public class Generator implements Item {
      * @return cooldown value in ticks
      */
     public int getBreakCooldown(Player player) {
-        String permission = getBreakCooldownPermission();
-        int breakCooldown = parseCustomNumericPermission(permission);
-        if (player.hasPermission(permission)) return breakCooldown;
-        return this.breakCooldown;
+        return Util.getPermissionSuffixAsInt(player, getBreakCooldownPermission(), this.breakCooldown);
     }
 
     /**
@@ -233,30 +229,7 @@ public class Generator implements Item {
      * @return cooldown value in ticks
      */
     public int getAffectPxDurabilityValue(Player player) {
-        String permission = getAffectPxDurabilityPerm();
-        int durabilityValue = parseCustomNumericPermission(permission);
-        if (player.hasPermission(permission)) return durabilityValue;
-        return this.affectPxDurabilityValue;
-    }
-
-    /**
-     * Used for parsing the number from permissions like "some.permission.150".
-     * @since 1.3.0
-     * @param permission as {@link String}
-     * @return parsed value
-     */
-    private int parseCustomNumericPermission(String permission) {
-        int value = 0;
-        if (permission != null) {
-            String[] splittedPermission = permission.split("\\.");
-            try {
-                value = Integer.parseInt(splittedPermission[splittedPermission.length - 1]);
-            }
-            catch (NumberFormatException exception) {
-                Util.systemMessage(Logger.WARN, "The permission '" + permission + "' is not valid.");
-            }
-        }
-        return value;
+        return Util.getPermissionSuffixAsInt(player, getAffectPxDurabilityPerm(), this.affectPxDurabilityValue);
     }
 
     /**
