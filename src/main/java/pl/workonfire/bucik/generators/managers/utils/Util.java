@@ -368,7 +368,7 @@ public final class Util {
                 String[] splittedPermission = permission.getPermission().split("\\.");
                 String lastCharacter = splittedPermission[splittedPermission.length - 1];
                 try {
-                    defaultValue = lastCharacter.equals("*") ? 0 : Integer.parseInt(lastCharacter);
+                    defaultValue = lastCharacter.equals("*") ? defaultValue : Integer.parseInt(lastCharacter);
                 }
                 catch (NumberFormatException exception) {
                     Util.systemMessage(Logger.WARN, "The permission '" + permission + "' is not valid.");
