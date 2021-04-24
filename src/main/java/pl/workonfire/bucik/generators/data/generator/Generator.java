@@ -18,7 +18,7 @@ import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pl.workonfire.bucik.generators.BucikGenerators;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
@@ -319,11 +319,15 @@ public class Generator implements Item {
      * Tries to create a {@link Generator} object from a specified {@link Material}.
      * It opens the configuration file (storage.yml) and looks for the closest match in the material definition.
      *
+     * This method is nullable, but in most cases in the code, the null warnings are suppressed, because this method
+     * <b>SHOULD</b> be preceded by a {@link #isGenerator(Location, World)} or a {@link #isGenerator(Location, World)}
+     * check.
+     *
      * @since 1.0.0
-     * @param item Material object
-     * @return Generator object
+     * @param item {@link Material} object
+     * @return {@link Generator} object or null
      */
-    public static @NotNull Generator from(Material item) {
+    public static @Nullable Generator from(Material item) {
         for (String generatorId : getIds()) {
             Generator generator = new Generator(generatorId);
             if (generator.getBaseItemMaterial() == item) return generator;

@@ -41,6 +41,7 @@ public class ForceDestroyCommand implements Command {
                 }
                 if (targetBlock != null && Generator.isGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                     Generator generator = Generator.from(targetBlock.getType());
+                    //noinspection ConstantConditions
                     generator.unregister(targetBlock.getLocation(), targetBlock.getWorld());
                     GeneratorLocation generatorLocation = GeneratorLocation.from(
                             targetBlock.getLocation(), targetBlock.getWorld().getName()

@@ -19,6 +19,7 @@ public class EntityExplodeListener implements Listener {
                 Generator baseGenerator = Generator.from(baseBlockLocation.getBlock().getType());
                 if (Generator.isGenerator(block.getLocation(), block.getWorld())) {
                     Generator generator = Generator.from(block.getType());
+                    //noinspection ConstantConditions
                     generator.unregister(block.getLocation(), block.getWorld());
                     GeneratorLocation fullLocation = GeneratorLocation.from(block.getLocation(), block.getWorld().getName());
                     BucikGenerators.getGeneratorDurabilities().unregister(fullLocation);

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@SuppressWarnings("ConstantConditions")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DropItem implements Item {
     /**
@@ -107,7 +106,7 @@ public class DropItem implements Item {
      * @since 1.0.0
      * @return {@link ItemStack} object
      */
-    @SuppressWarnings("deprecation") // one deprecated method is required for backwards compatibility
+    @SuppressWarnings({"deprecation", "ConstantConditions"}) // one deprecated method is required for backwards compatibility
     public ItemStack getItemStack() {
         ItemStack item = new ItemStack(getMaterial());
         ItemMeta itemMeta = item.getItemMeta();

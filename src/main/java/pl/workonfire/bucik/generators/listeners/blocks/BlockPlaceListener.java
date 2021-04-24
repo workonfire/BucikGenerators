@@ -25,6 +25,7 @@ public class BlockPlaceListener implements Listener {
 
             if (Generator.isGenerator(event.getItemInHand())) {
                 Generator generator = Generator.from(block.getType());
+                //noinspection ConstantConditions
                 for (String worldName : generator.getWorldBlacklist()) {
                     if (block.getWorld().getName().equals(worldName)) {
                         event.setCancelled(true);
