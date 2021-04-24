@@ -320,7 +320,7 @@ public class Generator implements Item {
      * It opens the configuration file (storage.yml) and looks for the closest match in the material definition.
      *
      * This method is nullable, but in most cases in the code, the null warnings are suppressed, because this method
-     * <b>SHOULD</b> be preceded by a {@link #isGenerator(Location, World)} or a {@link #isGenerator(Location, World)}
+     * <b>SHOULD</b> be preceded by a {@link #isGenerator(Location, World)} or a {@link #isGenerator(ItemStack)}
      * check.
      *
      * @since 1.0.0
