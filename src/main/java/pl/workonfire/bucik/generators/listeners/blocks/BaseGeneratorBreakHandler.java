@@ -25,6 +25,7 @@ public class BaseGeneratorBreakHandler {
         Block block = event.getBlock();
         GeneratorLocation fullBlockLocation = GeneratorLocation.from(block.getLocation(), block.getWorld().getName());
         Generator generator = Generator.from(block.getType());
+        //noinspection ConstantConditions
         if (player.hasPermission(generator.getPermission())) {
             if (generator.isDurabilityOn() && Generator.hasDurabilityLeft(fullBlockLocation)) {
                 int currentDurability = GeneratorDurabilities.getInstance().getValue(fullBlockLocation);

@@ -20,6 +20,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Util;
@@ -351,7 +352,7 @@ public class Generator implements Item {
      * @return true, if the generator durability differs from 0
      */
     public static boolean hasDurabilityLeft(GeneratorLocation location) {
-        return BucikGenerators.getGeneratorDurabilities().getValue(location) != 0;
+        return GeneratorDurabilities.getInstance().getValue(location) != 0;
     }
 
 }

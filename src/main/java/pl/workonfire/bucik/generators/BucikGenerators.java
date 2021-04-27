@@ -41,7 +41,6 @@ import pl.workonfire.bucik.generators.managers.VaultHandler;
 public final class BucikGenerators extends JavaPlugin {
     @Getter private static BucikGenerators       instance;
     @Getter private static String                pluginVersion;
-    @Getter private static GeneratorDurabilities generatorDurabilities;
 
     @Override
     public void onEnable() {
@@ -50,7 +49,6 @@ public final class BucikGenerators extends JavaPlugin {
         getInstance().saveDefaultConfig();
         ConfigManager.initializeConfig();
         ConfigManager.initializeDb();
-        generatorDurabilities = GeneratorDurabilities.getInstance();
 
         Util.registerEvents();
         Util.registerCommands();
@@ -84,6 +82,6 @@ public final class BucikGenerators extends JavaPlugin {
     public void onDisable() {
         ConfigManager.updateDb();
         Util.unregisterRecipes();
-        getGeneratorDurabilities().serialize();
+        GeneratorDurabilities.getInstance().serialize();
     }
 }

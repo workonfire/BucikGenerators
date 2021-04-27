@@ -29,6 +29,7 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +40,7 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLan
 @UtilityClass
 @SuppressWarnings("ConstantConditions")
 public final class Util {
+    public static final Random RANDOM = new Random();
 
     /**
      * Replaces the ampresand symbol to the paragraph in order to show colors properly.

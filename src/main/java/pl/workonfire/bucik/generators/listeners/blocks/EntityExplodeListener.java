@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.Generator;
 
@@ -22,7 +22,7 @@ public class EntityExplodeListener implements Listener {
                     //noinspection ConstantConditions
                     generator.unregister(block.getLocation(), block.getWorld());
                     GeneratorLocation fullLocation = GeneratorLocation.from(block.getLocation(), block.getWorld().getName());
-                    BucikGenerators.getGeneratorDurabilities().unregister(fullLocation);
+                    GeneratorDurabilities.getInstance().unregister(fullLocation);
                 }
                 else if (baseGenerator != null && Generator.isGenerator(baseBlockLocation, baseBlockLocation.getWorld())
                         && !baseGenerator.isDurabilityOn())

@@ -25,12 +25,15 @@ public class GeneratorDurabilities implements Serializable {
      * </p>
      *
      */
-    transient static GeneratorDurabilities               instance;
-                     HashMap<GeneratorLocation, Integer> durabilities;
 
     transient static final File   dataFolder       = BucikGenerators.getInstance().getDataFolder();
     transient static final String FILE_PATH        = dataFolder.getPath() + "/durabilities.ser";
               static final long   serialVersionUID = -1543193395652903243L;
+                           HashMap<GeneratorLocation, Integer> durabilities;
+
+    private static class LazyHolder {
+        private transient static final GeneratorDurabilities INSTANCE = new GeneratorDurabilities();
+    }
 
     @SneakyThrows
     private GeneratorDurabilities() {
@@ -94,8 +97,7 @@ public class GeneratorDurabilities implements Serializable {
     }
 
     public static GeneratorDurabilities getInstance() {
-        if (instance == null) instance = new GeneratorDurabilities();
-        return instance;
+        return LazyHolder.INSTANCE;
     }
 
 }

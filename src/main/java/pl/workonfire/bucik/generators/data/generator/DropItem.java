@@ -18,7 +18,6 @@ import static pl.workonfire.bucik.generators.managers.utils.ConfigPropertyType.*
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DropItem implements Item {
@@ -174,7 +173,7 @@ public class DropItem implements Item {
                 && Util.isDamageable(item)
                 && item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
             localDropMultiplier = item.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
-        return Math.round(new Random().nextDouble() * 10000.0) / 100.0 <= getDropChance() * localDropMultiplier;
+        return Math.round(Util.RANDOM.nextDouble() * 10000.0) / 100.0 <= getDropChance() * localDropMultiplier;
     }
 
     /**
