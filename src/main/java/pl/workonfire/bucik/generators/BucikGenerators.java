@@ -39,8 +39,8 @@ import pl.workonfire.bucik.generators.managers.VaultHandler;
 
 
 public final class BucikGenerators extends JavaPlugin {
-    @Getter private static BucikGenerators       instance;
-    @Getter private static String                pluginVersion;
+    @Getter private static BucikGenerators instance;
+    @Getter private static String          pluginVersion;
 
     @Override
     public void onEnable() {
@@ -64,8 +64,7 @@ public final class BucikGenerators extends JavaPlugin {
         Util.registerRecipes();
 
         if (ConfigManager.getConfig().getBoolean("options.metrics")) {
-            int pluginId = 7854;
-            new Metrics(getInstance(), pluginId);
+            new Metrics(getInstance(), 7854);
             Util.systemMessage(Logger.INFO,
                     "bStats service has been &2enabled&r! Set &6metrics &rto &cfalse &rin " +
                             "&f&nconfig.yml&r in order to disable metrics.");
