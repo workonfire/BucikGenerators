@@ -5,7 +5,6 @@ main: pl.workonfire.bucik.generators.BucikGenerators
 api-version: "1.13"
 softdepend: [Vault]
 author: Buty935
-website: "https://workonfi.re/bucik/generatorss"
 commands:
   generators:
     description: "Main command."

@@ -6,7 +6,9 @@
 [![JavaDoc Badge](https://img.shields.io/badge/JavaDoc-here!-orange?logo=java)](https://workonfi.re/bucik/generators/apidocs)
 ![Made with love in Poland](https://madewithlove.now.sh/pl?heart=true)
 
-[Polish version here](README.pl.md)
+[English version here](README.md)
+
+# UWAGA: Ten projekt nie jest już wspierany.
 
 ## Funkcje
 - W pełni dostosowywalne generatory bloków
@@ -52,6 +54,3 @@ Specjalne podziękowania dla [@k073l](https://github.com/k073l) i [@oliwier975PL
 
 ## Licencja
 Ten projekt jest na licencji [GNU GPL-3.0](LICENSE).
-
-## Status projektu
-Skończyły mi się siły i chęci, więc obecnie nie są prowadzone prace nad tym projektem. Chociaż jeśli wpadnę na pomysł lub ktoś zgłosi mi krytyczny błąd, wydam aktualizację. :smile: 

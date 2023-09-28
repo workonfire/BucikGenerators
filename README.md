@@ -8,6 +8,8 @@
 
 [Polish version here](README.pl.md)
 
+# WARNING: This project is not supported anymore.
+
 ## Features
 - Fully customizable block generators
 - Custom permissions for many things
@@ -52,6 +54,3 @@ Thanks to [@k073l](https://github.com/k073l) and [@oliwier975PL](https://github.
 
 ## License
 This project is licensed under the [GNU GPL-3.0 License](LICENSE).
-
-## Project status
-I've run out of energy, so currently this project is not actively maintained. Although if I come up with an idea or someone reports me a critical bug, I'll release an update. :smile: 

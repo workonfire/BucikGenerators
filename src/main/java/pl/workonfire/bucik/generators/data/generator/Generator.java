@@ -319,7 +319,7 @@ public class Generator implements Item {
     /**
      * Tries to create a {@link Generator} object from a specified {@link Material}.
      * It opens the configuration file (storage.yml) and looks for the closest match in the material definition.
-     *
+     * <p>
      * This method is nullable, but in most cases in the code, the null warnings are suppressed, because this method
      * <b>SHOULD</b> be preceded by a {@link #isGenerator(Location, World)} or a {@link #isGenerator(ItemStack)}
      * check.

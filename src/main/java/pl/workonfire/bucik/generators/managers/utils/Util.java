@@ -41,6 +41,7 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLan
 @SuppressWarnings("ConstantConditions")
 public final class Util {
     public static final Random RANDOM = new Random();
+    private static int serverVersion;
 
     /**
      * Replaces the ampresand symbol to the paragraph in order to show colors properly.
@@ -195,14 +196,31 @@ public final class Util {
             player.spawnParticle(particle, block.getLocation(), count);
     }
 
+
+    /**
+     * Gathers the server version and returns it as a number.
+     * For example the version "git-Paper-196 (MC: 1.20.1)" will be returned as the integer 20.
+     * @return version number
+     */
+    public static int getVersionNumber() {
+        try {
+            String[] versionSplit = Bukkit.getVersion().split("\\(MC: ");
+            String fullVersion = versionSplit[1].replace(")", "");
+            serverVersion = Integer.parseInt(fullVersion.split("\\.")[1]);
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            Util.systemMessage(Logger.WARN, "Unable to report the server version. Defaulting to 12.");
+            serverVersion = 12;
+        }
+        return serverVersion;
+    }
+
     /**
      * Checks if the server is legacy.
      * @since 1.0.6
      * @return true, if the server is running on 1.12 or an earlier version.
      */
     public static boolean isServerLegacy() {
-        String[] newVersions = {"1.13", "1.14", "1.15", "1.16"};
-        return Arrays.asList(newVersions).contains(Bukkit.getVersion());
+        return getVersionNumber() <= 12;
     }
 
     /**
@@ -211,8 +229,7 @@ public final class Util {
      * @return true, if the server is running on 1.16+
      */
     public static boolean isRGBSupported() {
-        String[] RGBVersions = {"1.16"};
-        return Arrays.asList(RGBVersions).contains(Bukkit.getVersion());
+        return getVersionNumber() >= 16;
     }
 
     /**
@@ -222,11 +239,11 @@ public final class Util {
      * @param message message string
      */
     public static void systemMessage(Logger level, String message) {
-        message = isServerLegacy() ? ChatColor.stripColor(message) : formatColors(message);
-        String pluginPrefix = isServerLegacy() ? ChatColor.stripColor(ConfigManager.getPrefix()) : ConfigManager.getPrefix();
-        String messagePrefix = pluginPrefix + "[" + (isServerLegacy() ? "" : level.getColor()) + level.name() + ChatColor.RESET + "] ";
+        message = ChatColor.stripColor(message);
         if (!ConfigManager.getConfig().getBoolean("options.debug") && level == Logger.DEBUG) return;
-        level.getStream().println(messagePrefix + message);
+        if (level == Logger.WARN)
+            BucikGenerators.getInstance().getLogger().warning(message);
+        else BucikGenerators.getInstance().getLogger().info(message);
     }
 
     /**
@@ -351,7 +368,7 @@ public final class Util {
 
     /**
      * Loops through the player permission list and searches for a permissionBase match.
-     * If it finds a match, returns a integer of the last permission character.
+     * If it finds a match, returns an integer of the last permission character.
      *
      * <p>
      *     For example:
@@ -367,8 +384,8 @@ public final class Util {
         permissionBase += ".";
         for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
             if (permission.getPermission().startsWith(permissionBase)) {
-                String[] splittedPermission = permission.getPermission().split("\\.");
-                String lastCharacter = splittedPermission[splittedPermission.length - 1];
+                String[] splitPermission = permission.getPermission().split("\\.");
+                String lastCharacter = splitPermission[splitPermission.length - 1];
                 try {
                     defaultValue = lastCharacter.equals("*") ? defaultValue : Integer.parseInt(lastCharacter);
                 }

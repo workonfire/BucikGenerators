@@ -2,8 +2,6 @@
 # Make sure it has no syntax errors by comparing it to the default config on the resource website.
 # https://www.spigotmc.org/resources/bucikgenerators-custom-block-generators.80180/
 
-# If you have any questions or troubles, feel free to text me.
-
 generators:
   normal:
     break-cooldown: 1 # In ticks. 20 ticks = 1 second
