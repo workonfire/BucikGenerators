@@ -42,7 +42,7 @@ public class BaseGeneratorBreakHandler {
                 block.setType(Material.AIR);
                 block.getWorld().dropItemNaturally(block.getLocation(), generator.getItemStack(1));
                 Util.playSound(block, Sound.BLOCK_ANVIL_LAND);
-                Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
+                Util.showParticle(player, block, Particle.LARGE_SMOKE, 7);
                 if (generator.isDurabilityOn())
                     GeneratorDurabilities.getInstance().unregister(fullBlockLocation);
                 sendMessage(player, getPrefixLangVar("base-generator-destroyed"));

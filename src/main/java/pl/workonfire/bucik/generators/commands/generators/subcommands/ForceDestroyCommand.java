@@ -50,7 +50,7 @@ public class ForceDestroyCommand implements Command {
                     targetBlock.setType(Material.AIR);
                     targetBlock.getLocation().add(0, 1, 0).getBlock().setType(Material.AIR);
                     Util.playSound(player, Sound.ENTITY_WITHER_HURT);
-                    Util.showParticle(player, targetBlock, Particle.SMOKE_LARGE, 7);
+                    Util.showParticle(player, targetBlock, Particle.LARGE_SMOKE, 7);
                     sendMessage(sender, getPrefixLangVar("base-generator-destroyed"));
                 }
                 else sendMessage(sender, getPrefixLangVar("force-destroy-block-is-not-a-generator"));

@@ -32,7 +32,7 @@ import pl.workonfire.bucik.generators.managers.VaultHandler;
  * Made with ♥
  *
  * @author  workonfire, aka Buty935
- * @version 1.3.1
+ * @version 1.3.2
  * @since   2020-06-13
  */
 
@@ -55,7 +55,7 @@ public final class BucikGenerators extends JavaPlugin {
         Util.registerCommands();
         VaultHandler.setupEconomy();
 
-        Util.systemMessage(Logger.INFO, "BucikGenerators " + getPluginVersion() + " by Buty935. Discord: workonfire");
+        Util.systemMessage(Logger.INFO, "BucikGenerators " + getPluginVersion() + " by Buty935. Discord: wzium");
         Util.systemMessage(Logger.WARN, "Unfortunately, this plugin is not supported anymore. Don't report any bugs. Sorry :(");
         Util.systemMessage(Logger.DEBUG, "Debug mode enabled.");
         Util.systemMessage(Logger.DEBUG, "Economy setup: " + VaultHandler.getEconomy());

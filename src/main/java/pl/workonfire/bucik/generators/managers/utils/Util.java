@@ -41,7 +41,6 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLan
 @SuppressWarnings("ConstantConditions")
 public final class Util {
     public static final Random RANDOM = new Random();
-    private static int serverVersion;
 
     /**
      * Replaces the ampresand symbol to the paragraph in order to show colors properly.
@@ -85,8 +84,7 @@ public final class Util {
      * @param exception exception object
      */
     public static void handleErrors(CommandSender commandSender, Exception exception) {
-        if (commandSender instanceof Player) {
-            Player player = (Player) commandSender;
+        if (commandSender instanceof Player player) {
             Sound placeSound = Util.isServerLegacy() ? Sound.ENTITY_BAT_DEATH : Sound.ITEM_TRIDENT_THUNDER;
             Util.playSound(player, placeSound);
             if (ConfigManager.getConfig().getBoolean("options.wzium")) {
@@ -203,6 +201,7 @@ public final class Util {
      * @return version number
      */
     public static int getVersionNumber() {
+        int serverVersion;
         try {
             String[] versionSplit = Bukkit.getVersion().split("\\(MC: ");
             String fullVersion = versionSplit[1].replace(")", "");
@@ -306,10 +305,11 @@ public final class Util {
                         generatorRecipe = new ShapedRecipe(generator.getItemStack(1));
                     }
                     generatorRecipe.shape("ABC", "DEF", "GHI");
-                    for (char ch = 'A'; ch <= 'I'; ++ch)
-                        generatorRecipe.setIngredient(
-                                ch, Material.getMaterial(generator.getCustomRecipe().getString("slot-" + ch))
-                        );
+                    for (char ch = 'A'; ch <= 'I'; ++ch) {
+                        Material material = Material.getMaterial(generator.getCustomRecipe().getString("slot-" + ch));
+                        if (material != null && material != Material.AIR)
+                            generatorRecipe.setIngredient(ch, material);
+                    }
                     Bukkit.addRecipe(generatorRecipe);
                 }
             }

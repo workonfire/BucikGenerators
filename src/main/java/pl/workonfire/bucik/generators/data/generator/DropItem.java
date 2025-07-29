@@ -29,7 +29,7 @@ public class DropItem implements Item {
      *     <li>A regular item, for example
      *     {@link org.bukkit.Material#COBBLESTONE} or {@link org.bukkit.Material#COAL}</li>
      *
-     *     <li>A specific potion, for example {@link org.bukkit.potion.PotionEffectType#FAST_DIGGING},
+     *     <li>A specific potion, for example {@link org.bukkit.potion.PotionEffectType#HASTE},
      *     in which you can specify the {@link #potionEffectTypeName},
      *     {@link #potionEffectAmplifier} and {@link #potionEffectDuration}.</li>
      *
@@ -62,6 +62,7 @@ public class DropItem implements Item {
     @Getter double       moneyAmount;
     @Getter int          expAmount;
     @Getter boolean      hideEnchantments;
+    @Getter String       command;
             String       generatorId;
             String       permission;
             int          itemId;
@@ -88,6 +89,7 @@ public class DropItem implements Item {
         moneyAmount           = (double)       getProperty("money-amount", DOUBLE);
         expAmount             = (int)          getProperty("exp-amount", INTEGER);
         hideEnchantments      = (boolean)      getProperty("hide-enchantments", BOOLEAN);
+        command               = (String)       getProperty("command", STRING);
     }
 
     @Override
@@ -159,7 +161,7 @@ public class DropItem implements Item {
 
     /**
      * Checks if the item was randomly selected based on the {@link #dropChance}.
-     * The method respects the {@link Enchantment#LOOT_BONUS_BLOCKS} enchantment and multiplies the final
+     * The method respects the {@link Enchantment#FORTUNE} enchantment and multiplies the final
      * percentage calculation by itself.
      *
      * @since 1.0.0
@@ -171,8 +173,8 @@ public class DropItem implements Item {
         double localDropMultiplier = 1;
         if (respectPickaxeFortune
                 && Util.isDamageable(item)
-                && item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))
-            localDropMultiplier = item.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+                && item.containsEnchantment(Enchantment.FORTUNE))
+            localDropMultiplier = item.getEnchantmentLevel(Enchantment.FORTUNE);
         return Math.round(Util.RANDOM.nextDouble() * 10000.0) / 100.0 <= getDropChance() * localDropMultiplier;
     }
 

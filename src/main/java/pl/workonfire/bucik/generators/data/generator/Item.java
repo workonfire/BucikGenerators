@@ -44,26 +44,17 @@ public interface Item {
     @SuppressWarnings("ConstantConditions")
     default Object getProperty(String property, ConfigPropertyType type) {
         String propName = getPropertyName(property);
-        switch (type) {
-            case INTEGER:
-                return getConfiguration().getInt(propName);
-            case STRING:
-                return getConfiguration().getString(propName);
-            case BOOLEAN:
-                return getConfiguration().getBoolean(propName);
-            case MATERIAL:
-                return Material.getMaterial(getConfiguration().getString(propName).toUpperCase());
-            case STRING_LIST:
-                return getConfiguration().getStringList(propName);
-            case CONFIG_SECTION:
-                return getConfiguration().getConfigurationSection(propName);
-            case CONFIG_SECTION_NO_KEYS:
-                return getConfiguration().getConfigurationSection(propName).getKeys(false);
-            case DOUBLE:
-                return getConfiguration().getDouble(propName);
-            default:
-                return null;
-        }
+        return switch (type) {
+            case INTEGER -> getConfiguration().getInt(propName);
+            case STRING -> getConfiguration().getString(propName);
+            case BOOLEAN -> getConfiguration().getBoolean(propName);
+            case MATERIAL -> Material.getMaterial(getConfiguration().getString(propName).toUpperCase());
+            case STRING_LIST -> getConfiguration().getStringList(propName);
+            case CONFIG_SECTION -> getConfiguration().getConfigurationSection(propName);
+            case CONFIG_SECTION_NO_KEYS -> getConfiguration().getConfigurationSection(propName).getKeys(false);
+            case DOUBLE -> getConfiguration().getDouble(propName);
+            default -> null;
+        };
     }
 
     default FileConfiguration getConfiguration() {

@@ -1,5 +1,6 @@
 package pl.workonfire.bucik.generators.commands.drop;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -99,10 +100,17 @@ public class DropPeekCommand implements CommandExecutor, Command {
                                                 hoverMsg.add("\n");
                                             }
                                         }
+                                        if (dropItem.getCommand() != null) { // TODO: make it actually nice
+                                            hoverMsg.add(getLangVar("drop-item-command") + Util.formatColors(dropItem.getCommand()));
+                                            hoverMsg.add("\n");
+                                        }
                                         if (!hoverMsg.isEmpty() && hoverMsg.get(hoverMsg.size() - 1).equals("\n"))
                                             hoverMsg.remove(hoverMsg.size() - 1);
                                         for (String message : hoverMsg) componentBuilder.append(message);
-                                        dropHover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, componentBuilder.create()));
+                                        BaseComponent[] hoverComponents = componentBuilder.create();
+                                        if (hoverComponents.length > 0) { // deprecated
+                                            dropHover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverComponents));
+                                        }
                                         player.spigot().sendMessage(dropHover);
                                     }
                                     catch (NoSuchMethodError error) {
@@ -122,6 +130,8 @@ public class DropPeekCommand implements CommandExecutor, Command {
                                             sendMessage(sender, getLangVar("drop-item-enchantments"));
                                             for (String enchantment : dropItem.getEnchantments()) player.sendMessage(enchantment);
                                         }
+                                        if (dropItem.getCommand() != null)
+                                            sendMessage(sender, getLangVar("drop-item-command") + Util.formatColors(dropItem.getCommand()));
                                     }
                                     sendMessage(sender, getLangVar("drop-item-chance") + dropItem.getDropChance() + "%");
                                 }

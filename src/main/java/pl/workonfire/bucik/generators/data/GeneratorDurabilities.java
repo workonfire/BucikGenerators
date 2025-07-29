@@ -26,10 +26,10 @@ public class GeneratorDurabilities implements Serializable {
      *
      */
 
-    transient static final File   dataFolder       = BucikGenerators.getInstance().getDataFolder();
-    transient static final String FILE_PATH        = dataFolder.getPath() + "/durabilities.ser";
-              static final long   serialVersionUID = -1543193395652903243L;
-                           HashMap<GeneratorLocation, Integer> durabilities;
+            static final File   dataFolder       = BucikGenerators.getInstance().getDataFolder();
+            static final String FILE_PATH        = dataFolder.getPath() + "/durabilities.ser";
+    @Serial static final long   serialVersionUID = -1543193395652903243L;
+    HashMap<GeneratorLocation, Integer> durabilities;
 
     private static class LazyHolder {
         private transient static final GeneratorDurabilities INSTANCE = new GeneratorDurabilities();

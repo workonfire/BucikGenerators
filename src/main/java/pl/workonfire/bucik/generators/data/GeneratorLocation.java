@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.Location;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -17,9 +18,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratorLocation implements Serializable {
-    static final long   serialVersionUID = 5266122845329240681L;
-           final int    X, Y, Z;
-           final String worldName;
+    @Serial static final long   serialVersionUID = 5266122845329240681L;
+                   final int    X, Y, Z;
+                   final String worldName;
 
     /**
      * Converts the regular Location object to {@link GeneratorLocation}

@@ -17,6 +17,7 @@ import pl.workonfire.bucik.generators.data.GeneratorDurabilities;
 import pl.workonfire.bucik.generators.data.GeneratorLocation;
 import pl.workonfire.bucik.generators.data.generator.DropItem;
 import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 import pl.workonfire.bucik.generators.managers.VaultHandler;
 
@@ -84,7 +85,7 @@ public class GeneratorBreakHandler {
                     baseGenerator.unregister(baseBlockLocation, baseBlockLocation.getWorld());
                     sendMessage(player, getPrefixLangVar("generator-has-worn-out"));
                     Util.playSound(block, Sound.ENTITY_WITHER_HURT);
-                    Util.showParticle(player, block, Particle.SMOKE_LARGE, 7);
+                    Util.showParticle(player, block, Particle.LARGE_SMOKE, 7);
                 }
                 else GeneratorDurabilities.getInstance().update(fullBlockLocation, currentDurability - 1);
             }
@@ -102,8 +103,8 @@ public class GeneratorBreakHandler {
                     }
                     else {
                         int dropDivider = 1;
-                        if (currentItem.containsEnchantment(Enchantment.DURABILITY))
-                            dropDivider = currentItem.getEnchantmentLevel(Enchantment.DURABILITY);
+                        if (currentItem.containsEnchantment(Enchantment.UNBREAKING))
+                            dropDivider = currentItem.getEnchantmentLevel(Enchantment.UNBREAKING);
                         currentDamage += baseGenerator.getAffectPxDurabilityValue(player) / dropDivider;
                         ((Damageable) currentItemMeta).setDamage(currentDamage);
                         currentItem.setItemMeta(currentItemMeta);
@@ -126,9 +127,13 @@ public class GeneratorBreakHandler {
                                 );
                                 player.addPotionEffect(potionEffect);
                             }
+                            else if (item.getCommand() != null) {
+                                Util.systemMessage(Logger.DEBUG, "Trying to execute command: " + item.getCommand());
+                                player.performCommand(item.getCommand());
+                            }
                             else if (item.isMoney() && item.getMoneyAmount() != 0 && VaultHandler.getEconomy() != null) {
                                 VaultHandler.getEconomy().depositPlayer(player, item.getMoneyAmount());
-                                if (!Util.isServerLegacy()) Util.showParticle(player, block, Particle.TOTEM, 1);
+                                if (!Util.isServerLegacy()) Util.showParticle(player, block, Particle.TOTEM_OF_UNDYING, 1);
                             }
                             else if (item.isExp() && item.getExpAmount() != 0)
                                 player.giveExp(item.getExpAmount());
