@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.workonfire.bucik.generators.data.generator.Generator;
+import pl.workonfire.bucik.generators.managers.ConfigManager;
 import pl.workonfire.bucik.generators.managers.utils.Command;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
@@ -29,7 +30,7 @@ public class GetCommand implements Command {
             else {
                 String generatorName = args[1];
                 if (Generator.isDefined(generatorName)) {
-                    Generator generator = new Generator(generatorName);
+                    Generator generator = Generator.get(generatorName);
                     if (args.length >= 3) {
                         try {
                             Player targetPlayer;

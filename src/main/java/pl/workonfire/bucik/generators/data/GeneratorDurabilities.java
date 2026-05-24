@@ -16,7 +16,7 @@ import java.util.HashMap;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratorDurabilities implements Serializable {
     /**
-     * A serializable, singleton class, that contains all data related to generator durabilities.
+     * A serializable, singleton class that contains all data related to generator durabilities.
      *
      * <p>
      *     After instantiated, it reads all data from <b>durabilities.ser</b> and assigns it to {@link #durabilities}.

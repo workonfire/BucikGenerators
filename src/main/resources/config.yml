@@ -1,6 +1,6 @@
 # BucikGenerators
 # Author: workonfire aka Buty935
-# Contact: workonfire (Discord)
+# Contact: wzium (Discord)
 
 options:
   auto-save-interval: 18000 # in ticks. 1 second = 20 ticks. Currently set to 15 minutes

@@ -56,7 +56,7 @@ public class GeneratorsCommand implements CommandExecutor, Command {
     public void run(CommandSender sender, String[] args) {
         String line = "§c§m--------------";
         if (!(sender instanceof Player)) line = "\n" + line; // for console
-        sender.sendMessage(line + "\n" +
+        Util.sendMessage(sender, line + "\n" +
                 "§bBucikGenerators §6" + BucikGenerators.getPluginVersion() + "\n" +
                 "§6by §c§lB§6§lu§e§lt§a§ly§b§l9§3§l3§9§l5\n" +
                 "§6§ohttps://github.com/workonfire\n" +

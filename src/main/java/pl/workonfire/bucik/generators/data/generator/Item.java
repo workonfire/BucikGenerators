@@ -39,7 +39,7 @@ public interface Item {
      *
      * @param property a property name from the configuration file defined in {@link #getConfiguration()}
      * @param type {@link ConfigPropertyType} type, required for proper type recognision
-     * @return an {@link Object}, that <b>should be casted</b> to a proper type
+     * @return an {@link Object}, that <b>should be cast</b> to a proper type
      */
     @SuppressWarnings("ConstantConditions")
     default Object getProperty(String property, ConfigPropertyType type) {
@@ -53,7 +53,6 @@ public interface Item {
             case CONFIG_SECTION -> getConfiguration().getConfigurationSection(propName);
             case CONFIG_SECTION_NO_KEYS -> getConfiguration().getConfigurationSection(propName).getKeys(false);
             case DOUBLE -> getConfiguration().getDouble(propName);
-            default -> null;
         };
     }
 

@@ -5,11 +5,14 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.workonfire.bucik.generators.BucikGenerators;
+import pl.workonfire.bucik.generators.data.generator.Generator;
 import pl.workonfire.bucik.generators.managers.utils.Logger;
 import pl.workonfire.bucik.generators.managers.utils.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A base class for all kinds of configuration files operations.
@@ -31,7 +34,7 @@ public final class ConfigManager {
     @Getter private static       FileConfiguration languageConfig;
     @Getter private static       FileConfiguration generatorsConfig;
     @Getter private static       FileConfiguration dataStorage;
-            private static final File              dataStorageFile = new File(
+    private static final File              dataStorageFile = new File(
                     BucikGenerators.getInstance().getDataFolder(), "storage.yml"
             );
 
@@ -91,8 +94,10 @@ public final class ConfigManager {
      */
     public static void reloadAll() {
         BucikGenerators.getInstance().reloadConfig();
+        Generator.clearCache();
         initializeConfig();
     }
+
 
     /**
      * Gets a language variable value from the config.
@@ -105,7 +110,7 @@ public final class ConfigManager {
     }
 
     /**
-     * Gets a language variable value from the config including a prefix.
+     * Gets a language variable value from the config, including a prefix.
      * @since 1.0.0
      * @param variable unparsed language variable, e.g. "no-permission"
      * @return language string with prefix.

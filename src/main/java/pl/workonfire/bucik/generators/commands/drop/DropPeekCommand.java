@@ -59,7 +59,10 @@ public class DropPeekCommand implements CommandExecutor, Command {
                     if (targetBlock != null && Generator.isGenerator(targetBlock.getLocation(), targetBlock.getWorld())) {
                         sendMessage(sender, getPrefixLangVar("items-drop-list"));
                         Generator generator = Generator.from(targetBlock.getType());
-                        //noinspection ConstantConditions
+                        if (generator == null) {
+                            sendMessage(sender, getPrefixLangVar("block-is-not-a-generator"));
+                            return;
+                        }
                         for (String permission : generator.getGeneratorDropPermissions()) {
                             if (player.hasPermission(Util.getPermission(permission))) {
                                 sendMessage(sender, getLangVar("items-for-permission") + Util.getPermission(permission) + "§f:");

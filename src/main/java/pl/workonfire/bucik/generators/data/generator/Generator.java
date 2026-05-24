@@ -28,12 +28,15 @@ import pl.workonfire.bucik.generators.managers.utils.Util;
 import static pl.workonfire.bucik.generators.managers.utils.ConfigPropertyType.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("ConstantConditions")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Generator implements Item {
+    private static final Map<String, Generator> CACHE = new HashMap<>();
     /**
      * This class represents the generator block.
      *
@@ -49,8 +52,8 @@ public class Generator implements Item {
      *
      * <p>
      *     The generator can contain a {@link #durability} value. If it's enabled ({@link #isDurabilityOn}), the
-     *     generator will have a certain amount of uses until it breaks itself. The player will also not be able to
-     *     destroy the generator base, unless it has been fully used.
+     *     generator will have a certain number of uses until it breaks itself. The player will also not be able to
+     *     destroy the generator base unless it has been fully used.
      * </p>
      */
     @Getter String               id;
@@ -102,6 +105,22 @@ public class Generator implements Item {
         whitelistedItems         = (List<String>)         getProperty("whitelist.items", STRING_LIST);
     }
 
+    /**
+     * Gets a generator from cache or creates a new one.
+     * @param id generator ID
+     * @return {@link Generator} object
+     */
+    public static Generator get(String id) {
+        return CACHE.computeIfAbsent(id, Generator::new);
+    }
+
+    /**
+     * Clears the generator cache.
+     */
+    public static void clearCache() {
+        CACHE.clear();
+    }
+
     @Override
     public String getPropertyName(String property) {
         return String.format("generators.%s.%s", getId(), property);
@@ -150,7 +169,7 @@ public class Generator implements Item {
     }
 
     /**
-     * Gets all possible items that can be dropped for an user permission.
+     * Gets all possible items that can be dropped for a user's permission.
      * @since 1.0.0
      * @param permission permission node
      * @return A set of item IDs.
@@ -209,7 +228,7 @@ public class Generator implements Item {
 
     /**
      * Checks if the "break-cooldown-permission" value is enabled.
-     * If it is, converts the permission node to an integer value, checks if the player has the permission and then
+     * If it is, converts the permission node to an integer value, checks if the player has the permission, and then
      * adjusts the personal break cooldown value, based on the permission.
      *
      * @since 1.3.0
@@ -222,7 +241,7 @@ public class Generator implements Item {
 
     /**
      * Checks if the "affect-pickaxe-durability.permission" value is set.
-     * If it is, converts the permission node to an integer value, checks if the player has the permission and then
+     * If it is, converts the permission node to an integer value, checks if the player has the permission, and then
      * adjusts the personal mining tool durability value, based on the permission.
      *
      * @since 1.3.0
@@ -234,7 +253,7 @@ public class Generator implements Item {
     }
 
     /**
-     * Checks if generator with a specified ID exists in the configuratuion file (generators.yml).
+     * Checks if a generator with a specified ID exists in the configuratuion file (generators.yml).
      * @since 1.0.0
      * @param id Generator ID
      * @return true, if the generator is defined
@@ -244,7 +263,7 @@ public class Generator implements Item {
     }
 
     /**
-     * Checks if block at a certain location is a generator saved in the database (storage.yml).
+     * Checks if a block at a certain location is a generator saved in the database (storage.yml).
      * @since 1.0.0
      * @param location {@link Location} object (X, Y, Z coordinates)
      * @param world {@link World} object
@@ -253,11 +272,11 @@ public class Generator implements Item {
     public static boolean isGenerator(Location location, World world) {
         List<String> allGenerators = ConfigManager.getDataStorage().getStringList("generators");
         for (String generatorDetails : allGenerators) {
-            String[] splittedDetails = generatorDetails.split("\\|");
-            String worldName = splittedDetails[0];
-            int locationX = Integer.parseInt(splittedDetails[1]);
-            int locationY = Integer.parseInt(splittedDetails[2]);
-            int locationZ = Integer.parseInt(splittedDetails[3]);
+            String[] splitDetails = generatorDetails.split("\\|");
+            String worldName = splitDetails[0];
+            int locationX = Integer.parseInt(splitDetails[1]);
+            int locationY = Integer.parseInt(splitDetails[2]);
+            int locationZ = Integer.parseInt(splitDetails[3]);
             GeneratorLocation generatorLocation = new GeneratorLocation(locationX, locationY, locationZ, worldName);
             GeneratorLocation currentLocation = GeneratorLocation.from(location, world.getName());
             if (currentLocation.equals(generatorLocation)) return true;
@@ -276,7 +295,7 @@ public class Generator implements Item {
         Material generatorBlock = item.getType();
         if (getAllTypes().contains(generatorBlock)) {
             Generator generator = from(item.getType());
-            if (Generator.isDefined(generator.getId())) {
+            if (generator != null) {
                 ItemStack generatorItem = generator.getItemStack(1);
                 if (item.isSimilar(generatorItem)) return true;
                 else {
@@ -330,14 +349,14 @@ public class Generator implements Item {
      */
     public static @Nullable Generator from(Material item) {
         for (String generatorId : getIds()) {
-            Generator generator = new Generator(generatorId);
+            Generator generator = Generator.get(generatorId);
             if (generator.getBaseItemMaterial() == item) return generator;
         }
         return null;
     }
 
     /**
-     * Gets a list of all generators IDs defined in the configuration file (storage.yml).
+     * Gets a list of all generator IDs defined in the configuration file (storage.yml).
      * @since 1.0.0
      * @return A set of generator IDs.
      */
@@ -348,7 +367,7 @@ public class Generator implements Item {
     /**
      * Checks if the generator at the specified location has some durability left.
      * @since 1.2.7
-     * @param location {@link Location} object (X, Y, Z and world)
+     * @param location {@link Location} object (X, Y, Z, and world)
      * @return true, if the generator durability differs from 0
      */
     public static boolean hasDurabilityLeft(GeneratorLocation location) {

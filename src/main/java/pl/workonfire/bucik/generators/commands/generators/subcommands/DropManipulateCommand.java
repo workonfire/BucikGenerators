@@ -23,7 +23,7 @@ public class DropManipulateCommand implements Command {
     @Override
     public void run(CommandSender sender, String[] args) {
         if (Util.isAuthorized(sender, permission())) {
-            if (args.length == 1) sender.sendMessage(getPrefixLangVar("not-enough-arguments"));
+            if (args.length == 1) sendMessage(sender, getPrefixLangVar("not-enough-arguments"));
             else {
                 if (args[1].equalsIgnoreCase("getMultiplier"))
                     sendMessage(sender, getPrefixLangVar("current-drop-multiplier")

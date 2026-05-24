@@ -41,27 +41,31 @@ import static pl.workonfire.bucik.generators.managers.ConfigManager.getPrefixLan
 @SuppressWarnings("ConstantConditions")
 public final class Util {
     public static final Random RANDOM = new Random();
+    private static final int SERVER_VERSION_NUMBER = parseVersionNumber();
+    private static final Pattern HEX_PATTERN = Pattern.compile("#([A-Fa-f0-9]){6}");
 
     /**
-     * Replaces the ampresand symbol to the paragraph in order to show colors properly.
+     * Replaces the ampresand symbol to the paragraph to show colors properly.
      * Parses RGB values on Minecraft 1.16.
-     * Borrowed from Esophose, because I suck at regular expressions.
      * @since 1.0.0
      * @param text string to format
      * @return formatted string
      */
     public static @NotNull String formatColors(String text) {
+        if (text == null || text.isEmpty()) return "";
         String parsedText = text;
         if (isRGBSupported()) {
-            Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]){6}");
-            Matcher matcher = hexPattern.matcher(parsedText);
+            Matcher matcher = HEX_PATTERN.matcher(parsedText);
+            StringBuilder buffer = new StringBuilder(parsedText.length() + 32);
+            int lastEnd = 0;
             while (matcher.find()) {
+                buffer.append(parsedText, lastEnd, matcher.start());
                 ChatColor hexColor = ChatColor.of(matcher.group());
-                String before = parsedText.substring(0, matcher.start());
-                String after = parsedText.substring(matcher.end());
-                parsedText = before + hexColor + after;
-                matcher = hexPattern.matcher(parsedText);
+                buffer.append(hexColor.toString());
+                lastEnd = matcher.end();
             }
+            buffer.append(parsedText.substring(lastEnd));
+            parsedText = buffer.toString();
         }
         return ChatColor.translateAlternateColorCodes('&', parsedText);
     }
@@ -73,7 +77,7 @@ public final class Util {
      * @return parsed permission with dots
      */
     public static @NotNull String getPermission(String unparsedPermission) {
-        return unparsedPermission.replaceAll("-", ".");
+        return unparsedPermission.replace("-", ".");
     }
 
     /**
@@ -103,8 +107,8 @@ public final class Util {
                 String exceptionAsString = stringWriter.toString();
                 exceptionAsString = exceptionAsString.substring(0, Math.min(exceptionAsString.length(), 256));
                 sendMessage(commandSender, "§c" + exceptionAsString
-                        .replaceAll("\u0009", "    ")
-                        .replaceAll("\r", "\n") + "...")
+                        .replace("\u0009", "    ")
+                        .replace("\r", "\n") + "...")
                 ;
                 sendMessage(commandSender, getPrefixLangVar("debug-more-info-in-console"));
             }
@@ -160,7 +164,7 @@ public final class Util {
     }
 
     /**
-     * Plays a sound, if sounds in the configuration file are enabled.
+     * Plays a sound if sounds in the configuration file are enabled.
      * @since 1.1.4
      * @param player {@link Player} object
      * @param sound {@link Sound} type
@@ -171,7 +175,7 @@ public final class Util {
     }
 
     /**
-     * Plays a sound, if sounds in the configuration file are enabled.
+     * Plays a sound if sounds in the configuration file are enabled.
      * @since 1.1.4
      * @param block {@link Block} object
      * @param sound {@link Sound} type
@@ -182,7 +186,7 @@ public final class Util {
     }
 
     /**
-     * Shows a particle, if particles in the configuration file are enabled.
+     * Shows a particle if particles in the configuration file are enabled.
      * @since 1.1.4
      * @param player {@link Player} object
      * @param block {@link Block} object
@@ -194,23 +198,30 @@ public final class Util {
             player.spawnParticle(particle, block.getLocation(), count);
     }
 
-
     /**
      * Gathers the server version and returns it as a number.
-     * For example the version "git-Paper-196 (MC: 1.20.1)" will be returned as the integer 20.
+     * For example, the version "git-Paper-196 (MC: 1.20.1)" will be parsed as 20.
+     * @return version number
+     */
+    private static int parseVersionNumber() {
+        try {
+            String version = Bukkit.getVersion();
+            String[] parts = version.split("\\.");
+            if (parts.length >= 2 && parts[0].equals("1")) {
+                return Integer.parseInt(parts[1]);
+            }
+            return Integer.parseInt(parts[0]);
+        } catch (Exception exception) {
+            Util.systemMessage(Logger.WARN, "Unable to report the server version. Defaulting to 18.");
+            return 18;
+        }
+    }
+
+    /**
      * @return version number
      */
     public static int getVersionNumber() {
-        int serverVersion;
-        try {
-            String[] versionSplit = Bukkit.getVersion().split("\\(MC: ");
-            String fullVersion = versionSplit[1].replace(")", "");
-            serverVersion = Integer.parseInt(fullVersion.split("\\.")[1]);
-        } catch (ArrayIndexOutOfBoundsException exception) {
-            Util.systemMessage(Logger.WARN, "Unable to report the server version. Defaulting to 12.");
-            serverVersion = 12;
-        }
-        return serverVersion;
+        return SERVER_VERSION_NUMBER;
     }
 
     /**
@@ -251,6 +262,7 @@ public final class Util {
      * @param sender command executor ({@link CommandSender})
      * @param message message
      */
+    @SuppressWarnings("deprecation")
     public static void sendMessage(CommandSender sender, String message) {
         if (isRGBSupported())
             sender.spigot().sendMessage(TextComponent.fromLegacyText(formatColors(message)));
@@ -287,14 +299,14 @@ public final class Util {
     }
 
     /**
-     * Registers custom crafting recipes, if there are any.
+     * Registers custom crafting recipes if there are any.
      * @since 1.0.0
      */
     @SuppressWarnings("deprecation")
     public static void registerRecipes() {
         try {
             for (String generatorId : Generator.getIds()) {
-                Generator generator = new Generator(generatorId);
+                Generator generator = Generator.get(generatorId);
                 if (generator.getCustomRecipe() != null) {
                     ShapedRecipe generatorRecipe;
                     try {
@@ -321,7 +333,7 @@ public final class Util {
     }
 
     /**
-     * Unregisters custom crafting recipes, if there are any.
+     * Unregisters custom crafting recipes if there are any.
      * @since 1.0.0
      */
     public static void unregisterRecipes() {
@@ -368,11 +380,11 @@ public final class Util {
 
     /**
      * Loops through the player permission list and searches for a permissionBase match.
-     * If it finds a match, returns an integer of the last permission character.
+     * If it finds a match, it returns an integer of the last permission character.
      *
      * <p>
-     *     For example:
-     *     If a player has the permission "bucik.generators.something.6", it will return 6.
+     *     For example,
+     *     if a player has the permission "bucik.generators.something.6", it will return 6.
      * </p>
      *
      * @param player {@link Player} object
