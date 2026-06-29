@@ -38,7 +38,7 @@ public interface Item {
      * Retrieves a value from a configuration file based on the specified YAML path.
      *
      * @param property a property name from the configuration file defined in {@link #getConfiguration()}
-     * @param type {@link ConfigPropertyType} type, required for proper type recognision
+     * @param type {@link ConfigPropertyType} type, required for proper type recognition
      * @return an {@link Object}, that <b>should be cast</b> to a proper type
      */
     @SuppressWarnings("ConstantConditions")

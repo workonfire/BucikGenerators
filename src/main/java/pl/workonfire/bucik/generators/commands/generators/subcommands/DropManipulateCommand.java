@@ -32,7 +32,7 @@ public class DropManipulateCommand implements Command {
                     if (args.length == 2) sendMessage(sender, getPrefixLangVar("not-enough-arguments"));
                     else {
                         try {
-                            DropMultiplier.setDropMultiplier(Integer.parseInt(args[2].replaceAll("x", "")));
+                            DropMultiplier.setDropMultiplier(Integer.parseInt(args[2].replace("x", "")));
                             sendMessage(sender, getPrefixLangVar("set-drop-multiplier")
                                     + DropMultiplier.getDropMultiplier() + "x.");
                         }

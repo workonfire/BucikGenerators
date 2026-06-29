@@ -253,7 +253,7 @@ public class Generator implements Item {
     }
 
     /**
-     * Checks if a generator with a specified ID exists in the configuratuion file (generators.yml).
+     * Checks if a generator with a specified ID exists in the configuration file (generators.yml).
      * @since 1.0.0
      * @param id Generator ID
      * @return true, if the generator is defined
